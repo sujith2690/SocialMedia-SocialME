@@ -1,0 +1,48 @@
+.allLoginUsers {
+  display: flex;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.logedUser {
+  width: 50px;
+  height: 50px;
+  border-radius: 25%;
+  object-fit: cover;
+}
+.arrange {
+  display: flex;
+  align-items: center;
+}
+.userDetail {
+}
+table,
+td,
+th {
+  /* border: 1px solid black; */
+  padding: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 50%;
+}
+
+.block {
+  background-color: rgba(9, 46, 23, 0.301);
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  /* height: 2rem; */
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.active-user {
+  height: 2rem;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.verifiedUser {
+ color: rgba(15, 37, 230, 0.788);
+}
+

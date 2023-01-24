@@ -1,0 +1,80 @@
+.Post {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: var(--cardColor);
+    margin-top: 1rem;
+  }
+  .Post > img {
+    width: 100%;
+    max-height: 20rem;
+    object-fit: cover;
+  }
+  .PostReact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-top: 10px;
+   
+  }
+  .UserProfile {
+    border-radius: 25%;
+    object-fit: cover;
+    width: 3rem;
+    height: 3rem;
+  }
+  .Options {
+    width: 2rem;
+    margin-left: auto;
+    cursor: pointer;
+  }
+  .PostReact > div > input {
+    background-color: var(--inputColor);
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 15px;
+    border: none;
+    outline: none;
+    width: auto;
+  }
+  .PostReaction{
+    align-items: center;
+    margin-top: 10px;
+    height: 250px;
+    overflow: hidden;
+    overflow-y: scroll;
+  }
+  .Message {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .PostUser {
+    display: flex;
+    align-items: center;
+  }
+  .c-btn {
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .PostIcon {
+    cursor: pointer;
+  }
+  .edit{
+    border: 5px;
+    color: red;
+  }
+  .edit>p{
+    cursor: pointer;
+    margin-top: -20px;
+  }
+  .PostReactedit{
+    border: 1px;
+    align-items: flex-end;
+  }
+  
+ 

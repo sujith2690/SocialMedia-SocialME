@@ -1,0 +1,101 @@
+.Post {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: var(--cardColor);
+  margin-top: 1rem;
+}
+.Post > img {
+  width: 100%;
+  max-height: 20rem;
+  object-fit: cover;
+}
+.PostReact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-top: 10px;
+}
+.Profileimg {
+  border-radius: 25%;
+  width: 3rem;
+  height: 3rem;
+ 
+  object-fit: cover;
+  /* height: 3rem; */
+}
+
+.PostReact > div > input {
+  background-color: var(--inputColor);
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+  outline: none;
+  width: 440px;
+}
+.PostReaction{
+  align-items: center;
+  margin-top: 10px;
+}
+.Message {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.PostUser {
+  display: flex;
+  align-items: center;
+}
+.PostUser>p{
+  margin-left: 10px;
+}
+.PostOptions{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.c-btn {
+  padding: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.PostIcon {
+  cursor: pointer;
+}
+.menuoptions{
+  cursor: pointer;
+}
+.edit{
+  border: 5px;
+  color: red;
+}
+.edit>p{
+  cursor: pointer;
+  margin-top: -20px;
+}
+.PostReactedit{
+  border: 1px;
+  align-items: flex-end;
+}
+.Discription{
+  margin-top: -20px;
+  margin-bottom: 10px;
+  margin-left: 40px;
+}
+.opps{
+  cursor: pointer;
+}
+.saveoptions{
+color: #aaa;
+font-size: 13px;
+cursor: pointer;
+}
+.likeandcomment{
+  color: var(--grey);
+  font-size: 12px;
+  margin-left: -20px;
+}
