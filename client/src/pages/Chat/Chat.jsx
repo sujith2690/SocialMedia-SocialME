@@ -100,6 +100,7 @@ const checkOnlineStatus = (chat)=>{
                         <Link to={'../saved'}>
                         <Bookmark />
                         </Link>
+                        
                         <img src={Noti} alt="" />
                         <Link to={'../chat'}>
                             <img src={Comment} alt="" />

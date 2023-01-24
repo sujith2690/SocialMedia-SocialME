@@ -41,7 +41,8 @@
   .PostReaction{
     align-items: center;
     margin-top: 10px;
-    height: 250px;
+    min-height: 100px;
+    max-height: 250px;
     overflow: hidden;
     overflow-y: scroll;
   }
@@ -75,6 +76,12 @@
   .PostReactedit{
     border: 1px;
     align-items: flex-end;
+  }
+  .comm{
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
   
  
