@@ -34,18 +34,20 @@ const Comment = ({ postId, countComment }) => {
         desc.current.value = ""
     }
     const handleComment = (e) => {
-        
-        e.preventDefault();
-        countComment()
-        const newComment = {
-            postId: postId,
-            userId: user._id,
-            desc: desc.current.value
+        if (desc.current.value) {
+            e.preventDefault();
+            countComment()
+            const newComment = {
+                postId: postId,
+                userId: user._id,
+                desc: desc.current.value
+            }
+            uploadComment(newComment).then((response) => {
+                setRefresh(!refresh)
+                reset()
+            })
         }
-        uploadComment(newComment).then((response) => {
-            setRefresh(!refresh)
-            reset()
-        })
+
     }
 
     return (
@@ -54,8 +56,8 @@ const Comment = ({ postId, countComment }) => {
                 <div className='PostReact'>
                     <div className="Message">
                         <img className="UserProfile" src={user.profilePicture ? serverPublic + user.profilePicture : serverPublic + "avatar.png"} alt="" />
-                        <input type="text" ref={desc} placeholder='#Say Something' className='commentInput'  />
-                        <button className='button' ><Send style={{color:'#3C7AF6'}}/></button>
+                        <input type="text" ref={desc} placeholder='#Say Something' className='commentInput' />
+                        <button className='button comm' ><Send /></button>
                     </div>
                 </div>
             </form>

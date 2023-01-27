@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { block, getAllUsers } from '../../../api/UserRequest'
 import './userTable.css'
+import { ArrowUpRightCircle } from 'tabler-icons-react';
+
 
 const UserTable = () => {
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
@@ -45,7 +47,7 @@ const UserTable = () => {
                 <tr>
                   <td><img src={user.profilePicture ? serverPublic + user.profilePicture : serverPublic + "avatar.png"} alt=""
                     className='logedUser' /></td>
-                  <td>{user.firstname} {user.lastname}</td>
+                  <td>{user.firstname} {user.lastname} {user.verified ? <ArrowUpRightCircle/>:''}</td>
                   <td>{user.username}</td>
                   <td>{user.followers.length}</td>
                   <td>{user.following.length}</td>

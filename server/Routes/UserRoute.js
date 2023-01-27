@@ -1,12 +1,12 @@
 import  express  from "express";
-import { deleteUser, followUser, getUser, UnFollowUser, updateUser,getAllUsers, getUnfollowedUser, getAllFollowUser, verifyUser, blockUser, postReport } from "../Controllers/UserController.js"
+import { deleteUser, followUser, getUser, UnFollowUser, updateUser, getUnfollowedUser, getAllFollowUser, verifyUser, blockUser, postReport, getAllUnfollowUsers } from "../Controllers/UserController.js"
 import authMiddleWare from "../Middleware/Middleware.js";
 const router = express.Router()
 
+router.get('/',authMiddleWare,getAllUnfollowUsers)
+router.get('/:id/allfollow',authMiddleWare,getAllFollowUser)
 
-router.get('/',authMiddleWare,getAllUsers)
-router.get('/allfollow',authMiddleWare,getAllFollowUser)
-router.get('/:id',getUser)
+router.get('/:id',authMiddleWare,getUser)
 router.put('/:id',authMiddleWare,updateUser)
 router.delete('/:id',authMiddleWare,deleteUser)
 router.put('/:id/follow',authMiddleWare,followUser)

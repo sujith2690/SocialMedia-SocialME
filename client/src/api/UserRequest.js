@@ -13,11 +13,14 @@ API.interceptors.request.use((req) => {
 
 export const getUser = (userId) => API.get(`/user/${userId}`);
 
+
 export const updateUser = (id, formData) => API.put(`/user/${id}`, formData);
 
 export const getAllUsers = () => API.get("/user");
 
-export const getAllFollowUser = ()=> API.get("/user/allfollow")
+// export const getAllFollowUser = (id)=> API.get("/user/allfollow",{id})
+
+export const getAllFollowUser = (id)=> API.get(`/user/${id}/allfollow`)
 
 export const getUnfollowedUsers = (userid) => API.post("/user/UnfollowedUser", { userid });
 

@@ -3,14 +3,15 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose, { Types } from "mongoose";
 import ReportModel from "../Models/ReportModal.js";
+import PostModel from "../Models/PostModal.js";
 
 // get All unfollow users
 
-export const getAllUsers = async (req, res) => {
+export const getAllUnfollowUsers = async (req, res) => {
   try {
     let users = await UserModel.find({ followers: { $nin: [req.body._id] } });
     users = users.map((user) => {
-      const { password, isAdmin, ...otherDetails } = user._doc;
+      const { password,isBlock,verified,saved,...otherDetails } = user._doc;
       return otherDetails;
     });
     res.status(200).json(users);
@@ -22,11 +23,13 @@ export const getAllUsers = async (req, res) => {
 // get All follow users
 
 export const getAllFollowUser = async (req, res) => {
+  console.log(req.params.id,'------------------otheruser')
+  const User = req.params.id
+  // console.log(req.body,'---------------loginuser or ')
   try {
-    let users = await UserModel.find({ followers: { $in: [req.body._id] } });
-
+    let users = await UserModel.find({ followers: { $in: [User] } });
     users = users.map((user) => {
-      const { password, isAdmin, ...otherDetails } = user._doc;
+      const { password,isBlock,verified,saved,...otherDetails } = user._doc;
       return otherDetails;
     });
     res.status(200).json(users);
@@ -38,11 +41,12 @@ export const getAllFollowUser = async (req, res) => {
 // get a user
 export const getUser = async (req, res) => {
   const id = req.params.id;
-
   try {
     const user = await UserModel.findById(id);
     if (user) {
-      const { password, ...otherDetails } = user._doc;
+      const { password,isBlock,verified,saved,...otherDetails } = user._doc;
+      const userPost = await PostModel.find({userId:id})
+      otherDetails.allPosts = userPost
       res.status(200).json(otherDetails);
     } else {
       res.status(404).json("No User exist");

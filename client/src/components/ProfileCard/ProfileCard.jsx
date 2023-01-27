@@ -3,6 +3,10 @@ import "./ProfileCard.css";
 import { Link, useParams } from 'react-router-dom'
 import { useSelector } from "react-redux";
 import axios from 'axios'
+import { ArrowUpRightCircle } from 'tabler-icons-react';
+import { getUser } from "../../api/UserRequest";
+import { userPosts } from "../../api/PostRequest";
+
 
 
 function ProfileCard({ location }) {
@@ -17,24 +21,25 @@ function ProfileCard({ location }) {
     const [following, setFollowing] = useState([])
     const [refresh, setrefresh] = useState(false)
 
-  
+
 
     useEffect(() => {
         const fetchFollowers = async () => {
             if (id) {
-                const { data } = await axios.get(`/user/${id}`)
+                const { data } = await getUser(id)
                 setFollowers(data.followers)
                 setFollowing(data.following)
                 setsearchuser(data)
                 setrefresh(true)
             } else {
-                const { data } = await axios.get(`/user/${user._id}`)
+                const { data } = await getUser(user._id)
+                console.log(data, '----------existing user')
                 setFollowers(data.followers)
                 setFollowing(data.following)
             }
         }
         fetchFollowers()
-    }, [refresh])
+    }, [id])
 
     return (
         <div className="ProfileCard">
@@ -50,13 +55,10 @@ function ProfileCard({ location }) {
                 }
             </div>
             <div className="ProfileName">
-                {!searchuser ? <span>{user.firstname} {user.lastname}</span>
-                    : <span>{searchuser.firstname} {searchuser.lastname}</span>
+                {!searchuser ? <span>{user.firstname} {user.lastname} {user.verified ? <ArrowUpRightCircle style={{ color: 'rgba(15, 37, 230, 0.788)' }} /> : ''}</span>
+                    : <span>{searchuser.firstname} {searchuser.lastname} {searchuser.verified ? <ArrowUpRightCircle style={{ color: 'rgba(15, 37, 230, 0.788)' }} /> : ''}</span>
                 }
-                {!searchuser ? <span>{user.worksAT ? user.worksAT : " About User"}</span>
-                    : <span>{searchuser.worksAT ? searchuser.worksAT : " About User"}</span>
-                }
-
+            
             </div>
             <div className="followStatus">
                 <hr />
@@ -74,16 +76,19 @@ function ProfileCard({ location }) {
                         }
                         <span>Followers</span>
                     </div>
-                    {location !== 'homepage' ? 
+                    {location !== 'homepage' ?
                         <>
                             <div className="vl">
                             </div>
                             <div className="follow">
-                            <span>{posts.filter((post) => post.userId === user._id).length}</span>
+                                {/* <span>{posts.filter((post) => post.userId === user._id).length}</span> */}
+                                {!searchuser ? <span>{posts.filter((post) => post.userId === user._id).length}</span>
+                                    : <span>{searchuser?.allPosts?.length}</span>
+                                }
                                 <span>Posts</span>
                             </div>
                         </>
-                    : ""}
+                        : ""}
                 </div>
                 <hr />
             </div>

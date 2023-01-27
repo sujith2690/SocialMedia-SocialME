@@ -1,10 +1,10 @@
 .Leftbar {
   width: 20%;
   background-color: white;
-  height: 400px;
+  height: 500px;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
-  /* margin-top: 10px; */
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   /* gap: 1rem; */
