@@ -1,9 +1,10 @@
 .adminControlls {
   display: flex;
-  margin: 10px;
+  /* margin: 10px; */
   background-color: white;
   width: 80%;
-  height: 400px;
+  height: 500px;
   margin-top: 10px;
   position: relative;
+  margin-left: 10px;
 }

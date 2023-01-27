@@ -51,19 +51,18 @@ const Chat = () => {
             setReceiveMessages(data)
         })
     }, [])
-
-
-
-    useEffect(() => {
-        const getChat = async () => {
-            try {
-                const { data } = await userChats(user._id)
-                setchats(data)
-                console.log(data, '----chat data')
-            } catch (error) {
-                console.log(error)
-            }
+    
+    const getChat = async () => {
+        try {
+            console.log("kkkkkkkk");
+            const { data } = await userChats(user._id)
+            setchats(data)
+            console.log(data, '----chat data')
+        } catch (error) {
+            console.log(error)
         }
+    }
+    useEffect(() => {
         getChat()
     }, [user])
 
@@ -81,8 +80,8 @@ const checkOnlineStatus = (chat)=>{
                 <div className="Chat-container">
                     <h2>Chats</h2>
                     <div className="Chat-list">
-                        {chats.map((chat) => (
-                            <div onClick={() => setcurrentChat(chat)} >
+                        {chats.map((chat,i) => (
+                            <div key={i} onClick={() => setcurrentChat(chat)} >
                                 <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} />
                             </div>
                         ))}

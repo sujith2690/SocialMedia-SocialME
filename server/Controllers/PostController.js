@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;
 
-// Create New Model
+// Create New Post 
 export const createPost = async (req, res) => {
   const userId = req.body.userId;
   const newPost = new PostModel(req.body);
@@ -33,9 +33,9 @@ export const getPost = async (req, res) => {
 
 // Get user posts
 
-export const otherUserposts = async (req,res) =>{
-  const otheruserId = req.body.userId
- console.log(otheruserId,'------------otheruserId postController')
+export const userPosts = async (req,res) =>{
+  const userId = req.body.userId
+ console.log(userId,'------------otheruserId postController')
 }
 
 // Get saved post
@@ -246,7 +246,7 @@ export const getTimeLinePosts = async (req, res) => {
         },
       },
     ]);
-console.log(timelinePosts,'-------------timelinepost controller..')
+// console.log(timelinePosts,'-------------timelinepost controller..')
     res.status(200).json(timelinePosts);
   } catch (error) {
     console.log(error);

@@ -79,8 +79,8 @@ const Post = ({ location, data, fetchpost }) => {
         }
     }
     const handleDelete = async () => {
-        // const response = await axios.delete(`/post/${data._id}/delete`, { userId: user._id })
-        // console.log(response,'-----------deleted')
+        const response = await axios.delete(`/post/${data._id}/delete`, { userId: user._id })
+        console.log(response,'-----------deleted')
         setAnchorEl(null);
         fetchpost()
     }
@@ -129,8 +129,7 @@ const Post = ({ location, data, fetchpost }) => {
                         }}
                     >{postOwnerId === user._id ?
                         <MenuItem onClick={handleDelete}>Delete</MenuItem>
-                        : ""}
-                        <MenuItem onClick={() => handleReport(data._id)}>Report</MenuItem>
+                        : <MenuItem onClick={() => handleReport(data._id)}>Report</MenuItem>}
                     </Menu>
                 </div>
             </div>

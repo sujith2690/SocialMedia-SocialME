@@ -6,6 +6,7 @@ import { FileReport } from 'tabler-icons-react';
 import { Logout } from 'tabler-icons-react';
 import { logOut } from '../../../Actions/AuthAction';
 import { useDispatch } from 'react-redux';
+import { Accessible } from 'tabler-icons-react';
 
 
 const AdminCommands = ({ setSelect }) => {
@@ -14,7 +15,7 @@ const AdminCommands = ({ setSelect }) => {
 
   const handleLogOut = () => {
     dispatch(logOut())
-}
+  }
 
   return (
     <div className='Leftbar'>
@@ -24,15 +25,19 @@ const AdminCommands = ({ setSelect }) => {
           <p>All users</p>
         </div>
         <div className='iconss' onClick={() => setSelect("activeUsers")}>
-          <UserCheck  />
-          <p>Active users</p>
+          <UserCheck />
+          <p>Verified users</p>
         </div>
         <div className='iconss' onClick={() => setSelect("report")}>
-          <FileReport  />
+          <FileReport />
           <p>Reported Posts</p>
         </div>
+        {/* <div className='iconss'>
+          <Accessible />
+          <p>User Requests</p>
+        </div> */}
         <div className='iconss' onClick={handleLogOut} >
-          <Logout  />
+          <Logout />
           <p>Logout</p>
         </div>
       </div>

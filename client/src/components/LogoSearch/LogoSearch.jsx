@@ -39,20 +39,22 @@ function LogoSearch() {
 
   return (
     <div className="LogoSearch">
-      <div style={{ display: 'flex' }}>
-        <img src={Logo} alt="" />
+      <form  onSubmit={search}>
+        <div style={{ display: 'flex' }}>
+          <img src={Logo} alt="" />
           <div className="Search">
             <input type="text" required ref={desc} placeholder='#Explore' />
             <div className="s-icon">
-              <UilSearch  onClick={search} />
+              <UilSearch onClick={search} />
             </div>
           </div>
-      </div>
+        </div>
+      </form>
       {show === true ?
         <div className='searchoutput'>
           {Result.map((item, i) => {
             return (
-              <div className='resultlocation'  key={i} >
+              <div className='resultlocation' key={i} >
                 <img className="SearchProfile" src={item.profilePicture ? serverPublic + item.profilePicture : serverPublic + "avatar.png"} alt="" />
                 <span style={{ marginLeft: '10px', marginTop: 10 }} >
                   <Link style={{ textDecoration: "none", color: "inherit" }} to={`/profile/${item._id}`}>

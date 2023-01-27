@@ -15,7 +15,6 @@ const authMiddleWare = async(req,res,next)=>{
      } catch (error) {
         console.log(error,'-----authMiddleWare')
     }
-
 }
 
 export default authMiddleWare;

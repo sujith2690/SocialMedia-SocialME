@@ -4,7 +4,7 @@ import { UilPen } from '@iconscout/react-unicons'
 import ProfileModal from '../ProfileModal/ProfileModal.jsx'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import * as UserApi from '../../api/UserRequest.js'
 import { logOut } from '../../Actions/AuthAction'
 import { createChat } from '../../api/ChatRequest'
@@ -20,7 +20,8 @@ const InfoCard = () => {
     const { user } = useSelector((state) => state.authReducer.authData)
     const senderId = user._id
     const receiverId = profileUserId
-    // console.log(user, 'is the user')
+    const [chats, setchats] = useState([])
+    const navigate = useNavigate()
     useEffect(() => {
         const fetchProfileUser = async () => {
             if (profileUserId === user._id) {
@@ -32,25 +33,32 @@ const InfoCard = () => {
             }
         }
         fetchProfileUser();
-    }, [user])
+    }, [profileUserId])
 
     const handleLogOut = () => {
         dispatch(logOut())
     }
+
+ 
     const handleChat = async () => {
         // e.preventDefault()
         console.log('start chat')
-        const create = await createChat({ senderId, receiverId })
-        console.log(create)
+         await createChat({ senderId, receiverId }).then((response) => {
+
+             console.log(response,"oo-oooooo--")
+             navigate('/chat')
+         })
+
+       
+
     }
-
-
 
     return (
         <div className='InfoCard'>
             <div className="infoHead">
-                <h4>Profile Info</h4>
-                {user._id === profileUserId ? (<div>
+                <p><b>{profileUser.firstname}</b> Profile Info</p>
+                {user._id === profileUserId ? (
+                <div>
                     <UilPen width='2rem' height='1.2rem' onClick={() => setModalOpened(true)} />
                     <ProfileModal
                         modalOpened={modalOpened}
@@ -60,6 +68,7 @@ const InfoCard = () => {
                 </div>) : ""}
 
             </div>
+            
             <div className="Info">
                 <span>
                     <b>Status</b>
@@ -68,7 +77,7 @@ const InfoCard = () => {
             </div>
             <div className="info">
                 <span>
-                    <b>Lives in </b>
+                    <b>Lives in</b>
                 </span>
                 <span> {profileUser.livesIn}</span>
             </div>
@@ -76,19 +85,14 @@ const InfoCard = () => {
                 <span>
                     <b>Works At</b>
                 </span>
-                <span> {profileUser.worksAt}</span>
+                <span> {!profileUser ? user.worksAt:profileUser.worksAt } </span>
             </div>
 
 
             {user._id === profileUserId ? <button className='button logout-button' onClick={handleLogOut} >Log out</button>
-                : <Link to={'../chat'} style={{textDecoration:"none"}}>
-                <button className='button logout-button' onClick={handleChat} >Message</button >
-                </Link>
+                : 
+                    <button className='button logout-button' onClick={handleChat} >Message</button >
             }
-
-
-
-
         </div>
     )
 }

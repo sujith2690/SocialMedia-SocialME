@@ -20,7 +20,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={user? <Navigate to="home" /> : <Navigate to="auth" />}
+          element={user?.user?.verified? <Navigate to="home" /> : <Navigate to="auth" />}
         />
         <Route
           path="home"
@@ -65,11 +65,6 @@ function App() {
           element={admin ? <AdminHome /> : <Navigate to="../admin" />}
         />
       </Routes>
-      {/* <Home/> */}
-      {/* <Profile/> */}
-      {/* <Auth/> */}
-      {/* <AdminAuth/> */}
-      {/* <AdminHome/> */}
     </div>
   );
 }
