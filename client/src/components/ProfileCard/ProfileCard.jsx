@@ -33,7 +33,7 @@ function ProfileCard({ location }) {
                 setrefresh(true)
             } else {
                 const { data } = await getUser(user._id)
-                console.log(data, '----------existing user')
+                // console.log(data, '----------existing user')
                 setFollowers(data.followers)
                 setFollowing(data.following)
             }

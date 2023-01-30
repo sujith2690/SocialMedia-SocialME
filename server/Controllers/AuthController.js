@@ -8,6 +8,7 @@ import otpVerificationModel from "../Models/OtpVerifyModal.js";
 // Registering New User
 
 export const registerUser = async (req, res) => {
+  console.log('--------its here')
   const jwt = pkg;
   const salt = await bcrypt.genSalt(10);
   const hashedPass = await bcrypt.hash(req.body.password, salt);
@@ -17,10 +18,12 @@ export const registerUser = async (req, res) => {
   try {
     const oldUser = await UserModel.findOne({ username });
     if (oldUser) {
-      return res.status(400).json({ message: "Username is already regiserd" });
+      return res.status(400).json({ message: "Email is already regiserd" });
     }
     console.log(newUser, "----new user signup");
     const user = await newUser.save();
+    // console.log(newUser,'----------coming user details')
+    // console.log(user,'-----------saved user details')
     const otpSend = await sendOtpVerificationEmail(user);
 
     //  T O K E N
@@ -40,14 +43,15 @@ export const registerUser = async (req, res) => {
   }
 };
 
-const sendOtpVerificationEmail = async (newUser) => {
+const sendOtpVerificationEmail = async (user) => {
+  
   console.log(
-    newUser,
+    user,
     "---------id and user namea at sendotpverifunction............."
   );
   return new Promise(async (resolve, reject) => {
-    const userEmail = newUser.username;
-    const userid = newUser._id.toString();
+    const userEmail = user.username;
+    const userid = user._id.toString();
     console.log(userid.toString(), "------id");
 
     try {
@@ -59,7 +63,7 @@ const sendOtpVerificationEmail = async (newUser) => {
           pass: process.env.NDMILR_PASS,
         },
       });
-      console.log(newUser.username, "--------email");
+      console.log(userEmail, "--------email");
       const mailOptions = {
         from: process.env.EMAIL,
         to: userEmail,
@@ -111,6 +115,7 @@ const sendOtpVerificationEmail = async (newUser) => {
 export const otpVerify = async (req, res) => {
   try {
     let { userId, otp } = req.body;
+    
     const jwt = pkg;
     console.log(userId, otp, "userid and otp at authcontroller");
     if (!userId || !otp) {
@@ -132,7 +137,7 @@ export const otpVerify = async (req, res) => {
           if (!vaildOtp) {
             throw new Error(" Invalied otp. check and Enter correct OTP");
           } else {
-            await UserModel.updateOne({ _id: userId }, { isBlock: false });
+            await UserModel.updateOne({ _id: userId }, { isUser: true });
             await otpVerificationModel.deleteMany({ userId });
             const user = await UserModel.findOne({ _id: userId });
             console.log(
@@ -150,6 +155,9 @@ export const otpVerify = async (req, res) => {
             res.status(200).json({ user, token });
           }
         }
+      }else{
+      
+        res.status(200).json('Wrong Otp')
       }
     }
   } catch (error) {

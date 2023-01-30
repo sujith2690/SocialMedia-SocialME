@@ -22,11 +22,11 @@ export const signUp = (formData) => async (dispatch) => {
   }
 };
 
-export const otpVerification = (userId,otp)=> async(dispatch)=>{
-  console.log(userId,otp,'-------------userid and otp authentication')
+export const otpVerification = (userDetails,otp)=> async(dispatch)=>{
+  console.log(userDetails,otp,'-------------userid and otp authentication')
   dispatch({type:"OTP_START"})
   try{
-    const {data} = await AuthApi.otpVerify(userId,otp)
+    const {data} = await AuthApi.otpVerify(userDetails,otp)
     console.log(data,'----data at opt verification')
     dispatch({type:"OTP_SUCCESS", data:data})
     

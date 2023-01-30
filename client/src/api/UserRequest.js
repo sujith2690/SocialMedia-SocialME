@@ -30,6 +30,12 @@ export const unFollowUser = (id, data) => API.put(`/user/${id}/unfollow`, data);
 
 export const postReport = (postId) => API.put(`/user/${postId}/report`)
 
+// Notifications 
+
+export const getNotifications = (id)=> API.get(`/user/${id}/notifications`)
+
+export const getSeenNotifications = (id)=> API.get(`/user/${id}/seennotifications`)
+
 // admin
 
 export const verifiedUser = (id)=> API.put(`/user/${id}/verify`)

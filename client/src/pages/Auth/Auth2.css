@@ -66,23 +66,41 @@
   height: 2rem;
   width: 90%;
 }
-.infoButton{
-    width: 6rem;
-    height: 2rem;
-    align-self: flex-end;
+.infoButton {
+  width: 6rem;
+  height: 2rem;
+  align-self: flex-end;
 }
-.authForm{
-    background-color: var(--cardColor);
-    border-radius: 1rem;
-    padding: 1rem;
+.authForm {
+  background-color: var(--cardColor);
+  border-radius: 1rem;
+  padding: 1rem;
 }
 
-.authForm>div{
-    width: 100%;
-    align-items: center;
-    justify-content: center;
+.authForm > div {
+  /* width: 100%; */
+  align-items: center;
+  justify-content: center;
+}
+.inputNames {
+  display: flex;
+  flex-direction: column;
 }
 .inputname{
   display: flex;
   flex-direction: column;
+}
+.a-right{
+  display: flex;
+  flex-direction: column;
+}
+.inputfields{
+  margin-bottom: 10px;
+}
+.inputfields>div{
+  width: 100%;
+}
+.form-error{
+  color: red;
+  font-size: 12px;
 }

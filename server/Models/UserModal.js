@@ -20,12 +20,50 @@ const UserSchema = mongoose.Schema(
     },
     isBlock: {
       type: Boolean,
-      default: true,
+      default: false,
+    },
+    isUser: {
+      type: Boolean,
+      default: false,
     },
     verified: {
       type: Boolean,
       default: false,
     },
+    seenNotifications: [
+      {
+        content: {
+          type: String,
+          required: true,
+        },
+        userId: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'users',
+        },
+        date: Date,
+        seen: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
+    unseenNotifications: [
+      {
+        content: {
+          type: String,
+          required: true,
+        },
+        userId: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'users',
+        },
+        createdAt:Date,
+        seen: {
+          type: Boolean,
+          default: false,
+        },
+      },
+    ],
     saved: [
       {
         postId: {
@@ -35,7 +73,7 @@ const UserSchema = mongoose.Schema(
         createdAt: Date,
       },
     ],
-    
+
     worksAt: String,
     livesIn: String,
     country: String,

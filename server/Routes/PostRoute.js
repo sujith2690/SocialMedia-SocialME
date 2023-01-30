@@ -3,17 +3,17 @@ import { createPost, deletePost, getPost, getTimeLinePosts, likePost, updatePost
 import authMiddleWare from "../Middleware/Middleware.js";
 const router = express.Router()
 
-router.post('/',authMiddleWare,createPost)
-router.get('/:id',authMiddleWare, getPost)
-router.put('/:id',authMiddleWare,updatePost)
-router.delete('/:id/delete',authMiddleWare,deletePost)
-router.put("/:id/like",authMiddleWare, likePost)
-router.get("/:id/userPosts",authMiddleWare,userPosts)
-router.get('/:id/timeline',authMiddleWare, getTimeLinePosts)
-router.post('/comment',authMiddleWare,commentPost)
-router.get('/:id/commnets',authMiddleWare,getComments)
+router.post('/',createPost)
+router.get('/:id', getPost)
+router.put('/:id',updatePost)
+router.delete('/:id/delete',deletePost)
+router.put("/:id/like", likePost)
+router.get("/:id/userPosts",userPosts)
+router.get('/:id/timeline', getTimeLinePosts)
+router.post('/comment',commentPost)
+router.get('/:id/commnets',getComments)
 
-router.put('/:id/save',authMiddleWare,savePost)
-router.get('/:id/saved',authMiddleWare,savedPost)
+router.put('/:id/save',savePost)
+router.get('/:id/saved',savedPost)
 
 export default router;

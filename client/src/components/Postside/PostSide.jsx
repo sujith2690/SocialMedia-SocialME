@@ -21,7 +21,7 @@ function PostSide({ location }) {
     else {
       const { data } = await getTimelinePosts(user._id)
       setPosts(data)
-      console.log(data,'----login user posts ')
+      // console.log(data,'----login user posts ')
     }
   }
 

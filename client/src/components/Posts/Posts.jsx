@@ -12,14 +12,14 @@ function Posts({location, data,fetchPosts}) {
   let [posts,setPosts] = useState(data)
   let { loading } = useSelector((state) => state.postReducer)
   const params = useParams()
- console.log(data,'----------------data')
+//  console.log(data,'----------------data')
   useEffect(()=>{
   setPosts(data)
   },[data])
   
   if (!posts) return "no posts";
    if (params.id) posts = posts.filter((post) => post.userId === params.id)
-   console.log(posts,'--------------------------------------------------')
+  //  console.log(posts,'--------------------------------------------------')
   return (
     <div className="Posts">
 

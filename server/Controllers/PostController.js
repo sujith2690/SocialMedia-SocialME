@@ -4,13 +4,13 @@ import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;
 
-// Create New Post 
+// Create New Post
 export const createPost = async (req, res) => {
   const userId = req.body.userId;
   const newPost = new PostModel(req.body);
   try {
     await newPost.save();
-    console.log(newPost,'--------new post')
+    console.log(newPost, "--------new post");
     res.status(200).json(newPost);
   } catch (error) {
     res.status(500).json(error);
@@ -33,10 +33,10 @@ export const getPost = async (req, res) => {
 
 // Get user posts
 
-export const userPosts = async (req,res) =>{
-  const userId = req.body.userId
- console.log(userId,'------------otheruserId postController')
-}
+export const userPosts = async (req, res) => {
+  const userId = req.body.userId;
+  console.log(userId, "------------otheruserId postController");
+};
 
 // Get saved post
 
@@ -74,10 +74,10 @@ export const updatePost = async (req, res) => {
 export const commentPost = async (req, res) => {
   console.log("KAAAAAAAAAAAAAAAAAAAAAAA");
   const comment = req.body.desc;
-  console.log(comment, "------comment");
+  // console.log(comment, "------comment");
   const userid = req.body.userId;
   const postId = req.body.postId;
-  console.log(postId, "-----postid");
+
   try {
     const post = await PostModel.findById(postId);
     console.log(post, "---------post");
@@ -88,8 +88,18 @@ export const commentPost = async (req, res) => {
         createdAt: Date.now(),
       };
       const app = await post?.updateOne({ $push: { comments: update } });
+      const User = await UserModel.findById(userid);
+      console.log(User, "------------user");
+      const postUserId = post.userId;
+      const postUser = await UserModel.findById(postUserId);
+      const data = {
+        content: `${User.firstname} ${User.lastname} commented on Your Post`,
+        userId: new mongoose.Types.ObjectId(userid),
+        createdAt: new Date(),
+        seen: false,
+      };
+      await postUser.updateOne({ $push: { unseenNotifications: data } });
       res.status(200).json(app);
-
     }
     console.log(post, "-----pooooo");
   } catch (error) {
@@ -117,7 +127,17 @@ export const likePost = async (req, res) => {
   const { userId } = req.body;
   try {
     const post = await PostModel.findById(id);
+    const postUserId = post.userId;
+    const User = await UserModel.findById(userId);
+    const postUser = await UserModel.findById(postUserId);
     if (!post.likes.includes(userId)) {
+      const data = {
+        content: `${User.firstname} ${User.lastname} Liked Your Post`,
+        userId: new mongoose.Types.ObjectId(userId),
+        createdAt: new Date(),
+        seen: false,
+      };
+      await postUser.updateOne({ $push: { unseenNotifications: data } });
       await post.updateOne({ $push: { likes: userId } });
       res.status(200).json("Post Liked");
     } else {
@@ -137,17 +157,16 @@ export const savePost = async (req, res) => {
   console.log(userId, "------userid");
   try {
     const saveOnpost = await PostModel.findById(id);
-    console.log(saveOnpost,'--------- post')
+    console.log(saveOnpost, "--------- post");
     if (!saveOnpost.savedusers.includes(userId)) {
       await saveOnpost.updateOne({ $push: { savedusers: userId } });
-        // const app = await save?.updateOne({ $push: { saved: update } });
-        res.status(200).json("Post Saved");
-      } else {
-        await saveOnpost.updateOne({ $pull: { savedusers: userId } });
-        res.status(200).json("Post Unsaved");
-      }
-      // console.log(save, "-------save postcontroller");
-    
+      // const app = await save?.updateOne({ $push: { saved: update } });
+      res.status(200).json("Post Saved");
+    } else {
+      await saveOnpost.updateOne({ $pull: { savedusers: userId } });
+      res.status(200).json("Post Unsaved");
+    }
+    // console.log(save, "-------save postcontroller");
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -157,9 +176,8 @@ export const savePost = async (req, res) => {
 
 export const getTimeLinePosts = async (req, res) => {
   const userId = req.params.id;
-  console.log(userId,'----timeline posts')
+  console.log(userId, "----timeline posts");
   try {
-    
     const timelinePosts = await UserModel.aggregate([
       {
         $match: {
@@ -184,7 +202,7 @@ export const getTimeLinePosts = async (req, res) => {
       {
         $lookup: {
           from: "posts",
-          localField:'stringId',
+          localField: "stringId",
           foreignField: "userId",
           as: "myPosts",
         },
@@ -246,7 +264,7 @@ export const getTimeLinePosts = async (req, res) => {
         },
       },
     ]);
-// console.log(timelinePosts,'-------------timelinepost controller..')
+    // console.log(timelinePosts,'-------------timelinepost controller..')
     res.status(200).json(timelinePosts);
   } catch (error) {
     console.log(error);
@@ -300,10 +318,9 @@ export const getComments = async (req, res) => {
         },
       },
     ]);
-   
+
     res.status(200).json(comments);
-  } 
-  catch (error) {
+  } catch (error) {
     console.log(error);
     res.status(500).json(error);
   }

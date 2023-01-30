@@ -74,6 +74,7 @@ const Auth = () => {
       <div className="a-right">
         <form className="infoForm authForm" onSubmit={handleSubmit}>
           <h3>{isSignUp ? "Sign Up" : isOtp ? "Enter OTP" : "Log In"}</h3>
+          
           {isSignUp && !isOtp &&
             <div>
               <input

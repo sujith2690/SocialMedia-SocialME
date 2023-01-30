@@ -1,0 +1,34 @@
+.menu{
+    background-color: rgba(122, 170, 209, 0.562);
+    height: auto;
+    width: 100%;
+    border-radius: 10px;
+    background-image: url(../../img/hlogol.png);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.menuitems{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+}
+.menuitems>p{
+    margin-left: 10px;
+}
+
+.homeimage{
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+}
+.s-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background: linear-gradient(98.63deg, #25b6f9 0%, #5f20f3 100%); */
+    border-radius: 5px;
+    padding: 5px;
+    color: white;
+    border: none;
+  }

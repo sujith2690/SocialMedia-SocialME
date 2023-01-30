@@ -17,14 +17,11 @@ const Comment = ({ postId, countComment }) => {
     console.log(postId, '-----postId')
     const getComment = async (id) => {
         const response = await fetchComments(id)
-
         const userscomment = response.data
         console.log(userscomment, '----------userscomment')
         setComment(userscomment)
         console.log(userscomment, '------userscomment')
-
     }
-
     useEffect(() => {
         getComment(postId)
     }, [refresh])
@@ -63,18 +60,16 @@ const Comment = ({ postId, countComment }) => {
             </form>
 
             <div className='PostReaction' style={{ alignItems: 'center' }} >
-                {comment.map((item) => {
+                {comment.map((item,i) => {
 
                     return (
-                        <>
+                        <div key={i}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <img className="UserProfile" src={item.userData.profilePicture ? serverPublic + item.userData.profilePicture : serverPublic + "avatar.png"} alt="" />
                                 <p style={{ marginLeft: '10px', marginTop: 10 }} ><b>{item.userData.firstname} {item.userData.lastname}</b></p>
                             </div>
                             <p style={{ marginLeft: '58px', textAlign: 'start', marginTop: '-16px' }}>{item.comments.comment}</p>
-
-                            {/* <p style={{ marginLeft: '60px', textAlign: 'start', marginTop: '-10px', color: '#aaa', fontSize: 13, cursor: 'pointer' }}>Replay</p> */}
-                        </>
+                        </div>
                     )
                 })
 

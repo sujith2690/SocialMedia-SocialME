@@ -89,7 +89,7 @@ const Post = ({ location, data, fetchpost }) => {
     }
     const countComment = () => {
         setTotalComm((prev) => prev + 1)
-        console.log(data, '-------------countComment')
+        // console.log(data, '-------------countComment')
     }
     useEffect(() => {
         if (location === 'saved') {

@@ -1,6 +1,6 @@
 import "./App.css";
 import Home from "./pages/home/Home";
-import Auth from "./pages/Auth/Auth";
+import Auth from "./pages/Auth/Auth2";
 import Profile from "./pages/Profile/Profile";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -8,6 +8,8 @@ import AdminHome from "./pages/AdminHome/AdminHome";
 import AdminAuth from "./pages/AdminAuth/AdminAuth";
 import Chat from "./pages/Chat/Chat";
 import Saved from "./pages/Saved/Saved";
+import Login from "./pages/Login/Login";
+import SignUp from "./pages/SignUp/SignUp";
 
 function App() {
   const user = useSelector((state) => state.authReducer.authData);
@@ -18,39 +20,47 @@ function App() {
       <div className="blur" style={{ top: "36%", left: "-8rem" }}></div>
 
       <Routes>
+        
         <Route
           path="/"
-          element={user?.user?.verified? <Navigate to="home" /> : <Navigate to="auth" />}
+          element={user? <Home /> : <Login />}
+        />
+        <Route path="/signup" element={<SignUp />} />
+
+
+        <Route
+          path="/signup"
+          element={user? <Home /> : <SignUp />}
+        />
+        <Route
+          path="/login"
+          element={user? <Home /> : <Login />}
         />
         <Route
           path="home"
-          element={user? <Home /> : <Navigate to="../auth" />}
-        />
-        <Route
-          path="auth"
-          element={user? <Navigate to="../home" /> : <Auth />}
+          element={user ? <Home /> : <Navigate to="/login" />}
         />
         <Route
           path="chat"
-          element={user? <Chat /> : <Navigate to="../auth" />}
+          element={user ? <Chat /> : <Navigate to="../auth" />}
         />
         <Route
           path="saved"
-          element={user? <Saved /> : <Navigate to="../auth" />}
+          element={user ? <Saved /> : <Navigate to="../login" />}
         />
 
         <Route
           path="/profile/:id"
-          element={user? <Profile /> : <Navigate to="../auth" />}
+          element={user ? <Profile /> : <Navigate to="../login" />}
         />
 
         <Route
-          path="/"
+          path="/admin"
           element={
-            admin ? <Navigate to="adminhome" /> : <Navigate to="/admin" />
+            admin ? <AdminHome/>  : <AdminAuth />
           }
         />
-
+   
         <Route
           path="adminhome"
           element={admin ? <AdminHome /> : <Navigate to="../admin" />}
@@ -60,10 +70,7 @@ function App() {
           path="/admin"
           element={admin ? <Navigate to="../adminhome" /> : <AdminAuth />}
         />
-        <Route
-          path="adminhome"
-          element={admin ? <AdminHome /> : <Navigate to="../admin" />}
-        />
+
       </Routes>
     </div>
   );

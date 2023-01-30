@@ -11,7 +11,7 @@ export const getAllUnfollowUsers = async (req, res) => {
   try {
     let users = await UserModel.find({ followers: { $nin: [req.body._id] } });
     users = users.map((user) => {
-      const { password,isBlock,verified,saved,...otherDetails } = user._doc;
+      const { password, isBlock, verified, saved, ...otherDetails } = user._doc;
       return otherDetails;
     });
     res.status(200).json(users);
@@ -23,13 +23,13 @@ export const getAllUnfollowUsers = async (req, res) => {
 // get All follow users
 
 export const getAllFollowUser = async (req, res) => {
-  console.log(req.params.id,'------------------otheruser')
-  const User = req.params.id
+  console.log(req.params.id, "------------------otheruser");
+  const User = req.params.id;
   // console.log(req.body,'---------------loginuser or ')
   try {
     let users = await UserModel.find({ followers: { $in: [User] } });
     users = users.map((user) => {
-      const { password,isBlock,verified,saved,...otherDetails } = user._doc;
+      const { password, isBlock, verified, saved, ...otherDetails } = user._doc;
       return otherDetails;
     });
     res.status(200).json(users);
@@ -41,12 +41,13 @@ export const getAllFollowUser = async (req, res) => {
 // get a user
 export const getUser = async (req, res) => {
   const id = req.params.id;
+  console.log(req.body, "---------finddddd=====");
   try {
     const user = await UserModel.findById(id);
     if (user) {
-      const { password,isBlock,verified,saved,...otherDetails } = user._doc;
-      const userPost = await PostModel.find({userId:id})
-      otherDetails.allPosts = userPost
+      const { password, isBlock, verified, saved, ...otherDetails } = user._doc;
+      const userPost = await PostModel.find({ userId: id });
+      otherDetails.allPosts = userPost;
       res.status(200).json(otherDetails);
     } else {
       res.status(404).json("No User exist");
@@ -137,7 +138,6 @@ export const deleteUser = async (req, res) => {
 
 export const followUser = async (req, res) => {
   const id = req.params.id;
-
   const { _id } = req.body;
 
   if (_id === id) {
@@ -148,6 +148,13 @@ export const followUser = async (req, res) => {
       const followingUser = await UserModel.findById(_id);
 
       if (!followUser.followers.includes(_id)) {
+        const data = {
+          content: `${followingUser.firstname} ${followingUser.lastname} started following you`,
+          userId: new mongoose.Types.ObjectId(_id),
+          createdAt: new Date(),
+          seen: false,
+        };
+        await followUser.updateOne({ $push: { unseenNotifications: data } });
         await followUser.updateOne({ $push: { followers: _id } });
         await followingUser.updateOne({ $push: { following: id } });
         res.status(200).json("User Followed");
@@ -185,6 +192,76 @@ export const UnFollowUser = async (req, res) => {
       console.log(error);
       res.status(500).json(error);
     }
+  }
+};
+
+// Notifications
+
+export const getNotifications = async (req, res) => {
+  const userId = req.params.id;
+  console.log(userId, "----userId----notifications ");
+  try {
+    const userDetails = await UserModel.aggregate([
+      {
+        $match: {
+          _id: Types.ObjectId("63ce2884619987f71e268d07"),
+        },
+      },
+      {
+        $unwind: {
+          path: "$unseenNotifications",
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "unseenNotifications.userId",
+          foreignField: "_id",
+          as: "userData",
+        },
+      },
+      {
+        $project: {
+          "userData.firstname": 1,
+          "userData.lastname": 1,
+          "userData.profilePicture": 1,
+          "unseenNotifications.content": 1,
+          "unseenNotifications.createdAt": 1,
+        },
+      },
+      {
+        $unwind: {
+          path: "$userData",
+        },
+      },
+      {
+        $sort: {
+          "unseenNotifications.createdAt": -1,
+        },
+      },
+    ]);
+    console.log(userDetails, "---------userDetails");
+    res.status(200).json(userDetails);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
+export const getseenNotifications = async (req, res) => {
+  const userId = req.params.id;
+  console.log(userId,'------------userId')
+  try {
+    const User = await UserModel.findById(userId);
+    if (User.unseenNotifications.length > 0) {
+      const unseen = await User.updateOne({
+        $unset: {unseenNotifications: [] } ,
+      });
+      const seen = await User.updateOne({ $push: { seenNotifications: User.unseenNotifications } });
+      res.status(200).json(seen)
+    }
+  } catch (error) {
+    res.status(500).json(error);
   }
 };
 
@@ -226,25 +303,22 @@ export const blockUser = async (req, res) => {
 
 export const postReport = async (req, res) => {
   const postId = req.params.id;
-  const userId =Types.ObjectId( req.body._id)
-  const {desc} = req.body
-  const user = {userId,desc}
+  const userId = Types.ObjectId(req.body._id);
+  const { desc } = req.body;
+  const user = { userId, desc };
   console.log(postId, "--------postid");
   console.log(userId, "********userid");
   try {
-    const report = await ReportModel.findOne({postId});
+    const report = await ReportModel.findOne({ postId });
     if (report) {
-  
-       report.users.push(user)
-       report.save()
-    }else{
-      
-const report =await ReportModel.create({users:user,postId})
-console.log(report)
-
+      report.users.push(user);
+      report.save();
+    } else {
+      const report = await ReportModel.create({ users: user, postId });
+      console.log(report);
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json(error);
   }
 };

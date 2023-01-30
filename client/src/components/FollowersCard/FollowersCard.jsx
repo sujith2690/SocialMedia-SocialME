@@ -14,7 +14,7 @@ function FollowersCard({ location }) {
 
 const loginUserId = user._id
   const { id } = useParams()
-  console.log(id,'---------------------klklklk')
+  // console.log(id,'---------------------klklklk')
 
   useEffect(() => {
     const fetchPersons = async () => {

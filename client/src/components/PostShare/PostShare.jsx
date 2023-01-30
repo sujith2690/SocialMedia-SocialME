@@ -91,7 +91,7 @@ function PostShare({fetchPosts}) {
                         {loading ? "Loading..." : "Share"}
                     </button>
                     <div style={{ display: "none" }}>
-                        <input type="file" name='myImage' ref={imageRef} onChange={onImageChange} />
+                        <input type="file" name='myImage' ref={imageRef} onChange={onImageChange}  accept="image/png, image/gif, image/jpeg" />
                     </div>
                 </div>
 
