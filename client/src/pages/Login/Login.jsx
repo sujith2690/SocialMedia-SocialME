@@ -44,7 +44,7 @@ const Login = () => {
             <div className="a-left">
                 <img src={Logo} alt="" />
                 <div className="Webname">
-                    <h1>AmazeME</h1>
+                    <h1>SocialME</h1>
                     <h6>Explore The World Through AmazeME</h6>
                 </div>
             </div>

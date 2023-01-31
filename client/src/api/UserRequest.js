@@ -16,31 +16,28 @@ export const getUser = (userId) => API.get(`/user/${userId}`);
 
 export const updateUser = (id, formData) => API.put(`/user/${id}`, formData);
 
-export const getAllUsers = () => API.get("/user");
+
 
 // export const getAllFollowUser = (id)=> API.get("/user/allfollow",{id})
 
 export const getAllFollowUser = (id)=> API.get(`/user/${id}/allfollow`)
 
-export const getUnfollowedUsers = (userid) => API.post("/user/UnfollowedUser", { userid });
+export const getUnfollowedUsers = (id) => API.get(`/user/${id}/UnfollowedUser`)
 
 export const followUser = (id, data) => API.put(`/user/${id}/follow`, data);
 
 export const unFollowUser = (id, data) => API.put(`/user/${id}/unfollow`, data);
 
-export const postReport = (postId) => API.put(`/user/${postId}/report`)
+export const searchUser = (data)=> API.post('/user/searchUser',data)
+console.log('----5----')
+
+
 
 // Notifications 
 
 export const getNotifications = (id)=> API.get(`/user/${id}/notifications`)
 
-export const getSeenNotifications = (id)=> API.get(`/user/${id}/seennotifications`)
-
-// admin
-
-export const verifiedUser = (id)=> API.put(`/user/${id}/verify`)
-
-export const block = (id) => API.put(`/user/${id}/block`)
+export const ClearNotifications=(id)=> API.get(`/user/${id}/clearNotifications`)
 
 
 

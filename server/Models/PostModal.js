@@ -21,7 +21,12 @@ const postSchema =  mongoose.Schema ({
             },
            createdAt:Date
         }
-    ],savedusers:[]
+    ],savedusers:[],
+    isremoved:{
+        type:Boolean,
+        default:false,
+    }
+    
 },
 { timestamps: true }
 );

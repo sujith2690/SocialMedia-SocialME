@@ -12,6 +12,10 @@ import LogoSearch from '../../components/LogoSearch/LogoSearch'
 import './chat.css'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import { io } from 'socket.io-client'
+import { MessageDots } from 'tabler-icons-react';
+import { Bell } from 'tabler-icons-react';
+
+
 
 const Chat = () => {
     const { user } = useSelector((state) => state.authReducer.authData)
@@ -47,11 +51,11 @@ const Chat = () => {
 
     useEffect(() => {
         socket.current.on("receive-message", (data) => {
-            console.log("data received on parent chat",data)
+            console.log("data received on parent chat", data)
             setReceiveMessages(data)
         })
     }, [])
-    
+
     const getChat = async () => {
         try {
             console.log("kkkkkkkk");
@@ -66,11 +70,11 @@ const Chat = () => {
         getChat()
     }, [user])
 
-const checkOnlineStatus = (chat)=>{
-    const  chatMember = chat.members.find((member)=> member !== user._id)
-    const online = onlineUsers.find((user)=> user.userId === chatMember)
-    return online? true: false
-}
+    const checkOnlineStatus = (chat) => {
+        const chatMember = chat.members.find((member) => member !== user._id)
+        const online = onlineUsers.find((user) => user.userId === chatMember)
+        return online ? true : false
+    }
 
     return (
         <div className="Chat">
@@ -80,7 +84,7 @@ const checkOnlineStatus = (chat)=>{
                 <div className="Chat-container">
                     <h2>Chats</h2>
                     <div className="Chat-list">
-                        {chats.map((chat,i) => (
+                        {chats.map((chat, i) => (
                             <div key={i} onClick={() => setcurrentChat(chat)} >
                                 <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} />
                             </div>
@@ -97,12 +101,12 @@ const checkOnlineStatus = (chat)=>{
                             <img src={Home} alt="" />
                         </Link>
                         <Link to={'../saved'}>
-                        <Bookmark />
+                            <Bookmark />
                         </Link>
-                        
-                        <img src={Noti} alt="" />
+
+                        <Bell />
                         <Link to={'../chat'}>
-                            <img src={Comment} alt="" />
+                            <MessageDots />
                         </Link>
                     </div>
 

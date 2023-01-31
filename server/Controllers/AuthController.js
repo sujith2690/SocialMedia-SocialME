@@ -209,6 +209,7 @@ export const loginUser = async (req, res) => {
 
 export const searchUser = async (req, res) => {
   console.log(req.body, "---------serch controller");
+  
   const user = req.body.data.desc;
   console.log(user, "---------serch controller");
   try {

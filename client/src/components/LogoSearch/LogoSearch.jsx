@@ -2,9 +2,8 @@ import React, { useRef, useState } from 'react'
 import Logo from '../../img/hlogo.png'
 import { UilSearch } from '@iconscout/react-unicons'
 import './LogoSearch.css'
-import axios from 'axios'
-import { searchUser } from '../../api/AuthRequest'
 import { Link } from 'react-router-dom'
+import { searchUser } from '../../api/UserRequest'
 
 function LogoSearch() {
 
@@ -28,7 +27,6 @@ function LogoSearch() {
       const response = await searchUser(userdis)
       const userDetails = response.data
       setResult(userDetails)
-      console.log(userDetails, "------response goted")
       reset()
     } else {
       if (show === true) {
@@ -43,7 +41,7 @@ function LogoSearch() {
         <div style={{ display: 'flex' }}>
           <img src={Logo} alt="" />
           <div className="Search">
-            <input type="text" required ref={desc} placeholder='#Explore' />
+            <input type="text"  required ref={desc} placeholder='#Explore' />
             <div className="s-icon">
               <UilSearch onClick={search} />
             </div>

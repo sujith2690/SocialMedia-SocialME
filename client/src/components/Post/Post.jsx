@@ -10,10 +10,11 @@ import Comment from '../comments/Comment'
 import { Bookmark } from 'tabler-icons-react';
 import { BookmarkOff } from 'tabler-icons-react';
 import { DotsVertical } from 'tabler-icons-react';
-import { getUser, postReport } from '../../api/UserRequest.js'
+import { getUser } from '../../api/UserRequest.js'
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { postReport } from '../../api/PostRequest'
 
 
 const Post = ({ location, data, fetchpost }) => {
@@ -32,7 +33,7 @@ const Post = ({ location, data, fetchpost }) => {
 
     const { user } = useSelector((state) => state.authReducer.authData)
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
-
+    const userId = user._id
     const [liked, setLiked] = useState(data.likes.includes(user._id))
     const [likes, setLikes] = useState(data.likes.length)
     const [cshow, csetShow] = useState(false)
@@ -44,7 +45,6 @@ const Post = ({ location, data, fetchpost }) => {
 
     const handleRemove = async () => {
         const response = await axios.delete(`/post/${data._id}/delete`, { userId: user._id })
-        console.log(response.data, '---------remove')
     }
     const handleLike = async () => {
         const response = await axios.put(`/post/${data._id}/like`, { userId: user._id })
@@ -80,16 +80,17 @@ const Post = ({ location, data, fetchpost }) => {
     }
     const handleDelete = async () => {
         const response = await axios.delete(`/post/${data._id}/delete`, { userId: user._id })
-        console.log(response,'-----------deleted')
         setAnchorEl(null);
         fetchpost()
     }
-    const handleReport = async (postId, userId) => {
-        const response = await postReport(postId)
+
+    const handleReport = async () => {
+        
+        const response = await postReport(data._id, user._id)
+        setAnchorEl(null);
     }
     const countComment = () => {
         setTotalComm((prev) => prev + 1)
-        // console.log(data, '-------------countComment')
     }
     useEffect(() => {
         if (location === 'saved') {
@@ -129,7 +130,7 @@ const Post = ({ location, data, fetchpost }) => {
                         }}
                     >{postOwnerId === user._id ?
                         <MenuItem onClick={handleDelete}>Delete</MenuItem>
-                        : <MenuItem onClick={() => handleReport(data._id)}>Report</MenuItem>}
+                        : <MenuItem onClick={() => handleReport()}>Report</MenuItem>}
                     </Menu>
                 </div>
             </div>
@@ -142,7 +143,7 @@ const Post = ({ location, data, fetchpost }) => {
             <img src={data.image ? process.env.REACT_APP_PUBLIC_FOLDER + data.image : ""} alt="" />
             <div className="PostReact">
                 <div className='PostReact'>
-                    <img src={liked ? likeIcon : NotLike} className='PostIcon' alt=""  onClick={handleLike} />
+                    <img src={liked ? likeIcon : NotLike} className='PostIcon' alt="" onClick={handleLike} />
                     <span className='likeandcomment' >{likes} Likes</span>
                     <img className='PostIcon' src={Comments} alt="" onClick={handleShow} />
                     <span className='likeandcomment'>{totalComm} Comments</span>

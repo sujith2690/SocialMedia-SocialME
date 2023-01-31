@@ -16,12 +16,10 @@ function PostSide({ location }) {
     if (otherUserid) {
       const { data } = await getTimelinePosts(otherUserid)
         setPosts(data)
-        console.log(data,'---------otheruser posts')
     }
     else {
       const { data } = await getTimelinePosts(user._id)
       setPosts(data)
-      // console.log(data,'----login user posts ')
     }
   }
 
@@ -31,11 +29,10 @@ function PostSide({ location }) {
     const { data } = await getSavedPost(user._id)
     // const { data } = await axios.get(`/post/${user._id}/saved`)
     setPosts(data)
-    console.log(data, '--------saved posts')
   }
 
-  useEffect(() => {
-  }, [posts])
+  // useEffect(() => {
+  // }, [posts])
 
   useEffect(() => {
     if (location === "saved") {

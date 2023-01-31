@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getAllUsers, verifiedUser } from '../../../api/UserRequest'
+import { getAllUsers, verifiedUser } from '../../../api/AdminRequest'
 import './activeUser.css'
 import { ArrowUpRightCircle } from 'tabler-icons-react';
 

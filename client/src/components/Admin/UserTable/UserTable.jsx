@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
-import { block, getAllUsers } from '../../../api/UserRequest'
+import { block, getAllUsers } from '../../../api/AdminRequest'
 import './userTable.css'
 import { ArrowUpRightCircle } from 'tabler-icons-react';
 
@@ -14,16 +14,17 @@ const UserTable = () => {
 
   const handleBlock = async (id) => {
     const userBlocked = await block(id)
-    console.log(userBlocked, '-----------block response')
+    // console.log(userBlocked, '-----------block response')
     getAll()
 
   }
 
   const getAll = async () => {
     const users = await getAllUsers()
-    console.log(users.data)
+    console.log(users.data,"jjjjj")
     setUser(users.data)
   }
+  // console.log(userss,'-------------------------------------')
   useEffect(() => {
     getAll()
   }, [])
@@ -51,9 +52,9 @@ const UserTable = () => {
                   <td>{user.username}</td>
                   <td>{user.followers.length}</td>
                   <td>{user.following.length}</td>
-                  <td>{user.isBlock === false?
-                    <button className='Nonblock' onClick={() => handleBlock(user._id)}>Non Block</button>
-                  :<button className='block' onClick={() => handleBlock(user._id)}>Blocked</button>}
+                  <td>
+                    <button className={user.isBlock? 'Block':'Nonblock'} onClick={() => handleBlock(user._id)}>{user.isBlock? 'Blocked' :'Block'} </button>
+                  
                   </td>
                 </tr>
               </tbody>

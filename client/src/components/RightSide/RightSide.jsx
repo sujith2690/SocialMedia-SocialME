@@ -13,14 +13,12 @@ import { useState } from 'react'
 import Notification from '../Notification/Notification'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import { getNotifications, getSeenNotifications } from '../../api/UserRequest'
+import { ClearNotifications, getNotifications } from '../../api/UserRequest'
 
 
 const RightSide = ({ location }) => {
   const { user } = useSelector((state) => state.authReducer.authData)
   const [notes, setNotes] = useState([])
-  console.log(user,'---------------user in notifid')
-  const [allnotes,setAllnotes] = useState([])
   const userId = user._id
 
 
@@ -31,16 +29,7 @@ const RightSide = ({ location }) => {
     else setShow(false)
   }
   useEffect(() => {
-    if(show === true){
-      Notifications()
-      // SeenNotification()
-      console.log('-show')
-    }
-    else if(show === false){
-      console.log('not shhow')
-      // Notifications()
-      SeenNotification()
-    }
+    Notifications()
   }, [])
   const Notifications = async () => {
     const notifications = await getNotifications(userId)
@@ -48,13 +37,11 @@ const RightSide = ({ location }) => {
     setNotes(allNotifications)
     // console.log(allNotifications, '--------allNotifications')
   }
-  const SeenNotification = async()=>{
-    const SeenNotifi = await getSeenNotifications(userId)
-    const AllSeen = SeenNotifi.data
 
-    console.log(SeenNotifi,'--------seen')
-  }
-  
+  const handleClear = async () => {
+    const clearNotifications = await ClearNotifications(userId)
+    setNotes([])
+}
 
   return (
     <div className="RightSide">
@@ -67,7 +54,7 @@ const RightSide = ({ location }) => {
         </Link>
         <div className='notify'>
           <Bell onClick={handleBell} />
-          <span className="notification-icon">{notes.length} </span>
+          {notes.length > 0 ? <span className="notification-icon">{notes.length} </span>:''}
         </div>
 
         <Link to={'../chat'}>
@@ -75,7 +62,7 @@ const RightSide = ({ location }) => {
         </Link>
       </div>
       {show ?
-        <Notification notes={notes} />
+        <Notification notes={notes} handleClear={handleClear} />
         : ''}
       <FollowersCard location={location} />
 

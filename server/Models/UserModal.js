@@ -30,7 +30,7 @@ const UserSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    seenNotifications: [
+    Notifications: [
       {
         content: {
           type: String,
@@ -41,23 +41,6 @@ const UserSchema = mongoose.Schema(
           ref: 'users',
         },
         date: Date,
-        seen: {
-          type: Boolean,
-          default: false,
-        },
-      },
-    ],
-    unseenNotifications: [
-      {
-        content: {
-          type: String,
-          required: true,
-        },
-        userId: {
-          type: mongoose.Schema.ObjectId,
-          ref: 'users',
-        },
-        createdAt:Date,
         seen: {
           type: Boolean,
           default: false,

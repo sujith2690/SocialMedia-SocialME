@@ -4,17 +4,15 @@ import User from '../User/User'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getAllFollowUser, getAllUsers, getUser } from '../../api/UserRequest'
+import { getAllFollowUser, getUnfollowedUsers, getUser } from '../../api/UserRequest'
 import { useParams } from 'react-router-dom'
 
 
 function FollowersCard({ location }) {
   const [persons, setPersons] = useState([])
   const { user } = useSelector((state) => state.authReducer.authData)
-
 const loginUserId = user._id
   const { id } = useParams()
-  // console.log(id,'---------------------klklklk')
 
   useEffect(() => {
     const fetchPersons = async () => {
@@ -22,7 +20,6 @@ const loginUserId = user._id
         if(id){
           const  otheruser  = await getUser(id)
           const userName = otheruser.data.firstname
-          console.log(userName,'--------------otherUser')
         const { data } = await getAllFollowUser(id);
         setPersons(data)
         }else{
@@ -30,14 +27,17 @@ const loginUserId = user._id
           setPersons(data)
         }
       } else if (location === "Home") {
-        // console.log('""""""""""""""""""""""first""""""""""""""""""""""')
-        const { data } = await getAllUsers();
+        try {
+          const { data } = await getUnfollowedUsers(loginUserId);
         setPersons(data)
+        } catch (error) {
+          console.log(error,'--ERROR')
+        }
+        
       }
     }
     fetchPersons()
   }, [id])
-
 
   return (
     <div className='FollowersCard'>

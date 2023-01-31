@@ -6,7 +6,7 @@ const router = express.Router()
 router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.post('/otpVerify',otpVerify)
-router.post('/user',searchUser)
+router.get('/searchUser',searchUser)
 
 // router.post('/adminregister', registerAdmin)
 // router.post('/adminlogin', loginAdmin)

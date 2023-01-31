@@ -1,6 +1,7 @@
 import PostModel from "../Models/PostModal.js";
 import UserModel from "../Models/UserModal.js";
 import mongoose from "mongoose";
+import ReportModel from "../Models/ReportModal.js";
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -31,12 +32,6 @@ export const getPost = async (req, res) => {
   }
 };
 
-// Get user posts
-
-export const userPosts = async (req, res) => {
-  const userId = req.body.userId;
-  console.log(userId, "------------otheruserId postController");
-};
 
 // Get saved post
 
@@ -265,7 +260,11 @@ export const getTimeLinePosts = async (req, res) => {
       },
     ]);
     // console.log(timelinePosts,'-------------timelinepost controller..')
-    res.status(200).json(timelinePosts);
+    const realPost = timelinePosts.filter((post)=>{
+      return !post.isremoved
+    })
+    console.log(realPost,'--------post after filter')
+    res.status(200).json(realPost);
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -325,3 +324,64 @@ export const getComments = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+
+
+// Report post
+
+export const postReport = async (req, res) => {
+  console.log('------------------------')
+  const postId = req.params.id;
+  const {userId} = req.body;
+  const { desc } = req.body;
+  const user = { userId, desc };
+  console.log(postId, "--------postid");
+  console.log(userId, "********userid");
+
+  try {
+    const report = await ReportModel.findOne({ postId });
+
+    if (report) {
+      report.users.push(user);
+      report.save();
+      res.status(200).json(report)
+    } else {
+      const report = await ReportModel.create({ users: user, postId });
+      console.log(report);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
+// Remove Post
+
+export const removePost = async (req, res) => {
+  const postId = req.params.id
+  const { userId } = req.body
+  const user = await UserModel.findById(userId)
+  console.log(user, 'user at removepost')
+  console.log(userId, postId, 'userid,isadminnn,postid...........at controller.....')
+  const post = await PostModel.findById(postId)
+  console.log(post, 'post at removepost post controller..................')
+
+  try {
+      console.log(user.isAdmin, 'usr.isadmin............')
+      if (post.userId === userId || user.isAdmin) {
+          if (post.isRemoved) {
+              await PostModel.updateOne({ _id: postId }, { isRemoved: false });
+              await ReportModel.deleteOne({postId:postId})
+          }
+          else {
+              await PostModel.updateOne({ _id: postId }, { isRemoved: true });
+          }
+
+          res.status(200).json('Post Removed Succesfully')
+      }
+  } catch (error) {
+      res.status(500).json(error)
+
+  }
+
+}

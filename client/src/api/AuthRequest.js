@@ -8,9 +8,6 @@ export const signUp = (formData) => API.post("/register", formData);
 
 export const otpVerify = (formData,otp)=> API.post("/auth/otpverify",{formData,otp})
 
-export const searchUser = (data)=> API.post(`/auth/user`,{data})
-
-
 
 export const AdminLogIn = (formData) => API.post("/admin/adminlogin", formData);
 

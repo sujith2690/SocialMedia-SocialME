@@ -13,7 +13,7 @@ API.interceptors.request.use((req) => {
 export const getTimelinePosts = (id) =>API.get(`/post/${id}/timeline`)
 
 
-export const userPosts = (userId) => API.get(`/user/${userId}/userPosts`);
+
 
 
 export const likePost = (id, userId) => API.put(`/post/${id}/like`,{userId:userId})
@@ -25,4 +25,11 @@ export const fetchComments = (id) => API.get(`/post/${id}/commnets`).then((resul
 export const savepost = (id,userId)=> API.put(`/post/${id}/save`,{userId:userId})
 
 export const getSavedPost=(userId) => API.get(`/post/${userId}/saved`)
+
+export const postReport = (postId,userId) => API.put(`/post/${postId}/report`,{userId:userId})
+
+
+
+
+
 
