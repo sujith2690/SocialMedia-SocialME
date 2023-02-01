@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 import { getSavedPost, getTimelinePosts } from '../../api/PostRequest'
 
 function PostSide({ location }) {
+  console.log('------------saved posts ')
   const params = useParams()
   const otherUserid = params.id
   let [posts, setPosts] = useState([])
@@ -22,27 +23,21 @@ function PostSide({ location }) {
       setPosts(data)
     }
   }
-
-
   const savedPost = async () => {
 
     const { data } = await getSavedPost(user._id)
-    // const { data } = await axios.get(`/post/${user._id}/saved`)
     setPosts(data)
   }
-
-  // useEffect(() => {
-  // }, [posts])
-
   useEffect(() => {
     if (location === "saved") {
+      console.log(location,'------locatioin saved')
       savedPost()
+
     } else {
       fetchPosts()
+      console.log(location,'------locatioin saved')
     }
   }, [])
-
-
   return (
     <div className="PostSide">
       <PostShare fetchPosts={fetchPosts} />

@@ -19,7 +19,6 @@ const loginUserId = user._id
       if (location === "Profile") {
         if(id){
           const  otheruser  = await getUser(id)
-          const userName = otheruser.data.firstname
         const { data } = await getAllFollowUser(id);
         setPersons(data)
         }else{

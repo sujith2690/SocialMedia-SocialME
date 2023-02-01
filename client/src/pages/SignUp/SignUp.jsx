@@ -14,11 +14,9 @@ const SignUp = () => {
     const loading = useSelector((state) => state.authReducer.loading)
     const userData = useSelector((state) => state.authReducer.authData)
     const userId = userData?.user?._id
-    const [isSignUp, setIsSignUp] = useState(false)
-    const [isOtp, setisOtp] = useState(false)
     const [show, setShow] = useState(false)
     const desc = useRef()
-    const [initValue,setInitValue] = useState(null)
+    const [initValue, setInitValue] = useState(null)
 
     const initialValues = {
         firstname: '',
@@ -43,11 +41,12 @@ const SignUp = () => {
             action.resetForm()
         }
     })
-    console.log(initValue,'-----55-----initvalues')
+    console.log(initValue, '-----55-----initvalues')
     const handleSubmit2 = async () => {
         if (desc.current.value) {
             const otp = desc.current.value
             console.log(otp)
+
             dispatch(otpVerification(userId, otp))
         }
     }
@@ -62,108 +61,108 @@ const SignUp = () => {
                 <img src={Logo} alt="" />
                 <div className="Webname">
                     <h1>SocialME</h1>
-                    <h6>Explore The World Through AmazeME</h6>
+                    <h6>Explore The World Through SocialME</h6>
                 </div>
             </div>
             {/* Right Side */}
             <div className="a-right">
                 {!show ?
-                    <form className="infoForm authForm" onSubmit={handleSubmit}>
+                    <form className="infoForm" onSubmit={handleSubmit}>
                         <h3>SignUp</h3>
-                        <div className="inputfields">
-                            <div className="inputname">
-                                <input
-                                    type="text"
-                                    name="firstname"
-                                    id="firstname"
-                                    placeholder="First Name"
-                                    value={values.firstname}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
+                            <div className="inputfields">
+                                <div className="inputname">
+                                    <input
+                                        type="text"
+                                        name="firstname"
+                                        id="firstname"
+                                        placeholder="First Name"
+                                        value={values.firstname}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
 
-                                    className="infoInput"
+                                        className="infoInput"
 
-                                />
-                                {errors.firstname && touched.firstname ? (
-                                    <span className="form-error">{errors.firstname}</span>) : null}
+                                    />
+                                    {errors.firstname && touched.firstname ? (
+                                        <span className="form-error">{errors.firstname}</span>) : null}
+
+                                </div>
+                                <div className="inputname">
+                                    <input
+
+                                        type="text"
+                                        placeholder="Last Name"
+                                        className="infoInput"
+                                        name="lastname"
+                                        id="lastname"
+                                        value={values.lastname}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.lastname && touched.lastname ? (
+                                        <span className="form-error">{errors.lastname}</span>) : null}
+                                </div>
 
                             </div>
-                            <div className="inputname">
-                                <input
 
-                                    type="text"
-                                    placeholder="Last Name"
-                                    className="infoInput"
-                                    name="lastname"
-                                    id="lastname"
-                                    value={values.lastname}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {errors.lastname && touched.lastname ? (
-                                    <span className="form-error">{errors.lastname}</span>) : null}
+
+                            <div className="inputfields">
+                                <div className="inputname">
+                                    <input
+                                        type="email"
+                                        placeholder="Email"
+                                        className="infoInput"
+                                        name="username"
+                                        id="username"
+                                        value={values.username}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.username && touched.username ? (
+                                        <span className="form-error">{errors.username}</span>) : null}
+                                </div>
                             </div>
 
-                        </div>
+                            <div className="inputfields">
+                                <div className="inputname">
+                                    <input
+                                        type="password"
+                                        placeholder="Password"
+                                        className="infoInput"
+                                        name="password"
+                                        id="password"
+                                        value={values.password}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.password && touched.password ? (
+                                        <span className="form-error">{errors.password}</span>) : null}
+                                </div>
 
+                                <div className="inputname">
+                                    <input
 
-                        <div className="inputfields">
-                            <div className="inputname">
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    className="infoInput"
-                                    name="username"
-                                    id="username"
-                                    value={values.username}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {errors.username && touched.username ? (
-                                    <span className="form-error">{errors.username}</span>) : null}
+                                        type="password"
+                                        placeholder="Confirm Password"
+                                        className="infoInput"
+                                        name="confirmpassword"
+                                        id="confirmpassword"
+                                        value={values.confirmpassword}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    {errors.confirmpassword && touched.confirmpassword ? (
+                                        <span className="form-error">{errors.confirmpassword}</span>) : null}
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="inputfields">
-                            <div className="inputname">
-                                <input
-                                    type="password"
-                                    placeholder="Password"
-                                    className="infoInput"
-                                    name="password"
-                                    id="password"
-                                    value={values.password}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {errors.password && touched.password ? (
-                                    <span className="form-error">{errors.password}</span>) : null}
+                            <div>
+                                <span style={{ fontSize: '12px', cursor: "pointer",marginLeft:'10px' }} onClick={handleLogin}>
+                                    Already have account <b><span style={{ color: 'blue', fontSize: '15px' }}>Login</span></b> Now...
+                                </span>
                             </div>
-
-                            <div className="inputname">
-                                <input
-
-                                    type="password"
-                                    placeholder="Confirm Password"
-                                    className="infoInput"
-                                    name="confirmpassword"
-                                    id="confirmpassword"
-                                    value={values.confirmpassword}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                {errors.confirmpassword && touched.confirmpassword ? (
-                                    <span className="form-error">{errors.confirmpassword}</span>) : null}
-                            </div>
-                        </div>
-                        <div>
-                            <span style={{ fontSize: '12px', cursor: "pointer" }} onClick={handleLogin}>
-                            Already have account Login Now...
-                            </span>
-                        </div>
-                        <button className="button infoButton" type="submit" disabled={loading} >
-                            {loading ? "Loading..." : isSignUp ? 'Sign Up' : 'Sign in'}
-                        </button>
+                            <button className="button infoButton" type="submit" disabled={loading} >
+                                {loading ? "Loading..." : 'Sign Up'}
+                            </button>
                     </form>
                     :
                     <form onSubmit={handleSubmit2}>
@@ -233,7 +232,7 @@ export default SignUp
 //             action.resetForm()
 //         }
 //     })
-//     // console.log(errors)  
+//     // console.log(errors)
 //     const handleSubmit2 = async (e) => {
 //         e.preventDefault()
 //         if (desc.current.value) {

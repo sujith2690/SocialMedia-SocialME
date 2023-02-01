@@ -1,9 +1,6 @@
 import React from 'react'
 import './RightSide.css'
 import Home from '../../img/homes.png'
-import Noti from '../../img/noti.png'
-import Comment from '../../img/comment.png'
-import { UilSetting } from '@iconscout/react-unicons'
 import { Link } from 'react-router-dom'
 import FollowersCard from '../FollowersCard/FollowersCard'
 import { Bookmark } from 'tabler-icons-react';
@@ -39,27 +36,33 @@ const RightSide = ({ location }) => {
   }
 
   const handleClear = async () => {
-    const clearNotifications = await ClearNotifications(userId)
+     await ClearNotifications(userId)
     setNotes([])
 }
 
   return (
     <div className="RightSide">
       <div className="navIcons">
-        <Link to={'../home'}>
-          <img src={Home} alt="" />
+       <div>
+       <Link to={'../home'}>
+          <img  className='homeimage' src={Home} alt="" />
         </Link>
+       </div>
+        <div>
         <Link to={'../saved'}>
           <Bookmark style={{ cursor: 'pointer' }} />
         </Link>
+        </div>
         <div className='notify'>
           <Bell onClick={handleBell} />
           {notes.length > 0 ? <span className="notification-icon">{notes.length} </span>:''}
         </div>
 
+        <div>
         <Link to={'../chat'}>
           <MessageDots />
         </Link>
+        </div>
       </div>
       {show ?
         <Notification notes={notes} handleClear={handleClear} />

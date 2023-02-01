@@ -5,6 +5,14 @@ export const logIn = (formData) => async (dispatch) => {
   try {
     const { data } = await AuthApi.logIn(formData);
     dispatch({ type: "AUTH_SUCCESS", data: data });
+    console.log(data,'----------login data...')
+    if(!data.success){
+      console.log('----login false')
+      dispatch({type:"LOADING_FALSE"})
+    }else{
+      await dispatch({type:"AUTH_SUCCESS", data: data })
+    }
+    return {message:data.message,success:data.success}
   } catch (error) {
     console.log(error);
     dispatch({ type: "AUTH_FAILED" });
@@ -22,11 +30,12 @@ export const signUp = (formData) => async (dispatch) => {
   }
 };
 
-export const otpVerification = (userDetails,otp)=> async(dispatch)=>{
-  console.log(userDetails,otp,'-------------userid and otp authentication')
+export const otpVerification = (userId,otp)=> async(dispatch)=>{
+  console.log(userId,otp,'-------------userid and otp authentication')
+
   dispatch({type:"OTP_START"})
   try{
-    const {data} = await AuthApi.otpVerify(userDetails,otp)
+    const {data} = await AuthApi.otpVerify(userId,otp)
     console.log(data,'----data at opt verification')
     dispatch({type:"OTP_SUCCESS", data:data})
     
@@ -47,6 +56,7 @@ export const AdminLogIn = (formData) => async (dispatch) => {
   try {
     console.log(formData,'------formData')
     const { data } = await AuthApi.AdminLogIn(formData);
+    console.log(data,"llllllllllllllllllllllllllllllllllllllll");
     dispatch({ type: "AUTH_SUCCESS", data: data });
   } catch (error) {
     console.log(error);

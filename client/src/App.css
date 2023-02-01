@@ -17,11 +17,16 @@
 
 .App {
   overflow: hidden;
-  box-sizing: border-box;
-  height: 100vh;
-  color: var(--black);
-  background: #f3f3f3;
   padding: 1rem 1rem;
+  color: var(--black);
+  /* background: #f3f3f3; */
+  box-sizing: border-box;
+  /* height: 100vh; */
+  background-image: url('./img/Wall.jpg');
+  background-repeat: no-repeat;
+  /* background-size: auto; */
+  background-size: cover;
+ 
 }
 .blur {
   position: absolute;

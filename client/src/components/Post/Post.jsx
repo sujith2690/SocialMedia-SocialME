@@ -15,6 +15,8 @@ import { getUser } from '../../api/UserRequest.js'
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { postReport } from '../../api/PostRequest'
+import toast, { Toaster } from 'react-hot-toast';
+
 
 
 const Post = ({ location, data, fetchpost }) => {
@@ -28,12 +30,13 @@ const Post = ({ location, data, fetchpost }) => {
         setAnchorEl(null);
     };
     /////////////////////////////////////
+    const notifySave = () => toast.success('Post Saved.');
+    const notifyLike = () => toast.success('Post Liked.');
 
     const postOwnerId = data.userId
 
     const { user } = useSelector((state) => state.authReducer.authData)
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
-    const userId = user._id
     const [liked, setLiked] = useState(data.likes.includes(user._id))
     const [likes, setLikes] = useState(data.likes.length)
     const [cshow, csetShow] = useState(false)
@@ -55,16 +58,19 @@ const Post = ({ location, data, fetchpost }) => {
         else if (response.data === "Post Liked") {
             setLikes(likes + 1)
             setLiked(true)
+            notifyLike()
         }
     }
     const handleSave = async () => {
         const response = await axios.put(`/post/${data._id}/save`, { userId: user._id })
+        console.log(response,'----------saved ///')
         if (response.data === "Post Saved") {
             setsave(true)
             if (location === 'saved') {
                 setsaveShow(true)
+                notifySave()
             }
-        } else {
+        } else if(response.data ==='Post Unsaved'){
             if (location === 'saved') {
                 setsaveShow(false)
             }
@@ -103,7 +109,9 @@ const Post = ({ location, data, fetchpost }) => {
         }
     }, [])
     return (saveShow === true ?
+        
         <div className="Post">
+            <Toaster />
             <div className='PostOptions'>
                 <div className="PostUser">
 
@@ -117,6 +125,7 @@ const Post = ({ location, data, fetchpost }) => {
                     {save ?
                         <span className='saveoptions'>
                             < BookmarkOff onClick={handleSave} />saved</span>
+                            
                         : < Bookmark onClick={handleSave} />
                     }
                     <DotsVertical onClick={handleClick} />

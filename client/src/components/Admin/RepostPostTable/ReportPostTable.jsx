@@ -81,34 +81,3 @@ const ReportPostTable = () => {
 }
 
 export default ReportPostTable
-
-
-
-{/* <td className='posimgtd'>
-                  {post.postDetails.image ? <img src={serverPublic + post.postDetails.image} alt="" className='postImage' /> : ''}
-                  <div>
-                    <span className='descri'>Discription:</span>{post.postDetails.desc ? <p>{post.postDetails.desc}</p> : ''}
-                  </div>
-                </td>
-                <td>
-                  <div className='reportUsers'>
-                    <div>
-                      <span className='userCount'>{post.userDetails.length} Users reported this post</span>
-                    </div>
-
-                    <span id='myBtn' onClick={() => { setShow((prev) => !prev) }}>{!show ? "Show who all reported" : "show less"}</span>
-                    {show &&
-                      <div id='users'>
-                        {post.userDetails.map((user, index) => {
-                          return (<div key={index}>{index + 1}. {user.username}</div>)
-                        })
-                        }
-                      </div>
-                    }
-                  </div>
-
-                </td>
-                <td>
-                  <button className={post.postDetails.isRemoved ? "block" : "Nonblock"} onClick={() => handleRemove(post.postDetails._id)}>{post.postDetails.isRemoved ? "Retrive" : "Remove"}</button>
-                </td>
-              </tr> */}

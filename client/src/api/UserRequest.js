@@ -18,7 +18,6 @@ export const updateUser = (id, formData) => API.put(`/user/${id}`, formData);
 
 
 
-// export const getAllFollowUser = (id)=> API.get("/user/allfollow",{id})
 
 export const getAllFollowUser = (id)=> API.get(`/user/${id}/allfollow`)
 
@@ -29,7 +28,6 @@ export const followUser = (id, data) => API.put(`/user/${id}/follow`, data);
 export const unFollowUser = (id, data) => API.put(`/user/${id}/unfollow`, data);
 
 export const searchUser = (data)=> API.post('/user/searchUser',data)
-console.log('----5----')
 
 
 

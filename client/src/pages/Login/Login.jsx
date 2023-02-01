@@ -1,32 +1,36 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './login.css'
 import Logo from "../../img/hlogol.png";
 import { useFormik } from "formik"
-import { loginSchema, signUpSchema } from "../../schemas";
+import { loginSchema } from "../../schemas";
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { logIn } from "../../Actions/AuthAction";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 
 const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const loading = useSelector((state) => state.authReducer.loading)
-    const userData = useSelector((state) => state.authReducer.authData)
-
-    const [isSignUp, setIsSignUp] = useState(false)
-    const [isOtp, setisOtp] = useState(false)
+    // const userData = useSelector((state) => state.authReducer.authData)
 
     const initialValues = {
         username: '',
         password: '',
     }
-    const { values, errors, touched, handleBlur, handleChange, handleSubmit, handleReset } = useFormik({
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit  } = useFormik({
         initialValues: initialValues,
         validationSchema: loginSchema,
-        onSubmit: (values, action) => {
-            dispatch(logIn(values))
-            console.log(values, '---------values')
+        onSubmit: async(values, action) => {
+         const response = await  dispatch(logIn(values))
+            console.log(response, '---------values')
+            if(response.success){
+                toast.success(response.message)
+            }else{
+                toast.error(response.message)
+            }
             action.resetForm()
         },
         onClick: (values, action) => {
@@ -40,12 +44,13 @@ const Login = () => {
     return (
 
         <div className="Auth">
+            <Toaster/>
             {/* Left side */}
             <div className="a-left">
                 <img src={Logo} alt="" />
                 <div className="Webname">
                     <h1>SocialME</h1>
-                    <h6>Explore The World Through AmazeME</h6>
+                    <h6>Explore The World Through SocialME</h6>
                 </div>
             </div>
             {/* Right Side */}
@@ -89,11 +94,11 @@ const Login = () => {
 
                     <div>
                         <span style={{ fontSize: '12px', cursor: "pointer" }} onClick={handleLogin}>
-                            {isSignUp ? "Already Have Account Login here..!" : isOtp ? "Not Received OTP ? Resend here" : "Don't have an account Sign Up"}
+                             Don't have an account <b><span style={{color:'blue',fontSize:'15px'}}>Sign Up</span></b>
                         </span>
                     </div>
                     <button className="button infoButton" type="submit" disabled={loading} >
-                        {loading ? "Loading..." : isSignUp ? 'Sign Up' : 'Sign in'}
+                        {loading ? "Loading..." :  'Sign in' }
                     </button>
                     {/* <button className="button infoButton" type="submit">Sign in</button> */}
                 </form>

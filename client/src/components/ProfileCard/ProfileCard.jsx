@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./ProfileCard.css";
 import { Link, useParams } from 'react-router-dom'
 import { useSelector } from "react-redux";
-import axios from 'axios'
 import { ArrowUpRightCircle } from 'tabler-icons-react';
 import { getUser } from "../../api/UserRequest";
-import { userPosts } from "../../api/PostRequest";
 
 
 
@@ -19,7 +17,6 @@ function ProfileCard({ location }) {
     const [searchuser, setsearchuser] = useState(null)
     const [followers, setFollowers] = useState([])
     const [following, setFollowing] = useState([])
-    const [refresh, setrefresh] = useState(false)
 
 
 
@@ -30,7 +27,6 @@ function ProfileCard({ location }) {
                 setFollowers(data.followers)
                 setFollowing(data.following)
                 setsearchuser(data)
-                setrefresh(true)
             } else {
                 const { data } = await getUser(user._id)
                 // console.log(data, '----------existing user')

@@ -7,13 +7,14 @@ const authReducer = (
       return { ...state, loading: true, error: false };
      
     case "AUTH_SUCCESS":
+      console.log("daaaaaaaaaaaaaaataaaaaaaaaaaaaaaaaaaaaa");
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
       return { ...state, authData: action.data, loading: false, error: false };
     case "AUTH_FAILED":
       return { ...state, loading: false, error: true };
 
     case "OTP_START":
-      return { ...state, loading: true, error: false, otpstart: true };
+      return { ...state, loading: true, error: false };
     case "OTP_SUCCESS":
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
       return {
@@ -21,7 +22,6 @@ const authReducer = (
         loading: false,
         authData: action.data,
         error: false,
-        otpsuccess: true,
       };
       
     case "OTP_FAIL":

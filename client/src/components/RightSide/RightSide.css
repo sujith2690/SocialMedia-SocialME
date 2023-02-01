@@ -2,18 +2,26 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  width: 100%;
 }
 .navIcons {
   margin-top: 1rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  bottom: 0;
+  position: fixed;
+  width: 300px;
+  /* width: 100%; */
+  align-items: center;
+  background-color: #aaa;
+  border-radius: 20px;
 }
 .navIcons > img {
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
 }
-.navIcons > a > img {
+.homeimage {
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;

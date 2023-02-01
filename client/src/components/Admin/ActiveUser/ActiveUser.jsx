@@ -9,7 +9,7 @@ const ActiveUser = () => {
   const [userss, setUser] = useState([])
 
   const verify = async (id) => {
-    const { setVerify } = await verifiedUser(id)
+     await verifiedUser(id)
     getAll()
   }
   const getAll = async () => {

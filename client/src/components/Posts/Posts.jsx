@@ -5,7 +5,6 @@ import {  useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { useParams} from 'react-router-dom'
 import { useState } from 'react'
-import axios from 'axios'
 
 function Posts({location, data,fetchPosts}) {
 
@@ -19,6 +18,7 @@ function Posts({location, data,fetchPosts}) {
   
   if (!posts) return "no posts";
    if (params.id) posts = posts.filter((post) => post.userId === params.id)
+   console.log(posts,'--------posts')
   //  console.log(posts,'--------------------------------------------------')
   return (
     <div className="Posts">

@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Home from '../../img/homes.png'
-import Noti from '../../img/noti.png'
-import Comment from '../../img/comment.png'
 import { Bookmark } from 'tabler-icons-react';
 
 import { userChats } from '../../api/ChatRequest'
@@ -39,7 +37,7 @@ const Chat = () => {
     // initialisation of socket
 
     useEffect(() => {
-        socket.current = io('http://localhost:8800')
+        socket.current = io('http://localhost:5000')
         socket.current.emit("new-user-add", user._id)
         socket.current.on('get-users', (users) => {
             setOnlineUsers(users);
@@ -98,7 +96,7 @@ const Chat = () => {
                 <div style={{ width: '20rem', alignSelf: 'flex-end' }}>
                     <div className="navIcons">
                         <Link to={'../home'}>
-                            <img src={Home} alt="" />
+                            <img className='homeimage' src={Home} alt="" />
                         </Link>
                         <Link to={'../saved'}>
                             <Bookmark />
