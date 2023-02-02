@@ -19,10 +19,10 @@
   overflow: hidden;
   padding: 1rem 1rem;
   color: var(--black);
-  /* background: #f3f3f3; */
+  background: #f3f3f3;
   box-sizing: border-box;
   /* height: 100vh; */
-  background-image: url('./img/Wall.jpg');
+  /* background-image: url('./img/Wall.jpg'); */
   background-repeat: no-repeat;
   /* background-size: auto; */
   background-size: cover;

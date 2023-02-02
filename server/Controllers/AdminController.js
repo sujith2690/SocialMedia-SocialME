@@ -124,7 +124,6 @@ export const getReportedPost = async (req, res) => {
       },
     },
   ]);
-  // console.log(reportPost, "-----------reportPost");
   try {
     if (reportPost) {
       res.status(200).json(reportPost);

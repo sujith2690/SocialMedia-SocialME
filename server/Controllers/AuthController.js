@@ -101,7 +101,7 @@ const sendOtpVerificationEmail = async (user) => {
       await newOtpVerification.save();
       await transporter.sendMail(mailOptions);
 
-      console.log("---------11------");
+      console.log("---------OTP send success------");
     } catch (error) {
       console.log(error);
       reject({
@@ -115,7 +115,7 @@ const sendOtpVerificationEmail = async (user) => {
 export const otpVerify = async (req, res) => {
   try {
     let { userId, otp } = req.body;
-    
+    console.log(req.body,'-------body')
     const jwt = pkg;
     console.log(userId, otp, "userid and otp at authcontroller");
     if (!userId || !otp) {
@@ -129,15 +129,19 @@ export const otpVerify = async (req, res) => {
         console.log(hashedOtp, "hashed otp");
 
         if (expiresAt < Date.now()) {
+          console.log('---------77---------')
           await otpVerificationModel.deleteMany({ userId });
           throw new Error("OTP expires. Please request again");
+          
+
         } else {
           console.log(otp, hashedOtp, "otp,hashedotp");
           const vaildOtp = await bcrypt.compare(otp, hashedOtp);
           if (!vaildOtp) {
             throw new Error(" Invalied otp. check and Enter correct OTP");
           } else {
-            await UserModel.updateOne({ _id: userId }, { isUser: true });
+           const changedUser = await UserModel.updateOne({ _id: userId }, { isUser: true });
+            console.log(changedUser,'--------changedUser')
             await otpVerificationModel.deleteMany({ userId });
             const user = await UserModel.findOne({ _id: userId });
             console.log(
@@ -180,11 +184,11 @@ export const loginUser = async (req, res) => {
 
     if (user) {
       if (user.isBlock === true) {
-        res.status(400).json("user Blocked");
+        res.status(200).json({message:"User Blocked",success:false});
       } else {
         const validity = await bcrypt.compare(password, user.password);
         if (!validity) {
-          res.status(400).json("Wrong Password");
+          res.status(200).json({message:"Wrong Password",success:false});
         } else {
           const token = jwt.sign(
             {
@@ -194,11 +198,11 @@ export const loginUser = async (req, res) => {
             process.env.JWT_KEY,
             { expiresIn: "24h" }
           );
-          res.status(200).json({ user, token });
+          res.status(200).json({ user, token,success:true,message:"Login Success" });
         }
       }
     } else {
-      res.status(404).json("User does not Exist");
+      res.status(200).json({message:"User does not Exist",success:false});
     }
   } catch (error) {
     res.status(500).json({ message: error.message });

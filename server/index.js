@@ -7,10 +7,11 @@ import UserRoute from "./Routes/UserRoute.js"
 import PostRoute from "./Routes/PostRoute.js"
 import cors from 'cors'
 import UploadRoute from './Routes/UploadRoute.js'
-
+import {createServer} from 'http'
 import MessageRoute from './Routes/MessageRoute.js'
 import ChatRoute from './Routes/ChatRoute.js'
 import AdminRoute from './Routes/AdminRoute.js'
+import Socket from "./socket.js";
 
 // Routes 
 
@@ -20,15 +21,15 @@ const app = express();
 app.use(express.static('public'))
 app.use('/images', express.static("images"))
 
-
+const server = createServer(app)
 
 
 // Middleware 
 
 app.use(bodyParser.json({ limit: "30 mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30 mb", extended: true }));
-app.use(cors())
-
+app.use(cors({origin:["https://socialmeconnect.netlify.app","http://localhost:3000"]}))
+Socket(server)
 dotenv.config();
 
 mongoose
@@ -37,7 +38,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() =>
-    app.listen(process.env.PORT, () =>
+    server.listen(process.env.PORT, () =>
       console.log(`Listening at ----- ${process.env.PORT}`)
     )
   ).catch((error)=> console.log(error));
