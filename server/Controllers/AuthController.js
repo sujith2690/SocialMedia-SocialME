@@ -4,6 +4,7 @@ import AdminModel from "../Models/AdminModal.js";
 import nodemailer from "nodemailer";
 import pkg from "jsonwebtoken";
 import otpVerificationModel from "../Models/OtpVerifyModal.js";
+import mongoose, { Types } from "mongoose";
 
 // Registering New User
 
@@ -50,9 +51,10 @@ const sendOtpVerificationEmail = async (user) => {
     "---------id and user namea at sendotpverifunction............."
   );
   return new Promise(async (resolve, reject) => {
+    console.log(user,"lllll")
+    console.log(user._id, "------iddddd");
     const userEmail = user.username;
     const userid = user._id.toString();
-    console.log(userid.toString(), "------id");
 
     try {
       const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
@@ -171,6 +173,34 @@ export const otpVerify = async (req, res) => {
     });
   }
 };
+
+
+// resend OTP
+
+export const resendOtp = async(req,res)=>{
+  console.log('resend otp ')
+  try {
+    console.log(req.body,'???? otp ')
+    const id = req.body.userId
+    const username = req.body.userEmail
+    let user={
+      _id:new mongoose.Types.ObjectId(id),
+      username:username
+    }
+    console.log(user,'------userId and email')
+    const userid = req.body.userId
+    console.log(userid,'----------userid')
+    if(!user._id || !user.username){
+      throw Error("Empty user Details")
+    }else{
+      await otpVerificationModel.deleteMany({userid});
+      sendOtpVerificationEmail(user,)
+    }
+  } catch (error) {
+    console.log(error,'----errererer')
+    res.json({status:'Failed',message:error.message})
+  }
+}
 
 // Login User
 

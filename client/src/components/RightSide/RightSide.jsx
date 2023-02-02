@@ -35,32 +35,32 @@ const RightSide = ({ location }) => {
   }
 
   const handleClear = async () => {
-     await ClearNotifications(userId)
+    await ClearNotifications(userId)
     setNotes([])
-}
+  }
 
   return (
     <div className="RightSide">
       <div className="navIcons">
-       <div>
-       <Link to={'../home'}>
-          <img  className='homeimage' src={Home} alt="" />
-        </Link>
-       </div>
         <div>
-        <Link to={'../saved'}>
-          <Bookmark style={{ cursor: 'pointer' }} />
-        </Link>
+          <Link to={'../home'}>
+            <img className='homeimage' src={Home} alt="" />
+          </Link>
+        </div>
+        <div>
+          <Link to={'../saved'}>
+            <Bookmark style={{ cursor: 'pointer' }} />
+          </Link>
         </div>
         <div className='notify'>
           <Bell onClick={handleBell} />
-          {notes.length > 0 ? <span className="notification-icon">{notes.length} </span>:''}
+          {notes.length > 0 ? <span className="notification-icon">{notes.length} </span> : ''}
         </div>
 
         <div>
-        <Link to={'../chat'}>
-          <MessageDots />
-        </Link>
+          <Link to={'../chat'}>
+            <MessageDots />
+          </Link>
         </div>
       </div>
       {show ?

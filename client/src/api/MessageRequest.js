@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({baseURL:'https://back.amazemen.shop'})
+const API = axios.create({baseURL:process.env.REACT_APP_BASE_URL})
 
 export const getMessages = (id)=> API.get(`/message/${id}`)
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API = axios.create({ baseURL: "https://back.amazemen.shop" });
+export const API = axios.create({ baseURL: process.env.REACT_APP_BASE_URL });
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {
     req.headers.Authorization = `Bearer ${

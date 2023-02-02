@@ -154,6 +154,7 @@ export const searchUser = async (req, res) => {
 // Follow User
 
 export const followUser = async (req, res) => {
+  console.log('-------------followuser')
   const id = req.params.id;
   const { _id } = req.body;
 
@@ -171,7 +172,8 @@ export const followUser = async (req, res) => {
           createdAt: new Date(),
           seen: false,
         };
-        await followUser.updateOne({ $push: { unseenNotifications: data } });
+        console.log(data,'----------------------')
+        await followUser.updateOne({ $push: { Notifications: data } });
         await followUser.updateOne({ $push: { followers: _id } });
         await followingUser.updateOne({ $push: { following: id } });
         res.status(200).json("User Followed");

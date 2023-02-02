@@ -22,13 +22,14 @@ function ProfileCard({ location }) {
 
     useEffect(() => {
         const fetchFollowers = async () => {
-            if (id) {
+            if (id !== user._id) {
                 const { data } = await getUser(id)
                 setFollowers(data.followers)
                 setFollowing(data.following)
                 setsearchuser(data)
             } else {
                 const { data } = await getUser(user._id)
+                // console.log(data, '----------existing user')
                 setFollowers(data.followers)
                 setFollowing(data.following)
             }
@@ -59,14 +60,14 @@ function ProfileCard({ location }) {
                 <hr />
                 <div>
                     <div className="follow">
-                        {!searchuser ? <span>{following?.length}</span>
+                        {!searchuser ? <span>{user.following?.length}</span>
                             : <span>{searchuser?.following?.length}</span>
                         }
                         <span>Following</span>
                     </div>
                     <div className="vl"></div>
                     <div className="follow">
-                        {!searchuser ? <span>{followers?.length}</span>
+                        {!searchuser ? <span>{user.followers?.length}</span>
                             : <span>{searchuser?.followers?.length}</span>
                         }
                         <span>Followers</span>
