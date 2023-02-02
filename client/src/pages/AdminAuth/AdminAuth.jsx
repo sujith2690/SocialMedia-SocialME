@@ -2,11 +2,8 @@ import React, { useState } from "react";
 import "./AdminAuth.css"
 import Logo from "../../img/hlogol.png";
 import { useDispatch, useSelector } from 'react-redux'
-import { AdminLogIn, AdminSignUp } from "../../Actions/AuthAction";
-import { useNavigate } from "react-router-dom";
-
+import { AdminLogIn } from "../../Actions/AuthAction";
 const AdminAuth = () => {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
   const loading = useSelector((state) => state.authReducer.loading)
 
