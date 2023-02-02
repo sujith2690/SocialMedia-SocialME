@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { followUser, unFollowUser } from '../../Actions/UserAction'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ArrowUpRightCircle } from 'tabler-icons-react';
 
 const User = ({ person }) => {
@@ -20,17 +20,12 @@ const User = ({ person }) => {
         setFollowing((prev) => !prev)
 
     }
-
-    const handleProfileview = async () => {
-
-    }
-
     return (
 
         <div className="followers">
             <div onClick={() => navigate(`/profile/${person._id}`)} style={{cursor:'pointer'}} >
                 <img src={person.profilePicture ? serverPublic + person.profilePicture : serverPublic + "avatar.png"} alt=""
-                    className='followerImagess' onClick={handleProfileview} />
+                    className='followerImagess'  />
                 <div className="name">
                     <span><b>{person.firstname} {person.lastname}</b>{person.verified ? <ArrowUpRightCircle style={{ color: 'rgba(15, 37, 230, 0.788)' }} /> : ''}</span>
                 </div>

@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom'
 import { getSavedPost, getTimelinePosts } from '../../api/PostRequest'
 
 function PostSide({ location }) {
-  console.log('------------saved posts ')
   const params = useParams()
   const otherUserid = params.id
   let [posts, setPosts] = useState([])
@@ -30,12 +29,10 @@ function PostSide({ location }) {
   }
   useEffect(() => {
     if (location === "saved") {
-      console.log(location,'------locatioin saved')
       savedPost()
 
     } else {
       fetchPosts()
-      console.log(location,'------locatioin saved')
     }
   }, [])
   return (

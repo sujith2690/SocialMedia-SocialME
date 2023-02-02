@@ -32,7 +32,6 @@ const RightSide = ({ location }) => {
     const notifications = await getNotifications(userId)
     const allNotifications = notifications.data
     setNotes(allNotifications)
-    // console.log(allNotifications, '--------allNotifications')
   }
 
   const handleClear = async () => {

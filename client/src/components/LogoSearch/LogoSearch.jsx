@@ -11,7 +11,6 @@ function LogoSearch() {
   const desc = useRef()
   const [Result, setResult] = useState([])
   const [show, setshow] = useState(false)
-  // console.log(Result, '---------restt')
   const reset = () => {
     desc.current.value = ""
   }

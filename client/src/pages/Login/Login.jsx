@@ -14,7 +14,6 @@ const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const loading = useSelector((state) => state.authReducer.loading)
-    // const userData = useSelector((state) => state.authReducer.authData)
 
     const initialValues = {
         username: '',
@@ -25,7 +24,6 @@ const Login = () => {
         validationSchema: loginSchema,
         onSubmit: async(values, action) => {
          const response = await  dispatch(logIn(values))
-            console.log(response, '---------values')
             if(response.success){
                 toast.success(response.message)
             }else{

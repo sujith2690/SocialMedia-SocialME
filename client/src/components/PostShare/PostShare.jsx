@@ -4,11 +4,9 @@ import './PostShare.css'
 import { UilScenery } from "@iconscout/react-unicons"
 import { UilPlayCircle } from "@iconscout/react-unicons"
 import { UilLocationPoint } from "@iconscout/react-unicons"
-import { UilSchedule } from "@iconscout/react-unicons"
 import { UilTimes } from "@iconscout/react-unicons"
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadImage, uploadPost } from '../../Actions/uploadAction'
-import axios from 'axios'
 
 
 
@@ -48,9 +46,7 @@ function PostShare({fetchPosts}) {
                 data.append("name", filename)
                 data.append("file", image)
                 newPost.image = filename
-                console.log(newPost, 'new post')
                 try {
-                    console.log(data, 'data at ;;;;;;;;;;')
                     dispatch(uploadImage(data));
                 } catch (error) {
                     console.log(error, 'error in postshare')

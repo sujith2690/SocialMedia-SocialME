@@ -18,6 +18,8 @@ export const likePost = (id, userId) => API.put(`/post/${id}/like`,{userId:userI
 export const fetchComments = (id) => API.get(`/post/${id}/commnets`).then((result)=>{
   return  result
 })
+
+export const deletePost = (id,userId)=> API.delete(`/post/${id}/delete`, { userId:userId })
 // save post and get save
 export const savepost = (id,userId)=> API.put(`/post/${id}/save`,{userId:userId})
 

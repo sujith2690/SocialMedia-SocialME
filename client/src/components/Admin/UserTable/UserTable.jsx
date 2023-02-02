@@ -9,12 +9,8 @@ const UserTable = () => {
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
 
   const [userss, setUser] = useState([])
-
-  const [blocked, setBlocked] = useState(null)
-
   const handleBlock = async (id) => {
     const userBlocked = await block(id)
-    // console.log(userBlocked, '-----------block response')
     getAll()
 
   }
@@ -24,7 +20,6 @@ const UserTable = () => {
     console.log(users.data,"jjjjj")
     setUser(users.data)
   }
-  // console.log(userss,'-------------------------------------')
   useEffect(() => {
     getAll()
   }, [])

@@ -16,9 +16,6 @@ export const getUser = (userId) => API.get(`/user/${userId}`);
 
 export const updateUser = (id, formData) => API.put(`/user/${id}`, formData);
 
-
-
-
 export const getAllFollowUser = (id)=> API.get(`/user/${id}/allfollow`)
 
 export const getUnfollowedUsers = (id) => API.get(`/user/${id}/UnfollowedUser`)

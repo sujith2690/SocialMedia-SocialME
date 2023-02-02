@@ -20,7 +20,6 @@ const InfoCard = () => {
     const { user } = useSelector((state) => state.authReducer.authData)
     const senderId = user._id
     const receiverId = profileUserId
-    const [chats, setchats] = useState([])
     const navigate = useNavigate()
     useEffect(() => {
         const fetchProfileUser = async () => {
@@ -38,21 +37,11 @@ const InfoCard = () => {
     const handleLogOut = () => {
         dispatch(logOut())
     }
-
- 
     const handleChat = async () => {
-        // e.preventDefault()
-        console.log('start chat')
          await createChat({ senderId, receiverId }).then((response) => {
-
-             console.log(response,"oo-oooooo--")
              navigate('/chat')
          })
-
-       
-
     }
-
     return (
         <div className='InfoCard'>
             <div className="infoHead">

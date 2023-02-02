@@ -12,21 +12,16 @@ const Comment = ({ postId, countComment }) => {
     const desc = useRef()
     const [comment, setComment] = useState([])
     const [refresh, setRefresh] = useState(false)
-    console.log(comment, '++++++++++')
 
-    console.log(postId, '-----postId')
     const getComment = async (id) => {
         const response = await fetchComments(id)
         const userscomment = response.data
-        console.log(userscomment, '----------userscomment')
         setComment(userscomment)
-        console.log(userscomment, '------userscomment')
     }
     useEffect(() => {
         getComment(postId)
     }, [refresh])
 
-    console.log(postId, '---------postId')
     const reset = () => {
         desc.current.value = ""
     }

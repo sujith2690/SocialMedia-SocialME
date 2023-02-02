@@ -5,10 +5,6 @@ import './notification.css'
 
 
 const Notification = ({ notes,handleClear }) => {
-
-   
-
-    console.log(notes, '*----------allnotes')
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
     return (
         <div className='Notification'>

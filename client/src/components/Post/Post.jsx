@@ -5,7 +5,6 @@ import likeIcon from '../../img/liked.png'
 import NotLike from '../../img/notlike.png'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
-import axios from 'axios'
 import Comment from '../comments/Comment'
 import { Bookmark } from 'tabler-icons-react';
 import { BookmarkOff } from 'tabler-icons-react';
@@ -14,7 +13,7 @@ import { getUser } from '../../api/UserRequest.js'
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { postReport } from '../../api/PostRequest'
+import { deletePost, likePost, postReport, savepost } from '../../api/PostRequest'
 import toast, { Toaster } from 'react-hot-toast';
 
 
@@ -30,8 +29,6 @@ const Post = ({ location, data, fetchpost }) => {
         setAnchorEl(null);
     };
     /////////////////////////////////////
-    const notifySave = () => toast.success('Post Saved.');
-    const notifyLike = () => toast.success('Post Liked.');
 
     const postOwnerId = data.userId
 
@@ -46,11 +43,9 @@ const Post = ({ location, data, fetchpost }) => {
     const [save, setsave] = useState(data.savedusers?.includes(user._id))
     const [postOwner, usepostOwner] = useState(null)
 
-    const handleRemove = async () => {
-        const response = await axios.delete(`/post/${data._id}/delete`, { userId: user._id })
-    }
+  
     const handleLike = async () => {
-        const response = await axios.put(`/post/${data._id}/like`, { userId: user._id })
+        const response = await likePost(data._id,user._id)
         if (response.data === "Post UnLiked") {
             setLikes(likes - 1)
             setLiked(false)
@@ -58,17 +53,16 @@ const Post = ({ location, data, fetchpost }) => {
         else if (response.data === "Post Liked") {
             setLikes(likes + 1)
             setLiked(true)
-            notifyLike()
+            toast.success('Post Liked.')
         }
     }
     const handleSave = async () => {
-        const response = await axios.put(`/post/${data._id}/save`, { userId: user._id })
-        console.log(response,'----------saved ///')
+        const response = await savepost(data._id,user._id)
         if (response.data === "Post Saved") {
             setsave(true)
             if (location === 'saved') {
                 setsaveShow(true)
-                notifySave()
+                toast.success('Post Saved.')
             }
         } else if(response.data ==='Post Unsaved'){
             if (location === 'saved') {
@@ -85,13 +79,12 @@ const Post = ({ location, data, fetchpost }) => {
         }
     }
     const handleDelete = async () => {
-        const response = await axios.delete(`/post/${data._id}/delete`, { userId: user._id })
+        const response = await deletePost(data._id, user._id)
         setAnchorEl(null);
         fetchpost()
     }
 
     const handleReport = async () => {
-        
         const response = await postReport(data._id, user._id)
         setAnchorEl(null);
     }
