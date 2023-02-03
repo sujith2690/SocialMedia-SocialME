@@ -10,7 +10,7 @@ import { uploadImage, uploadPost } from '../../Actions/uploadAction'
 
 
 
-function PostShare({fetchPosts}) {
+function PostShare({ fetchPosts }) {
 
     const loading = useSelector((state) => state.postReducer.uploading)
 
@@ -24,9 +24,15 @@ function PostShare({fetchPosts}) {
 
     const onImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
-            let img = event.target.files[0];
-            setImage(img);
+            if (event.target.files[0].type === 'image/x-png' || event.target.files[0].type === 'image/gif' || event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'image/jpg') {
+                let img = event.target.files[0];
+                setImage(img);
+            }else{
+
+            }
         }
+        //     let img = e.target.files[0]
+        //     setImage(img)
     }
 
     const reset = () => {
@@ -34,7 +40,7 @@ function PostShare({fetchPosts}) {
         desc.current.value = ""
     }
     const handleSubmit = (e) => {
-        if (desc.current.value) {
+        if (desc.current.value || image) {
             e.preventDefault();
             const newPost = {
                 userId: user._id,
@@ -53,7 +59,7 @@ function PostShare({fetchPosts}) {
                 }
             }
             dispatch(uploadPost(newPost))
-         fetchPosts()
+            fetchPosts()
             reset()
         }
     }
@@ -87,7 +93,7 @@ function PostShare({fetchPosts}) {
                         {loading ? "Loading..." : "Share"}
                     </button>
                     <div style={{ display: "none" }}>
-                        <input type="file" name='myImage' ref={imageRef} onChange={onImageChange}  accept="image/png, image/gif, image/jpeg" />
+                        <input type="file" name='myImage' ref={imageRef} onChange={onImageChange} accept="image/png, image/gif, image/jpeg" />
                     </div>
                 </div>
 

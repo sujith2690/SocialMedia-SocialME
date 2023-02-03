@@ -37,7 +37,7 @@ const Chat = () => {
     // initialisation of socket
 
     useEffect(() => {
-        socket.current = io('https://back.amazemen.shop')
+        socket.current = io(process.env.REACT_APP_BASE_URL)
         socket.current.emit("new-user-add", user._id)
         socket.current.on('get-users', (users) => {
             setOnlineUsers(users);
