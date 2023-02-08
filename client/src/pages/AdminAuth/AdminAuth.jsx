@@ -1,74 +1,95 @@
-import React, { useState } from "react";
-import "./AdminAuth.css"
+import React from 'react'
+import './AdminAuth.css'
 import Logo from "../../img/hlogol.png";
+import { useFormik } from "formik"
+import { adminSchema } from "../../schemas";
 import { useDispatch, useSelector } from 'react-redux'
-import { AdminLogIn } from "../../Actions/AuthAction";
+import { useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
+import { AdminLogIn } from '../../Actions/AuthAction';
+
+
+
 const AdminAuth = () => {
-  const dispatch = useDispatch()
-  const loading = useSelector((state) => state.authReducer.loading)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const loading = useSelector((state) => state.authReducer.loading)
 
-  const [data, setData] = useState({
-    adminname: '',
-    password: '',
-  });
-const handleSubmit=(e)=>{
-  e.preventDefault();
+    const initialValues = {
+        adminname: '',
+        password: '',
+    }
+    const { values, errors, touched, handleBlur, handleChange, handleSubmit  } = useFormik({
+        initialValues: initialValues,
+        validationSchema: adminSchema,
+        onSubmit: async(values, action) => {
+         const response = await  dispatch(AdminLogIn(values))
+            if(response.success){
+                toast.success(response.message)
+            }else{
+                toast.error(response.message)
+            }
+            action.resetForm()
+        },
+    })
+    console.log(errors)
+    
+    return (
 
-  dispatch(AdminLogIn(data))
-  
-}
-const handleChange = (e) => {
-  setData({ ...data, [e.target.name]: e.target.value });
-};
+        <div className="Auth">
+            <Toaster/>
+            {/* Left side */}
+            <div className="a-left">
+                <img src={Logo} alt="" />
+                <div className="Webname">
+                    <h1>SocialME</h1>
+                    <h6>Explore The World Through SocialME</h6>
+                </div>
+            </div>
+            {/* Right Side */}
+            <div className="a-right">
+                <form className="infoForm authForm" onSubmit={handleSubmit}>
+                    <h3>Admin Login</h3>
+                    <div className="inputfields">
+                        <div className="inputname">
+                            <input
+                                type="text"
+                                placeholder="Email"
+                                className="infoInput"
+                                name="adminname"
+                                id="adminname"
+                                value={values.adminname}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {errors.adminname && touched.adminname ? (
+                                <span className="form-error">{errors.adminname}</span>) : null}
+                        </div>
+                    </div>
+                    <div className="inputfields">
+                        <div className="inputname">
+                            <input
+                                type="password"
+                                placeholder="Password"
+                                className="infoInput"
+                                name="password"
+                                id="password"
+                                value={values.password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            {errors.password && touched.password ? (
+                                <span className="form-error">{errors.password}</span>) : null}
+                        </div>
+                    </div>
 
-
-  return (
-
-    <div className="AdminAuth">
-      {/* Left side */}
-      <div className="a-left">
-        <img src={Logo} alt="" />
-        <div className="Webname">
-          <h1>AmazeME</h1>
-          <h6>Explore The World Through AmazeME</h6>
+                    <button className="button infoButton" type="submit" disabled={loading} >
+                        {loading ? "Loading..." :  'Login' }
+                    </button>
+                </form>
+            </div>
         </div>
-      </div>
-      {/* Right Side */}
-      <div className="a-right">
-        <form className="infoForm authForm" onSubmit={handleSubmit}>
-          <h3>Admin Login</h3>
-
-          <div>
-            <input
-              type="text"
-              placeholder="Admin Name"
-              className="infoInput"
-              name="adminname"
-              onChange={handleChange}
-              value={data.adminname}
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              placeholder="Password"
-              className="infoInput"
-              name="password"
-              onChange={handleChange}
-              value={data.password}
-            />
-
-          </div>
-
-
-          <button className="button infoButton" type="submit" disabled={loading} >
-            {loading ? "Loading..." : 'Sign in'}
-          </button>
-        </form>
-      </div>
-    </div>
-  );
-};
-
+    );
+}
 
 export default AdminAuth

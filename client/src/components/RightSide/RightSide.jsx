@@ -11,7 +11,7 @@ import Notification from '../Notification/Notification'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { ClearNotifications, getNotifications } from '../../api/UserRequest'
-
+import { UserCircle } from 'tabler-icons-react';
 
 const RightSide = ({ location }) => {
   const { user } = useSelector((state) => state.authReducer.authData)
@@ -60,6 +60,11 @@ const RightSide = ({ location }) => {
         <div>
           <Link to={'../chat'}>
             <MessageDots />
+          </Link>
+        </div>
+        <div>
+          <Link to={`/profile/${user._id}`}>
+            <UserCircle />
           </Link>
         </div>
       </div>

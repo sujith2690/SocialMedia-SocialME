@@ -12,7 +12,7 @@ const AdminControls = ({ select }) => {
     <div className="adminControlls">
 
       {select == "users" ? < UserTable/> : ''}
-      {select == "activeUsers" ? <ActiveuserTable /> : ''}
+      {select == "activeUsers" ? <ActiveuserTable className='verifiedUser' /> : ''}
       {select == "report" ? <ReportPostTable /> : ''}
     </div>
   )

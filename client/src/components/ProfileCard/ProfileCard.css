@@ -89,6 +89,11 @@
     align-self: center;
     margin-bottom: 1rem;
     cursor: pointer;
-
+}
+.customBut{
+    margin-top: -40px;
+    display: flex;
+    flex-direction: row-reverse;
+    margin-right: 10px;
 }
 

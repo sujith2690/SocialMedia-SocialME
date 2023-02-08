@@ -13,12 +13,14 @@ function FollowersCard({ location }) {
   const { user } = useSelector((state) => state.authReducer.authData)
 const loginUserId = user._id
   const { id } = useParams()
+  const [otherUser,setOtherUser] = useState()
 
   useEffect(() => {
     const fetchPersons = async () => {
       if (location === "Profile") {
         if(id){
           const  otheruser  = await getUser(id)
+          setOtherUser(otheruser.data.firstname)
         const { data } = await getAllFollowUser(id);
         setPersons(data)
         }else{
@@ -40,7 +42,7 @@ const loginUserId = user._id
 
   return (
     <div className='FollowersCard'>
-      {location === 'Home' ? <h3>Follow People</h3> : <h3>Following People</h3>}
+      {location === 'Home' ? <h3>Follow People</h3> :<h3>{otherUser} Following People</h3>}
 
 
       {persons.map((persons, id) => {

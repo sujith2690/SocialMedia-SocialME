@@ -19,10 +19,11 @@ function App() {
 
       <Routes>
 
-      <Route path="/admin" element={user?.user?.isAdmin? <AdminHome/>  : <AdminAuth /> }/>
+      <Route path="/admin" element={user? <AdminHome/>  : <AdminAuth /> }/>
+      
       <Route path='/' element = {user?.user?.isUser?<Navigate to = "/home"/>:<Navigate to ='/login'/> }/>
       <Route path='/login' element = {user?.user?.isUser && !user.isBlock?<Navigate to = "../home"/>:<Login/> }/>
-      <Route path='/signup' element = {user?.user?.isUser && !user.isBlock?<Navigate to = "../home"/>:<SignUp/> }/>
+      <Route path='/signup' element = {user?.user?.isUser?<Navigate to = "../home"/>:<SignUp/> }/>
       <Route path = '/home' element = {user?.user?.isUser && !user.isBlock? <Home/>:<Navigate to ='../login'/> }/>
       <Route path = '/saved' element = {user?.user?.isUser && !user.isBlock? <Saved/>:<Navigate to ='../login'/> }/>
       <Route path='/auth' element = {user?.user?.verified?<Navigate to = '../home'/>:<Login/>}/>

@@ -2,10 +2,11 @@ const authReducer = (
   state = { authData: null, loading: false, error: false },
   action
 ) => {
+  console.log(action.type,'actiontype')
   switch (action.type) {
     case "AUTH_START":
       return { ...state, loading: true, error: false };
-     
+
     case "AUTH_SUCCESS":
       console.log("daaaaaaaaaaaaaaataaaaaaaaaaaaaaaaaaaaaa");
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
@@ -23,7 +24,7 @@ const authReducer = (
         authData: action.data,
         error: false,
       };
-      
+
     case "OTP_FAIL":
       return { ...state, loading: false, error: true, otpfail: true };
 
@@ -69,6 +70,10 @@ const authReducer = (
           },
         },
       };
+
+    case "LOADING_FALSE":
+      localStorage.clear();
+      return { ...state, authData: null, loading: false, error: false };
 
     case "LOG_OUT":
       localStorage.clear();

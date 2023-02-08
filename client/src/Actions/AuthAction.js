@@ -30,18 +30,33 @@ export const signUp = (formData) => async (dispatch) => {
   }
 };
 
-export const otpVerification = (userId,otp)=> async(dispatch)=>{
-  console.log(userId,otp,'-------------userid and otp authentication')
+// export const otpVerification = (userId,otp)=> async(dispatch)=>{
+//   console.log(userId,otp,'-------------userid and otp authentication')
 
-  dispatch({type:"OTP_START"})
-  try{
-    const {data} = await AuthApi.otpVerify(userId,otp)
-    console.log(data,'----data at opt verification')
-    dispatch({type:"OTP_SUCCESS", data:data})
+//   dispatch({type:"OTP_START"})
+//   try{
+//     console.log('-----------Otp verify');
+//     const { data } = await AuthApi.otpVerify(userId,otp)
+//     console.log(data,'----data at opt verification')
+//     dispatch({type:"OTP_SUCCESS", data:data})
     
-  }catch(error){
-    console.log(error)
-    dispatch({type:"OTP_FAIL"})
+//   }catch(error){
+//     console.log(error,'-------otp fail at authaction')
+//     dispatch({type:"OTP_FAIL"})
+//   }
+// }
+
+export const otpVerification = (userId,otp) => async (dispatch)=>{
+  dispatch({type:"OTP_START"})
+  try {
+      const { data } = await AuthApi.otpVerify(userId, otp)
+  
+      dispatch({ type: "OTP_SUCCESS", data: data })
+
+  } catch (error) {
+      console.log(error)
+      dispatch({ type: "OTP_FAIL" })
+
   }
 }
 
@@ -57,7 +72,13 @@ export const AdminLogIn = (formData) => async (dispatch) => {
     console.log(formData,'------formData')
     const { data } = await AuthApi.AdminLogIn(formData);
     console.log(data,"llllllllllllllllllllllllllllllllllllllll");
-    dispatch({ type: "AUTH_SUCCESS", data: data });
+    if(!data.success){
+      console.log('----login false')
+      dispatch({type:"LOADING_FALSE"})
+    }else{
+      await dispatch({type:"AUTH_SUCCESS", data: data })
+    }
+    return {message:data.message,success:data.success}
   } catch (error) {
     console.log(error);
     dispatch({ type: "AUTH_FAILED" });

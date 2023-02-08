@@ -43,7 +43,7 @@ const UserTable = () => {
                 <tr>
                   <td><img src={user.profilePicture ? serverPublic + user.profilePicture : serverPublic + "avatar.png"} alt=""
                     className='logedUser' /></td>
-                  <td>{user.firstname} {user.lastname} {user.verified ? <ArrowUpRightCircle/>:''}</td>
+                  <td>{user.firstname} {user.lastname} {user.verified ? <ArrowUpRightCircle className='verifiedUser'/>:''}</td>
                   <td>{user.username}</td>
                   <td>{user.followers.length}</td>
                   <td>{user.following.length}</td>

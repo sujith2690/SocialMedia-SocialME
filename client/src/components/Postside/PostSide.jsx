@@ -5,6 +5,7 @@ import Posts from '../Posts/Posts'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { getSavedPost, getTimelinePosts } from '../../api/PostRequest'
+import { getUser } from "../../api/UserRequest";
 
 function PostSide({ location }) {
   const params = useParams()
@@ -13,9 +14,13 @@ function PostSide({ location }) {
   const { user } = useSelector((state) => state.authReducer.authData)
   const fetchPosts = async () => {
 
+
     if (otherUserid) {
-      const { data } = await getTimelinePosts(otherUserid)
-        setPosts(data)
+      // const { data } = await getTimelinePosts(otherUserid)
+      const { data } = await getUser(otherUserid)
+      console.log('data, ', data.allPosts)
+      setPosts(data.allPosts)
+      //   setPosts(data)
     }
     else {
       const { data } = await getTimelinePosts(user._id)
@@ -34,10 +39,10 @@ function PostSide({ location }) {
     } else {
       fetchPosts()
     }
-  }, [])
+  }, [otherUserid])
   return (
     <div className="PostSide">
-      <PostShare fetchPosts={fetchPosts} />
+      {location === "Home" ?  <PostShare fetchPosts={fetchPosts} /> : ''}
       <Posts location='saved' data={posts} fetchPosts={fetchPosts} />
     </div>
   )

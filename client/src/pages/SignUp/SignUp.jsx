@@ -49,7 +49,7 @@ const SignUp = () => {
     const handleSubmit2 = async () => {
         if (desc.current.value) {
             const otp = desc.current.value
-            console.log(otp)
+            console.log(otp,'----------otp')
             dispatch(otpVerification(userId, otp))
         }
     }

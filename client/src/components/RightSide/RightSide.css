@@ -5,12 +5,12 @@
   width: 100%;
 }
 .navIcons {
-  margin-top: 1rem;
+  /* margin-top: 1rem; */
   display: flex;
   justify-content: space-around;
   bottom: 0;
   position: fixed;
-  width: 300px;
+  width: 350px;
   /* width: 100%; */
   align-items: center;
   background-color: #aaa;

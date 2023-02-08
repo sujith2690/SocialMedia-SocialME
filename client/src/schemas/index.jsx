@@ -11,3 +11,7 @@ export const  loginSchema = Yup.object({
     username:Yup.string().email().required("Please enter your Email"),
     password: Yup.string().min(3).required("Please enter your Password"),
 })
+export const  adminSchema = Yup.object({
+    adminname:Yup.string().email().required("Please enter your Email"),
+    password: Yup.string().min(3).required("Please enter your Password"),
+})

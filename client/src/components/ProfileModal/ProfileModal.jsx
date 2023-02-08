@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { uploadImage } from '../../Actions/uploadAction';
 import { updateUser } from '../../Actions/UserAction';
 
-function ProfileModal({ modalOpened, setModalOpened, data }) {
+function ProfileModal({ modalOpened,setModalOpened, data }) {
   const theme = useMantineTheme();
   const { password,isAdmin, ...other } = data;
   const [formData, setFormData] = useState(other)

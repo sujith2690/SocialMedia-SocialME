@@ -6,8 +6,8 @@ export const logIn = (formData) => API.post("/login", formData);
 
 export const signUp = (formData) => API.post("/register", formData);
 
-export const otpVerify = async(userId,otp)=>await API.post("/otpverify",{userId,otp})
-console.log('---otp verify path----')
+export const otpVerify = (userId,otp)=> API.post("/otpverify",{userId,otp})
+
 export const resendOtp = async (userId,userEmail) => API.post('/resendOtp',{userId,userEmail})
 
 

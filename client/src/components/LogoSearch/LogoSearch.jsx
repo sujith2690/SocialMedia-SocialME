@@ -36,11 +36,13 @@ function LogoSearch() {
 
   return (
     <div className="LogoSearch">
-      <form  onSubmit={search}>
+      <form onSubmit={search}>
         <div style={{ display: 'flex' }}>
-          <img src={Logo} alt="" />
+          <Link to={'/home'}>
+            <img src={Logo} alt="" />
+          </Link>
           <div className="Search">
-            <input type="text"  required ref={desc} placeholder='#Explore' />
+            <input type="text" required ref={desc} placeholder='#Explore' />
             <div className="s-icon">
               <UilSearch onClick={search} />
             </div>

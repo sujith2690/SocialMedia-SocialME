@@ -56,3 +56,6 @@ table {
   padding-left: 20px;
   padding-right: 20px;
 }
+.verifiedUser {
+  color: rgba(15, 37, 230, 0.788);
+ }

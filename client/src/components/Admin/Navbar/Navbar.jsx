@@ -44,9 +44,6 @@ const Navbar = () => {
                 <MessageDots />
                 <div className="dropdown">
                     <span>Admin</span>
-                    <div className="dropdown-content">
-                        <p>Logout</p>
-                    </div>
                 </div>
 
             </div>

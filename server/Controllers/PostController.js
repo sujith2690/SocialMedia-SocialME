@@ -7,14 +7,16 @@ const ObjectId = mongoose.Types.ObjectId;
 
 // Create New Post
 export const createPost = async (req, res) => {
-  const userId = req.body.userId;
   const newPost = new PostModel(req.body);
+  console.log(req.body,'-------body--')
   try {
     await newPost.save();
     console.log(newPost, "--------new post");
     res.status(200).json(newPost);
   } catch (error) {
+    console.log(error,'-----post controller')
     res.status(500).json(error);
+
   }
 };
 
@@ -31,6 +33,19 @@ export const getPost = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+// get user userPost
+
+export const userPosts = async(req,res)=>{
+  const userId = req.userId
+  try {
+    const userPost = PostModel.findById({userId:{ $in: [userId] }})
+    console.log(userPost,'------------------userpost')
+    res.status(200).json(userPost)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
 
 
 // Get saved post
@@ -51,7 +66,7 @@ export const savedPost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   const postId = req.params.id;
-  const { userId } = req.body;
+  const  userId  = req.userId;
 
   try {
     const post = await PostModel.findById(postId);
@@ -70,7 +85,7 @@ export const commentPost = async (req, res) => {
   console.log("KAAAAAAAAAAAAAAAAAAAAAAA");
   const comment = req.body.desc;
   // console.log(comment, "------comment");
-  const userid = req.body.userId;
+  const userid = req.userId;
   const postId = req.body.postId;
 
   try {
@@ -119,7 +134,7 @@ export const deletePost = async (req, res) => {
 
 export const likePost = async (req, res) => {
   const id = req.params.id;
-  const { userId } = req.body;
+  const  userId  = req.userId;
   // const { userId } = req.user;
   console.log(req.user,'------------userId') 
   try {
@@ -149,7 +164,7 @@ export const likePost = async (req, res) => {
 // save post
 export const savePost = async (req, res) => {
   const id = req.params.id;
-  const { userId } = req.body;
+  const  userId  = req.userId;
   console.log(id, "----postid");
   console.log(userId, "------userid");
   try {
@@ -172,7 +187,7 @@ export const savePost = async (req, res) => {
 // Get TimeLine Posts
 
 export const getTimeLinePosts = async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.userId;
   console.log(userId, "----timeline posts");
   try {
     const timelinePosts = await UserModel.aggregate([
@@ -265,7 +280,7 @@ export const getTimeLinePosts = async (req, res) => {
     const realPost = timelinePosts.filter((post)=>{
       return !post.isremoved
     })
-    console.log(realPost,'--------post after filter')
+    // console.log(realPost,'--------post after filter')
     res.status(200).json(realPost);
   } catch (error) {
     console.log(error);
@@ -334,7 +349,7 @@ export const getComments = async (req, res) => {
 export const postReport = async (req, res) => {
   console.log('------------------------')
   const postId = req.params.id;
-  const {userId} = req.body;
+  const userId = req.userId;
   const { desc } = req.body;
   const user = { userId, desc };
   console.log(postId, "--------postid");
@@ -361,7 +376,7 @@ export const postReport = async (req, res) => {
 
 export const removePost = async (req, res) => {
   const postId = req.params.id
-  const { userId } = req.body
+  const  userId  = req.userId
   const user = await UserModel.findById(userId)
   console.log(user, 'user at removepost')
   console.log(userId, postId, 'userid,isadminnn,postid...........at controller.....')

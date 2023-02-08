@@ -31,7 +31,7 @@ const Post = ({ location, data, fetchpost }) => {
     /////////////////////////////////////
 
     const postOwnerId = data.userId
-
+// console.log(data,'------------all posts')
     const { user } = useSelector((state) => state.authReducer.authData)
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
     const [liked, setLiked] = useState(data.likes.includes(user._id))
@@ -42,8 +42,6 @@ const Post = ({ location, data, fetchpost }) => {
     const [saveShow, setsaveShow] = useState(true)
     const [save, setsave] = useState(data.savedusers?.includes(user._id))
     const [postOwner, usepostOwner] = useState(null)
-
-  
     const handleLike = async () => {
         const response = await likePost(data._id,user._id)
         if (response.data === "Post UnLiked") {

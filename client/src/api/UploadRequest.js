@@ -12,7 +12,8 @@ API.interceptors.request.use((req) => {
 
 export const uploadImage = (data) =>API.post('/upload',data);
 
-export const uploadPost = (data) => API.post('/post',data) 
+export const uploadPost = (data) => {API.post('/post',data) 
+console.log(data,'---post api')}
 
 export const uploadComment = (data) => API.post('/post/comment',data).then((response) => { return response})
 

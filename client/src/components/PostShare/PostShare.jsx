@@ -59,6 +59,7 @@ function PostShare({ fetchPosts }) {
                 }
             }
             dispatch(uploadPost(newPost))
+            console.log(newPost,'---------newPost------')
             fetchPosts()
             reset()
         }

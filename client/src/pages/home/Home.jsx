@@ -8,7 +8,7 @@ function Home() {
   return (
     <div className="Home">
       <Profileside/>
-      <PostSide/>
+      <PostSide location='Home' />
       <RightSide location='Home' />
     </div>
   );

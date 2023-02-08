@@ -10,7 +10,8 @@ const authMiddleWare = async(req,res,next)=>{
         console.log('token --exist -- at authmiddleware')
         if(token){
             const decoded = jwt.verify(token, secret)
-            req.body._id = decoded?.id;
+            // req.body._id = decoded?.id;
+            req.userId = decoded?.id;
         }
         next();
      } catch (error) {

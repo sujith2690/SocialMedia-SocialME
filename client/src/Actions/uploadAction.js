@@ -15,11 +15,12 @@ export const uploadImage = (data)=> async (dispatch)=>{
 export const uploadPost = (data)=>async(dispatch)=>{
     dispatch({type: "UPLOAD_START"})
     try {
+        console.log(data,'----data before upload post')
         const newPost = await UploadApi.uploadPost(data)
-        console.log(newPost,'---------newPost')
+        console.log(newPost,'---------newPost in uploadAction')
         dispatch({type: "UPLOAD_SUCCESS", data:newPost.data})
     } catch (error) {
-        console.log(error)
+        console.log(error,'-------upload action')
         dispatch({type: "UPLOAD_FAIL"})
     }
 }
