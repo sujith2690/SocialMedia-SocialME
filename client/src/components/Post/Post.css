@@ -21,7 +21,7 @@
   border-radius: 25%;
   width: 3rem;
   height: 3rem;
- 
+ cursor: pointer;
   object-fit: cover;
   /* height: 3rem; */
 }

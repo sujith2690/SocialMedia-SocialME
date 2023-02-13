@@ -31,7 +31,7 @@ const Navbar = () => {
 
             <div className='LogoContainer'>
                 <img src={Logo} alt="" />
-                <p>AmazeMe</p>
+                <p>SocialME</p>
             </div>
             <div>
                 <div className='searchInputContainer'>

@@ -43,7 +43,7 @@ const InfoCard = () => {
          })
     }
     return (
-        <div className='InfoCard'>
+        <div className='InfoCard' >
             <div className="infoHead">
                 <p><b>{profileUser.firstname}</b> Profile Info</p>
                 {user._id === profileUserId ? (

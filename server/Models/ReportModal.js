@@ -12,9 +12,9 @@ const ReportSchema = mongoose.Schema(
           type: mongoose.Schema.ObjectId,
           required: true,
         },
-        desc:{
-          type:String
-        }
+        desc: {
+          type: String,
+        },
       },
     ],
   },

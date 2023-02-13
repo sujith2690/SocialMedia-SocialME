@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { ArrowUpRightCircle } from 'tabler-icons-react';
 import { getUser } from "../../api/UserRequest";
 import { followUser, unFollowUser } from '../../Actions/UserAction'
-
+import { UilPen } from '@iconscout/react-unicons'
 
 function ProfileCard({ location }) {
 
@@ -48,7 +48,7 @@ function ProfileCard({ location }) {
     return (
         <div className="ProfileCard">
             <div className="ProfileImages">
-                {!searchuser ? <img src={user?.coverPicture ? serverPublic + user?.coverPicture : serverPublic + "coverimage.jpg"} alt="" />
+                {!searchuser ?<img src={user?.coverPicture ? serverPublic + user?.coverPicture : serverPublic + "coverimage.jpg"} alt="" />
                     :
                     <img src={searchuser?.coverPicture ? serverPublic + searchuser?.coverPicture : serverPublic + "coverimage.jpg"} alt="" />
                 }

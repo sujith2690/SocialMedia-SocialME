@@ -120,7 +120,10 @@ export const getReportedPost = async (req, res) => {
         "postDetails.desc": 1,
         "postDetails.image": 1,
         "postDetails._id": 1,
+        "postDetails.likes": 1,
+        "postDetails.comments": 1,
         "postDetails.isremoved": 1,
+        "users.desc": 1,
       },
     },
   ]);

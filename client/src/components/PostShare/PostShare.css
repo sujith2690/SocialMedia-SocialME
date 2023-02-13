@@ -7,7 +7,7 @@
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
 }
-.PostShare>img{
+.share{
     border-radius: 25%;
     width: 3rem;
     height: 3rem;

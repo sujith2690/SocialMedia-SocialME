@@ -1,34 +1,18 @@
-.allLoginUsers {
-  display: flex;
-  overflow: hidden;
-  overflow-y: scroll;
-  /* align-items: center; */
-}
 
-.logedUser {
+
+.userProfile {
   width: 50px;
   height: 50px;
-  border-radius: 25%;
   object-fit: cover;
+  border-radius: 25%;
 }
-.arrange {
+.usertable {
+  width: 100%;
+}
+.sixze {
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
-.userDetail {
-}
-table,
-td,
-th {
-  border: 1px solid black;
-  padding: 10px;
-}
-
-table {
-  border-collapse: collapse;
-  width: 50%;
-}
-
 .Block {
   background-color: red !important;
   color: white;
@@ -40,22 +24,34 @@ table {
   padding-right: 20px;
   cursor: pointer;
 }
-.Nonblock {
-  background-color: grey !important;
+.Verify{
+  background-color: rgb(0, 92, 128) !important;
   color: white;
   border: none;
   padding: 10px;
+  min-width: 100px;
   border-radius: 10px;
   padding-left: 20px;
   padding-right: 20px;
   cursor: pointer;
-  min-width: 100px;
 }
-.active-user {
+.button {
   height: 2rem;
   padding-left: 20px;
   padding-right: 20px;
+  min-width: 100px;
 }
-.verifiedUser {
-  color: rgba(15, 37, 230, 0.788);
- }
+/* .userSearch{
+  padding: 10px;
+  border-radius: 25px;
+  border: none;
+
+} */
+.userSearch{
+  /* width: 33pc; */
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgb(224, 228, 232);
+  outline: none;
+}

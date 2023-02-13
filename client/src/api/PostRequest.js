@@ -25,7 +25,7 @@ export const savepost = (id,userId)=> API.put(`/post/${id}/save`,{userId:userId}
 
 export const getSavedPost=(userId) => API.get(`/post/${userId}/saved`)
 
-export const postReport = (postId,userId) => API.put(`/post/${postId}/report`,{userId:userId})
+export const postReport = (postId,data) => API.put(`/post/${postId}/report`,{data:data})
 
 
 

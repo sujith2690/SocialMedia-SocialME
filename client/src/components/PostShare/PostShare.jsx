@@ -7,14 +7,19 @@ import { UilLocationPoint } from "@iconscout/react-unicons"
 import { UilTimes } from "@iconscout/react-unicons"
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadImage, uploadPost } from '../../Actions/uploadAction'
-
+import toast, { Toaster } from 'react-hot-toast';
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 function PostShare({ fetchPosts }) {
+    const navigate = useNavigate()
 
+    const notify = () => toast.error('Unsupported Format');
     const loading = useSelector((state) => state.postReducer.uploading)
 
     const { user } = useSelector((state) => state.authReducer.authData)
+    const userId = user._id
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
 
     const desc = useRef()
@@ -27,12 +32,10 @@ function PostShare({ fetchPosts }) {
             if (event.target.files[0].type === 'image/x-png' || event.target.files[0].type === 'image/gif' || event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'image/jpg') {
                 let img = event.target.files[0];
                 setImage(img);
-            }else{
-
+            } else {
+                notify()
             }
         }
-        //     let img = e.target.files[0]
-        //     setImage(img)
     }
 
     const reset = () => {
@@ -59,7 +62,7 @@ function PostShare({ fetchPosts }) {
                 }
             }
             dispatch(uploadPost(newPost))
-            console.log(newPost,'---------newPost------')
+            console.log(newPost, '---------newPost------')
             fetchPosts()
             reset()
         }
@@ -67,7 +70,7 @@ function PostShare({ fetchPosts }) {
 
     return (
         <div className='PostShare'>
-            <img src={user.profilePicture ? serverPublic + user.profilePicture : serverPublic + "avatar.png"} alt="" />
+                <img onClick={() => navigate(`/profile/${user._id}`)} style={{cursor:'pointer'}} className='share' src={user.profilePicture ? serverPublic + user.profilePicture : serverPublic + "avatar.png"} alt="" />
             <div>
                 <input
                     ref={desc}

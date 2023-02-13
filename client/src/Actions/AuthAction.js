@@ -50,17 +50,12 @@ export const otpVerification = (userId,otp) => async (dispatch)=>{
   dispatch({type:"OTP_START"})
   try {
       const { data } = await AuthApi.otpVerify(userId, otp)
-  
       dispatch({ type: "OTP_SUCCESS", data: data })
-
   } catch (error) {
       console.log(error)
       dispatch({ type: "OTP_FAIL" })
-
   }
 }
-
-
 export const logOut = () => async (dispatch) => {
   dispatch({ type: "LOG_OUT" });
 };

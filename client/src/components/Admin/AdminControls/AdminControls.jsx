@@ -14,6 +14,10 @@ const AdminControls = ({ select }) => {
       {select == "users" ? < UserTable/> : ''}
       {select == "activeUsers" ? <ActiveuserTable className='verifiedUser' /> : ''}
       {select == "report" ? <ReportPostTable /> : ''}
+      <div>
+
+      </div>
+
     </div>
   )
 }

@@ -11,7 +11,7 @@ const AdminHome = () => {
   return (
     <div className='adminHome'>
       <Navbar />
-      <div className='controllers' style={{display:'flex',alignItems:'center'}}>
+      <div className='controllers'>
         <AdminCommands  setSelect={setSelect} />
         <AdminControls select={select} />
       </div>

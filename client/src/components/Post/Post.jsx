@@ -15,10 +15,13 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { deletePost, likePost, postReport, savepost } from '../../api/PostRequest'
 import toast, { Toaster } from 'react-hot-toast';
+import ReportModal from '../ReportModal/ReportModal'
+import { useNavigate } from 'react-router-dom'
 
 
 
 const Post = ({ location, data, fetchpost }) => {
+    const navigate = useNavigate()
     //////////////////////////////////////
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -31,7 +34,7 @@ const Post = ({ location, data, fetchpost }) => {
     /////////////////////////////////////
 
     const postOwnerId = data.userId
-// console.log(data,'------------all posts')
+    // console.log(data,'------------all posts')
     const { user } = useSelector((state) => state.authReducer.authData)
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
     const [liked, setLiked] = useState(data.likes.includes(user._id))
@@ -42,8 +45,10 @@ const Post = ({ location, data, fetchpost }) => {
     const [saveShow, setsaveShow] = useState(true)
     const [save, setsave] = useState(data.savedusers?.includes(user._id))
     const [postOwner, usepostOwner] = useState(null)
+    const postId = data._id
+
     const handleLike = async () => {
-        const response = await likePost(data._id,user._id)
+        const response = await likePost(data._id, user._id)
         if (response.data === "Post UnLiked") {
             setLikes(likes - 1)
             setLiked(false)
@@ -55,14 +60,14 @@ const Post = ({ location, data, fetchpost }) => {
         }
     }
     const handleSave = async () => {
-        const response = await savepost(data._id,user._id)
+        const response = await savepost(data._id, user._id)
         if (response.data === "Post Saved") {
             setsave(true)
             if (location === 'saved') {
                 setsaveShow(true)
                 toast.success('Post Saved.')
             }
-        } else if(response.data ==='Post Unsaved'){
+        } else if (response.data === 'Post Unsaved') {
             if (location === 'saved') {
                 setsaveShow(false)
             }
@@ -82,10 +87,6 @@ const Post = ({ location, data, fetchpost }) => {
         fetchpost()
     }
 
-    const handleReport = async () => {
-        const response = await postReport(data._id, user._id)
-        setAnchorEl(null);
-    }
     const countComment = () => {
         setTotalComm((prev) => prev + 1)
     }
@@ -99,15 +100,25 @@ const Post = ({ location, data, fetchpost }) => {
             savedUser()
         }
     }, [])
+
+    // Report Modal
+
+    const [modal, setModal] = useState(false);
+
+    const toggleModal = () => {
+        setModal(!modal);
+        handleClose()
+    };
+
     return (saveShow === true ?
-        
+
         <div className="Post">
             <Toaster />
             <div className='PostOptions'>
-                <div className="PostUser">
+                <div className="PostUser"   >
 
-                    {postOwner ? <img className="Profileimg" src={postOwner.profilePicture ? serverPublic + postOwner.profilePicture : serverPublic + "avatar.png"} alt="" />
-                        : <img className="Profileimg" src={data.profilePicture ? serverPublic + data.profilePicture : serverPublic + "avatar.png"} alt="" />
+                    {postOwner ? <img onClick={() => navigate(`/profile/${postOwner._id}`)} className="Profileimg" src={postOwner.profilePicture ? serverPublic + postOwner.profilePicture : serverPublic + "avatar.png"} alt="" />
+                        : <img onClick={() => navigate(`/profile/${data._id}`)}  className="Profileimg" src={data.profilePicture ? serverPublic + data.profilePicture : serverPublic + "avatar.png"} alt="" />
                     }
                     {postOwner ? <p><b>{postOwner.firstname} {postOwner.lastname}</b></p>
                         : <p ><b>{data.firstname} {data.lastname}</b></p>}
@@ -116,7 +127,7 @@ const Post = ({ location, data, fetchpost }) => {
                     {save ?
                         <span className='saveoptions'>
                             < BookmarkOff onClick={handleSave} />saved</span>
-                            
+
                         : < Bookmark onClick={handleSave} />
                     }
                     <DotsVertical onClick={handleClick} />
@@ -130,7 +141,10 @@ const Post = ({ location, data, fetchpost }) => {
                         }}
                     >{postOwnerId === user._id ?
                         <MenuItem onClick={handleDelete}>Delete</MenuItem>
-                        : <MenuItem onClick={() => handleReport()}>Report</MenuItem>}
+                        : <MenuItem
+                            onClick={toggleModal}
+                        > Report</MenuItem>
+                        }
                     </Menu>
                 </div>
             </div>
@@ -154,6 +168,7 @@ const Post = ({ location, data, fetchpost }) => {
                 <Comment postId={data._id} countComment={countComment} />
                 : ""
             }
+            <ReportModal postId={postId} modal={modal} toggleModal={toggleModal} />
         </div>
         : ""
 

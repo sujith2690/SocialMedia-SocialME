@@ -7,6 +7,11 @@ import { Logout } from 'tabler-icons-react';
 import { logOut } from '../../../Actions/AuthAction';
 import { useDispatch } from 'react-redux';
 import { Accessible } from 'tabler-icons-react';
+import Logo from '../../../img/hlogo.png'
+import { HomeCheck } from 'tabler-icons-react';
+import { UserCircle } from 'tabler-icons-react';
+import Menu from '../../Menu/Menu';
+
 
 
 const AdminCommands = ({ setSelect }) => {
@@ -32,15 +37,56 @@ const AdminCommands = ({ setSelect }) => {
           <FileReport />
           <p>Reported Posts</p>
         </div>
-        {/* <div className='iconss'>
-          <Accessible />
-          <p>User Requests</p>
-        </div> */}
         <div className='iconss' onClick={handleLogOut} >
           <Logout />
           <p>Logout</p>
         </div>
       </div>
+
+      {/* <nav className='bab'>
+        <ul>
+          <li>
+            <a href="" className='logos'>
+              <img src={Logo} alt="" />
+              <span className='nav-item'>SocialME</span>
+            </a>
+          </li>
+          <li>
+            <a href=""className='atag'>
+            <HomeCheck className='adicon' />
+            <span className='nav-item'>Home</span>
+            </a>
+          </li>
+          <li>
+            <a href=""className='atag'>
+            <UserCircle className='adicon' />
+            <span className='nav-item'>Users</span>
+            </a>
+          </li>
+          <li>
+            <a href=""className='atag'>
+            <UserCheck className='adicon' />
+            <span className='nav-item'>Verify</span>
+            </a>
+          </li>
+          <li>
+            <a href="" className='atag'>
+            <FileReport className='adicon' />
+            <span className='nav-item'>Reports</span>
+            </a>
+          </li>
+          <li>
+            <a href="" className='logout atag'>
+            <Logout className='adicon' />
+            <span className='nav-item'>Logout</span>
+            </a>
+          </li>
+
+        </ul>
+      </nav> */}
+
+
+
     </div>
   )
 }

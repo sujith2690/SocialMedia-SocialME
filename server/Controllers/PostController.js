@@ -350,10 +350,12 @@ export const postReport = async (req, res) => {
   console.log('------------------------')
   const postId = req.params.id;
   const userId = req.userId;
-  const { desc } = req.body;
+  const  desc  = req.body.data
+  console.log(req.body, "********userid");
+  console.log(desc, "********userid");
+
   const user = { userId, desc };
   console.log(postId, "--------postid");
-  console.log(userId, "********userid");
 
   try {
     const report = await ReportModel.findOne({ postId });
