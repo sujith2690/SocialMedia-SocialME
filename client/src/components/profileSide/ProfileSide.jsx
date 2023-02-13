@@ -7,13 +7,10 @@ import "./ProfileSide.css"
 function ProfileSide() {
   return (
     <div className="ProfileSide">
-      <LogoSearch />
-      {/* <Menu/> */}
-
-      <div id='profileDiv'>
-        <ProfileCard location="homepage" />
-      </div>
-
+        {/* <LogoSearch/> */}
+        <Menu/>
+        {/* <ProfileCard location="homepage"/> */}
+        
     </div>
   )
 }

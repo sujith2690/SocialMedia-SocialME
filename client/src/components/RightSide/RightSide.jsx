@@ -74,9 +74,7 @@ const RightSide = ({ location }) => {
           </Link>
         </div> */}
         <div>
-          <Link to={`/profile/${user._id}`}>
             <Logout onClick={handleLogOut} />
-          </Link>
         </div>
       </div>
       {show ?

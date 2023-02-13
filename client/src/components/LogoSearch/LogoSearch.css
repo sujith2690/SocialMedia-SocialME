@@ -27,11 +27,13 @@
 .s-icon:hover {
   cursor: pointer;
 }
+
 .SearchProfile {
   border-radius: 50%;
   width: 3rem;
   height: 3rem;
 }
+
 .searchoutput {
   min-height: 100px;
   max-height: 150px;
@@ -43,7 +45,7 @@
   margin-top: 10px;
 }
 .resultlocation {
-  background-color: white;
+  /* background-color: white; */
   display: flex;
   border-radius: 10px;
 }

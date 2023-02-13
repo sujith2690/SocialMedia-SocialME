@@ -4,32 +4,39 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { uploadImage } from '../../Actions/uploadAction';
 import { updateUser } from '../../Actions/UserAction';
+import toast from 'react-hot-toast';
 
-function ProfileModal({ modalOpened,setModalOpened, data }) {
+function ProfileModal({ modalOpened, setModalOpened, data }) {
   const theme = useMantineTheme();
-  const { password,isAdmin, ...other } = data;
+  const { password, isAdmin, ...other } = data;
   const [formData, setFormData] = useState(other)
   const [profileImage, setProfileImage] = useState(null)
   const [coverImage, setCoverImage] = useState(null)
   const dispatch = useDispatch()
   const param = useParams()
 
+  const notify = () => toast.error('Unsupported Format');
   const { user } = useSelector((state) => state.authReducer.authData)
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
-  const onImageChange = (event)=>{
-    if(event.target.files && event.target.files[0]){
-      let img = event.target.files[0];
-      event.target.name === "profileImage" ? setProfileImage(img) : setCoverImage(img)
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      if(event.target.files[0].type === 'image/x-png'|| event.target.files[0].type === 'image/gif' || event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'image/jpg'){
+        let img = event.target.files[0];
+        event.target.name === "profileImage" ? setProfileImage(img) : setCoverImage(img)
+      }
+      else{
+        notify()
+      }
     }
   };
 
-  const handleSubmit = (e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault();
     let UserData = formData;
-    
-    if(profileImage){ 
+    if (profileImage) {
+      
       const data = new FormData()
       const fileName = Date.now() + profileImage.name;
       data.append("name", fileName);
@@ -41,7 +48,7 @@ function ProfileModal({ modalOpened,setModalOpened, data }) {
         console.log(error)
       }
     }
-    if(coverImage){
+    if (coverImage) {
       const data = new FormData()
       const fileName = Date.now() + coverImage.name;
       data.append("name", fileName);

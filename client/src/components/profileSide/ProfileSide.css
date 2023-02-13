@@ -1,7 +1,9 @@
 .ProfileSide{
     display: flex;
     flex-direction: column;
-    gap:1rem;
+    /* gap:1rem; */
     align-items: center;
     overflow: auto;
+    justify-content: center;
+    padding-top: 10px;
 }
