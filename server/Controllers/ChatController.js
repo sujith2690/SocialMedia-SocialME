@@ -3,8 +3,8 @@ import ChatModal from "../Models/ChatModal.js";
 export const createChat = async (req, res) => {
   
   const exist = await ChatModal.findOne({members:{$all:[req.body.senderId, req.body.receiverId]}})
-  if(exist) return res.sendStatus(500)
 
+  if(exist) return res.status(200).json(exist)
   const newChat = new ChatModal({
     members: [req.body.senderId, req.body.receiverId],
   });

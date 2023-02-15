@@ -9,6 +9,7 @@ import Chat from "./pages/Chat/Chat";
 import Login from "./pages/Login/Login";
 import SignUp from "./pages/SignUp/SignUp";
 import Saved from "./pages/Saved/Saved";
+import ErrorPage from "./pages/Error/ErrorPage";
 
 function App() {
   const user = useSelector((state) => state.authReducer.authData);
@@ -20,7 +21,7 @@ function App() {
       <Routes>
 
       <Route path="/admin" element={user? <AdminHome/>  : <AdminAuth /> }/>
-      
+      {/* <Route path="/error" element={ <ErrorPage/> }/> */}
       <Route path='/' element = {user?.user?.isUser?<Navigate to = "/home"/>:<Navigate to ='/login'/> }/>
       <Route path='/login' element = {user?.user?.isUser && !user.isBlock?<Navigate to = "../home"/>:<Login/> }/>
       <Route path='/signup' element = {user?.user?.isUser?<Navigate to = "../home"/>:<SignUp/> }/>

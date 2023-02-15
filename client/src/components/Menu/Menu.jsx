@@ -44,6 +44,7 @@ const Menu = () => {
         }
     }
     const handleLogOut = () => {
+        
         dispatch(logOut())
     }
 

@@ -2,18 +2,9 @@
     position: relative;
     display: grid;
     grid-template-columns: 18rem auto 20rem;
-    gap: 1rem;
-    /* width: 100%; */
-   
-    
 }
-.Profile-center{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    /* height: 100vh;
-    overflow: auto; */
-}
+
+
 @media only screen and (max-width: 1250px){
     .Profile{
         grid-template-columns: 18rem auto;

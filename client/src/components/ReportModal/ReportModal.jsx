@@ -67,7 +67,6 @@ const ReportModal = ({ modal, toggleModal,postId }) => {
                     </div>
                 </div>
             )}
-            <p>hai</p>
         </>
     )
 }

@@ -30,26 +30,15 @@ export const signUp = (formData) => async (dispatch) => {
   }
 };
 
-// export const otpVerification = (userId,otp)=> async(dispatch)=>{
-//   console.log(userId,otp,'-------------userid and otp authentication')
 
-//   dispatch({type:"OTP_START"})
-//   try{
-//     console.log('-----------Otp verify');
-//     const { data } = await AuthApi.otpVerify(userId,otp)
-//     console.log(data,'----data at opt verification')
-//     dispatch({type:"OTP_SUCCESS", data:data})
-    
-//   }catch(error){
-//     console.log(error,'-------otp fail at authaction')
-//     dispatch({type:"OTP_FAIL"})
-//   }
-// }
 
 export const otpVerification = (userId,otp) => async (dispatch)=>{
   dispatch({type:"OTP_START"})
   try {
-      const { data } = await AuthApi.otpVerify(userId, otp)
+      const { data } = await AuthApi.otpVerify(userId, otp).then((response)=>{
+        console.log(response,'-----response-----')
+      })
+      console.log(data,'------otp verification data---- auh action')
       dispatch({ type: "OTP_SUCCESS", data: data })
   } catch (error) {
       console.log(error)

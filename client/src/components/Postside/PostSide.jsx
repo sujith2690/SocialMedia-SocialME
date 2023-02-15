@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { getSavedPost, getTimelinePosts } from '../../api/PostRequest'
 import { getUser } from "../../api/UserRequest";
+import ProfileCard from '../ProfileCard/ProfileCard'
 
 function PostSide({ location }) {
   const params = useParams()
@@ -16,11 +17,8 @@ function PostSide({ location }) {
 
 
     if (otherUserid) {
-      // const { data } = await getTimelinePosts(otherUserid)
       const { data } = await getUser(otherUserid)
-      console.log('data, ', data.allPosts)
       setPosts(data.allPosts)
-      //   setPosts(data)
     }
     else {
       const { data } = await getTimelinePosts(user._id)
@@ -42,7 +40,16 @@ function PostSide({ location }) {
   }, [otherUserid])
   return (
     <div className="PostSide">
-      {location === "Home" ?  <PostShare fetchPosts={fetchPosts} /> : ''}
+      {location === "Home" ?
+        <PostShare fetchPosts={fetchPosts} />
+        : ''
+      }
+
+      {location === "Profile" ?
+        <ProfileCard location="Profile" />
+        : ''
+      }
+
       <Posts location='saved' data={posts} fetchPosts={fetchPosts} />
     </div>
   )

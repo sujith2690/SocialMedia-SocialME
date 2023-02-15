@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./ProfileCard.css";
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import { ArrowUpRightCircle } from 'tabler-icons-react';
 import { getUser } from "../../api/UserRequest";
 import { followUser, unFollowUser } from '../../Actions/UserAction'
-import { UilPen } from '@iconscout/react-unicons'
 import { Edit } from 'tabler-icons-react';
 import ProfileModal from "../ProfileModal/ProfileModal";
+import { createChat } from "../../api/ChatRequest";
 
 function ProfileCard({ location }) {
 
@@ -22,6 +22,7 @@ function ProfileCard({ location }) {
     const [userPost, setUserPost] = useState([])
     const [followings, setFollowings] = useState(user.following.includes(id))
     const [modalOpened, setModalOpened] = useState(false)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchFollowers = async () => {
@@ -32,7 +33,6 @@ function ProfileCard({ location }) {
                 setsearchuser(data)
             } else {
                 const { data } = await getUser(user._id)
-                console.log(data.allPosts, '----------existing user')
                 setFollowers(data.followers)
                 setFollowing(data.following)
                 setUserPost(data.allPosts)
@@ -46,6 +46,13 @@ function ProfileCard({ location }) {
             dispatch(unFollowUser(id, user)) :
             dispatch(followUser(id, user))
         setFollowings((prev) => !prev)
+    }
+    const handleChat = async () => {
+        const senderId = user._id
+        const receiverId = id
+        await createChat({ senderId, receiverId }).then((response) => {
+            navigate('/chat')
+        })
     }
 
     return (
@@ -83,6 +90,10 @@ function ProfileCard({ location }) {
                 {!searchuser ? <span>{user.firstname} {user.lastname} {user.verified ? <ArrowUpRightCircle style={{ color: 'rgba(15, 37, 230, 0.788)' }} /> : ''}</span>
                     : <span>{searchuser.firstname} {searchuser.lastname} {searchuser.verified ? <ArrowUpRightCircle style={{ color: 'rgba(15, 37, 230, 0.788)' }} /> : ''}</span>
                 }
+                {
+                    user._id !== id ? <button className='button logout-button' onClick={handleChat} >Message</button >
+                        : ''
+                }
             </div>
             <div>
                 {!searchuser ?
@@ -105,18 +116,19 @@ function ProfileCard({ location }) {
                     </div>
                 }
             </div>
-            {location === 'homepage' ? "" :
-                <div>
-                    {id !== user._id ? <div className="customBut">
+            {id !== user._id ?
+                <div className="userFollo">
+                    <div className="customBut">
                         <button className={followings ? "button fc-button UnfollowButton" : "button fc-button "} onClick={handleFollow}>
                             {followings ? "Unfollow" : "Follow"}
                         </button>
+
+
                     </div>
-                        : ""}
                 </div>
-            }
+                : ""}
             <div className="followStatus">
-                <hr />
+                {/* <hr /> */}
                 <div>
                     <div className="follow">
                         {!searchuser ? <span>{user.following?.length}</span>
@@ -136,7 +148,6 @@ function ProfileCard({ location }) {
                             <div className="vl">
                             </div>
                             <div className="follow">
-                                {/* <span>{posts.filter((post) => post.userId === user._id).length}</span> */}
                                 {!searchuser ? <span>{userPost.length}</span>
                                     : <span>{searchuser?.allPosts?.length}</span>
                                 }
@@ -145,15 +156,8 @@ function ProfileCard({ location }) {
                         </>
                         : ""}
                 </div>
-                <hr />
+                {/* <hr /> */}
             </div>
-            {location !== 'homepage' ? "" :
-                <span>
-                    <Link style={{ textDecoration: "none", color: "inherit" }} to={`/profile/${user._id}`}>
-                        My Profile
-                    </Link>
-                </span>
-            }
 
         </div>
     );

@@ -34,7 +34,6 @@ const Post = ({ location, data, fetchpost }) => {
     /////////////////////////////////////
 
     const postOwnerId = data.userId
-    // console.log(data,'------------all posts')
     const { user } = useSelector((state) => state.authReducer.authData)
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
     const [liked, setLiked] = useState(data.likes.includes(user._id))

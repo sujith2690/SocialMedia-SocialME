@@ -9,7 +9,7 @@ import mongoose, { Types } from "mongoose";
 // Registering New User
 
 export const registerUser = async (req, res) => {
-  console.log('--------its here')
+  console.log("--------its here");
   const jwt = pkg;
   const salt = await bcrypt.genSalt(10);
   const hashedPass = await bcrypt.hash(req.body.password, salt);
@@ -45,13 +45,12 @@ export const registerUser = async (req, res) => {
 };
 
 const sendOtpVerificationEmail = async (user) => {
-  
   console.log(
     user,
     "---------id and user namea at sendotpverifunction............."
   );
   return new Promise(async (resolve, reject) => {
-    console.log(user,"lllll")
+    console.log(user, "lllll");
     console.log(user._id, "------iddddd");
     const userEmail = user.username;
     const userid = user._id.toString();
@@ -114,148 +113,85 @@ const sendOtpVerificationEmail = async (user) => {
   });
 };
 
-// export const otpVerify = async (req, res) => {
-//   try {
-//     let { userId, otp } = req.body;
-//     console.log(req.body,'-------body')
-//     const jwt = pkg;
-//     console.log(userId, otp, "userid and otp at authcontroller");
-//     if (!userId || !otp) {
-//       throw Error("Empty otp details are not allowed");
-//     } else {
-//       const otpVerificationData = await otpVerificationModel.find({ userId });
-//       console.log(otpVerificationData, "otp verification data");
-//       if (otpVerificationData) {
-//         const { expiresAt } = otpVerificationData[0];
-//         const hashedOtp = otpVerificationData[0].otp;
-//         console.log(hashedOtp, "hashed otp");
 
-//         if (expiresAt < Date.now()) {
-//           console.log('---------77---------')
-//           await otpVerificationModel.deleteMany({ userId });
-//           throw new Error("OTP expires. Please request again");
-          
 
-//         } else {
-//           console.log(otp, hashedOtp, "otp,hashedotp");
-//           const vaildOtp = await bcrypt.compare(otp, hashedOtp);
-//           console.log(vaildOtp,'validotp............')
-//           if (!vaildOtp) {
-//             throw new Error(" Invalied otp. check and Enter correct OTP");
-//           } else {
-//            const changedUser = await UserModel.updateOne({ _id: userId }, { isUser: true });
-//             console.log(changedUser,'--------changedUser')
-//             console.log('-----**  otp verify success  ***------')
-//             await otpVerificationModel.deleteMany({ userId });
-//             const user = await UserModel.findOne({ _id: userId });
-//             console.log(
-//               user.isUser,
-//               "----- isuser at authcontroller, otpverify function ..............."
-//             );
-//             const token = jwt.sign(
-//               {
-//                 username: user.userName,
-//                 id: user._id,
-//               },
-//               process.env.JWT_KEY,
-//               { expiresIn: "24h" }
-//             );
-//             console.log(user,'---user',token,'----token')
-//             res.status(200).json({user,token });
-            
-//           }
-//         }
-//       }else{
-      
-//         res.status(200).json('Wrong Otp')
-//       }
-//     }
-//   } catch (error) {
-//     res.json({
-//       status: "Failed",
-//       message: error.message,
-//     });
-//   }
-// };
-
-export const otpVerify = async(req,res)=>{
+export const otpVerify = async (req, res) => {
   try {
-      let {userId,otp} = req.body
-      console.log(userId,otp, 'userid and otp at authcontroller')
-      if(!userId || !otp){
-          throw Error('Empty otp details are not allowed')
-      }
-      else{
-          const otpVerificationData = await otpVerificationModel.find({userId})
-          console.log(otpVerificationData, "otp verification data")
-          if(otpVerificationData){
-              const {expiresAt} = otpVerificationData[0];
-              const hashedOtp = otpVerificationData[0].otp;
-              console.log(hashedOtp,'hashed otp')
+    let { userId, otp } = req.body;
+    console.log(userId, otp, "userid and otp at authcontroller");
+    if (!userId || !otp) {
+      throw Error("Empty otp details are not allowed");
+    } else {
+      const otpVerificationData = await otpVerificationModel.find({ userId });
+      console.log(otpVerificationData, "otp verification data");
+      if (otpVerificationData) {
+        const { expiresAt } = otpVerificationData[0];
+        const hashedOtp = otpVerificationData[0].otp;
+        console.log(hashedOtp, "hashed otp");
 
-              if(expiresAt < Date.now()){
-                  await otpVerificationModel.deleteMany({userId})
-                  throw new Error("OTP expires. Please request again")
-              }
-              else{
-                  console.log(otp,hashedOtp,'otp,hashedotp')
-                  const vaildOtp =  await bcrypt.compare(otp, hashedOtp)
-                  if(!vaildOtp){
-                      throw new Error(" Invalied otp. check and Enter correct OTP")
-                  }
-                  else{
-                      console.log('else ccase otp valid')
-                      await UserModel.updateOne({_id:userId}, {isUser:true});
-                      await otpVerificationModel.deleteMany({userId})
-                      const user = await UserModel.findOne({_id:userId})
-                      console.log(user,'user at otpverify....')
-                      
-                      const token = jwt.sign({
-                          username: user.userName, id: user._id
-                      }, process.env.JWT_KEY, { expiresIn: '24h' })
-                      
-                      res.status(200).json({ user, token })
-                      
-                     
-                  }
+        if (expiresAt < Date.now()) {
+          await otpVerificationModel.deleteMany({ userId });
+          throw new Error("OTP expires. Please request again");
+        } else {
+          console.log(otp, hashedOtp, "otp,hashedotp");
+          const vaildOtp = await bcrypt.compare(otp, hashedOtp);
+          if (!vaildOtp) {
+            throw new Error(" Invalied otp. check and Enter correct OTP");
+          } else {
+            console.log("else ccase otp valid");
+            await UserModel.updateOne({ _id: userId }, { isUser: true });
+            await otpVerificationModel.deleteMany({ userId });
+            const user = await UserModel.findOne({ _id: userId });
+            console.log(user, "user at otpverify....");
 
-              }
+            const token = jwt.sign(
+              {
+                username: user.userName,
+                id: user._id,
+              },
+              process.env.JWT_KEY,
+              { expiresIn: "24h" }
+            );
+
+            res.status(200).json({ user, token });
           }
+        }
       }
+    }
   } catch (error) {
-      res.json({
-          status:"Failed",
-          message: error.message
-      })
+    res.json({
+      status: "Failed",
+      message: error.message,
+    });
   }
-}
+};
 
 // resend OTP
 
-export const resendOtp = async(req,res)=>{
-  console.log('resend otp ')
+export const resendOtp = async (req, res) => {
+  console.log("resend otp ");
   try {
-    console.log(req.body,'???? otp ')
-    const id = req.body.userId
-    const username = req.body.userEmail
-    let user={
-      _id:new mongoose.Types.ObjectId(id),
-      username:username
-    }
-    console.log(user,'------userId and email')
-    const userid = req.body.userId
-    console.log(userid,'----------userid')
-    if(!user._id || !user.username){
-      throw Error("Empty user Details")
-    }else{
-      await otpVerificationModel.deleteMany({userid});
-      sendOtpVerificationEmail(user,)
+    console.log(req.body, "???? otp ");
+    const id = req.body.userId;
+    const username = req.body.userEmail;
+    let user = {
+      _id: new mongoose.Types.ObjectId(id),
+      username: username,
+    };
+    console.log(user, "------userId and email");
+    const userid = req.body.userId;
+    console.log(userid, "----------userid");
+    if (!user._id || !user.username) {
+      throw Error("Empty user Details");
+    } else {
+      await otpVerificationModel.deleteMany({ userid });
+      sendOtpVerificationEmail(user);
     }
   } catch (error) {
-    console.log(error,'----errererer')
-    res.json({status:'Failed',message:error.message})
+    console.log(error, "----errererer");
+    res.json({ status: "Failed", message: error.message });
   }
-}
+};
 
 // Login User
 
@@ -269,11 +205,11 @@ export const loginUser = async (req, res) => {
 
     if (user) {
       if (user.isBlock === true) {
-        res.status(200).json({message:"User Blocked",success:false});
+        res.status(200).json({ message: "User Blocked", success: false });
       } else {
         const validity = await bcrypt.compare(password, user.password);
         if (!validity) {
-          res.status(200).json({message:"Wrong Password",success:false});
+          res.status(200).json({ message: "Wrong Password", success: false });
         } else {
           const token = jwt.sign(
             {
@@ -283,11 +219,13 @@ export const loginUser = async (req, res) => {
             process.env.JWT_KEY,
             { expiresIn: "24h" }
           );
-          res.status(200).json({ user, token,success:true,message:"Login Success" });
+          res
+            .status(200)
+            .json({ user, token, success: true, message: "Login Success" });
         }
       }
     } else {
-      res.status(200).json({message:"User does not Exist",success:false});
+      res.status(200).json({ message: "User does not Exist", success: false });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -296,9 +234,46 @@ export const loginUser = async (req, res) => {
 
 //  searchUser
 
+export const verifyEmail = async (req, res) => {
+  console.log(req.body.email);
+  const userEmail = req.body.email;
+  try {
+    const user = await UserModel.findOne({ username: userEmail });
+    if (user) {
+      console.log(user, "----get user");
+      const userDetails = {
+        username: user.username,
+        _id: user._id,
+      };
+      const response = sendOtpVerificationEmail(userDetails);
+      res.status(200).json({ message: "OTP SEND", success: true, userDetails });
+      if (response) {
+        console.log(response, "--------54545");
+      }
+    } else {
+      res.status(200).json({ message: "User Not Found", success: false });
+    }
+  } catch (error) {}
+};
+//Change password
+export const changePassword = async (req, res) => {
+  let { email, newPassword } = req.body;
+  try {
+    newPassword = await bcrypt.hash(newPassword, 10);
+    const user = await UserModel.findOneAndUpdate(
+      { username: email },
+      { $set: { password: newPassword } }
+    );
+    res.status(204).json(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
 export const searchUser = async (req, res) => {
   console.log(req.body, "---------serch controller");
-  
+
   const user = req.body.data.desc;
   console.log(user, "---------serch controller");
   try {
@@ -363,11 +338,11 @@ export const loginAdmin = async (req, res) => {
     const admin = await AdminModel.findOne({ adminname: adminname });
     if (admin) {
       if (admin.isAdmin === false) {
-        res.status(200).json({message:"Admin Blocked",success:false});
+        res.status(200).json({ message: "Admin Blocked", success: false });
       } else {
         const validity = await bcrypt.compare(password, admin.password);
         if (!validity) {
-          res.status(200).json({message:"Wrong Password",success:false});
+          res.status(200).json({ message: "Wrong Password", success: false });
         } else {
           const token = jwt.sign(
             {
@@ -377,11 +352,13 @@ export const loginAdmin = async (req, res) => {
             process.env.JWT_KEY,
             { expiresIn: "24h" }
           );
-          res.status(200).json({ admin, token,success:true,message:"Login Success" });
+          res
+            .status(200)
+            .json({ admin, token, success: true, message: "Login Success" });
         }
       }
     } else {
-      res.status(200).json({message:"Admin does not Exist",success:false});
+      res.status(200).json({ message: "Admin does not Exist", success: false });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });

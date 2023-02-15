@@ -44,7 +44,10 @@
     margin-left: 20px;
   }
   .searchInput{
-      width: 33pc;
+      /* width: 33pc; */
+      width: 100%;
+      /* min-width: 50%;
+      max-width: 100%; */
       border: none;
       padding: 4px;
       border-radius: 10px;
@@ -63,8 +66,13 @@
     text-align: center;
     border-radius: 10px;
   }
-  
   .dropdown:hover .dropdown-content {
     display: block;
   }
-  
+  .navResult{
+    height: 100px;
+    overflow: hidden;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+  }

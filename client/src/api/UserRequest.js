@@ -26,6 +26,10 @@ export const unFollowUser = (id, data) => API.put(`/user/${id}/unfollow`, data);
 
 export const searchUser = (data)=> API.post('/user/searchUser',data)
 
+export const verifyEmails = (email)=> API.post('/searchUser',{email:email})
+
+export const verifyOtp = (userId,otp)=> API.post('/otpVerify',{userId:userId,otp:otp})
+
 
 
 // Notifications 

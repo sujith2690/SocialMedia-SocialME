@@ -50,7 +50,8 @@ const SignUp = () => {
         if (desc.current.value) {
             const otp = desc.current.value
             console.log(otp,'----------otp')
-            dispatch(otpVerification(userId, otp))
+            // dispatch(otpVerification(userId, otp))
+            otpVerification(userId, otp)
         }
     }
     const handleLogin = () => {

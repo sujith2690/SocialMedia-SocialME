@@ -130,8 +130,8 @@ export const deleteUser = async (req, res) => {
 // search user
 
 export const searchUser = async (req, res) => {
-
   const user = req.body.desc
+  console.log(user,'------controler')
   try {
     let findUser = await UserModel.find({
       firstname: { $regex: new RegExp(user), $options: "si" },

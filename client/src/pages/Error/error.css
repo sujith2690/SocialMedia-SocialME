@@ -1,0 +1,9 @@
+.errorPage{
+    background-color: transparent;
+    text-align: center;
+    background-color: aqua;
+    background-image: url('../../img/coverimage.jpg');
+    height: auto;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

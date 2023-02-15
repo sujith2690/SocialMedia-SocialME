@@ -3,17 +3,13 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  gap: 1rem;
   overflow-x: clip;
   background-color: var(--cardColor);
-  /* height: 100vh; */
-  /* overflow: auto; */
 }
 .ProfileImages {
   position: relative;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   justify-content: center;
 }
 .coverImages {
@@ -37,8 +33,7 @@
   gap: 10px;
   font-weight: bold;
 }
-/* .ProfileName > span:nth-of-type(1) {
-} */
+
 .pen {
   height: 30px;
   width: 30px;
@@ -53,10 +48,10 @@
 
 .profileDetails {
  
-  margin-top: -5rem;
+  margin-top: -2rem;
   text-align: end;
   padding: 10px;
-}
+}ls
 
 
 .followStatus {
@@ -64,8 +59,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 13rem;
 
-  margin-top: -50px;
 }
 .followStatus > hr {
   width: 85%;
@@ -74,9 +69,11 @@
 .followStatus > div {
   display: flex;
   gap: 1rem;
-  width: 80%;
+  width: 100%;
   justify-content: space-around;
   align-items: center;
+  background-color: rgba(128, 128, 128, 0.24);
+  margin-top: 30px;
 }
 .follow {
   display: flex;
@@ -105,7 +102,7 @@
   cursor: pointer;
 }
 .customBut {
-  margin-top: -40px;
+  /* margin-top: -40px; */
   display: flex;
   flex-direction: row-reverse;
   margin-right: 10px;
