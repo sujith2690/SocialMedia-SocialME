@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { logIn } from "../../Actions/AuthAction";
 import toast, { Toaster } from 'react-hot-toast';
-import { getUser, verifyEmails, verifyOtp } from '../../api/UserRequest';
+import {  verifyEmails, verifyOtp } from '../../api/UserRequest';
+import { changePassword, resendOtp } from '../../api/AuthRequest';
 
 
 const Login = () => {
@@ -17,14 +18,14 @@ const Login = () => {
     const [forgot, setForgot] = useState(false)
     const [otpSend, setOtpSend] = useState(false)
     const [Password, setPassword] = useState(false)
+    const [passwordChanged, setPasswordChanged] = useState(false);
     const [email, setEmail] = useState('')
-    const [Otp, setOtp] = useState('')
     const [Userid, setUserid] = useState('')
     const desc = useRef()
     const [data, setData] = useState({
         password: '',
         confirmpassword: '',
-      });
+    });
 
     const initialValues = {
         username: '',
@@ -57,51 +58,62 @@ const Login = () => {
         else setForgot(false)
     }
 
-
-
-    // const handleVerifyEmail = async () => {
-    //     const email = desc.current.value
-    //     console.log("VERIFY EMAIL")
-    //     if (email) {
-    //         const response = await verifyEmail(email)
-    //         console.log(response, '------------user')
-
-    //         // if (otpSend === false) setOtpSend(true)
-    //     }
-
-    // }
-    const handleConfirmOTP = async () => {
-        console.log('otp verified');
-    }
-
     const verifyEmail = async () => {
-        console.log('-----1...')
-        const userDetails = await verifyEmails(email)
-        console.log(userDetails.data.success, '-----user...')
-        const response = userDetails.data.success
-        setUserid(userDetails.data.userDetails._id)
-        if (response === true) {
+        const response = await verifyEmails(email)
+        if (response.data.success) {
+            toast.success(response.data.message)
             setOtpSend(true)
+            setUserid(response.data.userDetails._id)
+        } else {
+            toast.error(response.data.message)
+        }
+    }
+    const resendOtps = async () => {
+        const resend = await resendOtp(Userid, email)
+        if (resend.data.success) {
+            toast.success(resend.data.message)
+        } else {
+            toast.error(resend.data.message)
         }
     }
     const verifyOtps = async () => {
         const otp = desc.current.value
-        console.log(otp, '---------otp')
+        console.log(otp, '-----otp')
         const Otpverify = await verifyOtp(Userid, otp)
-        console.log(Otpverify,'-------Otpverify')
-        const verified = Otpverify.data.token
-        if (verified) {
-            setPassword(true)
+        console.log(Otpverify.data, '-------Otpverify')
+        if (Otpverify.data.success) {
+            toast.success(Otpverify.data.message)
+            if (Otpverify.data.success === "OTP expires") {
+                setOtpSend(false)
+            } else {
+                setPassword(true)
+            }
+        } else {
+            toast.error(Otpverify.data.message)
         }
     }
     const handleChanges = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
-      };
-    const changePassword =async()=>{
-        console.log(data.password,'------',data.confirmpassword)
-        if (data.password === data.confirmpassword){
-
+    };
+    const changePasswords = async () => {
+        if (data.password === data.confirmpassword) {
+            const newPassword = data.confirmpassword
+            console.log('-its here')
+            const Change = await changePassword(Userid, newPassword)
+            console.log(Change, '----------changed')
+            if (Change.data.success) toast.success(Change.data.message)
+            setPasswordChanged(true);
+            // if (passwordChanged) {
+            //     console.log('changed')
+            //     return redirect("/login");
+            // }
+        } else {
+            toast.error('Password Not Match !')
         }
+    }
+    if (passwordChanged) {
+        console.log('changed')
+        navigate("/");
     }
 
     return (
@@ -171,73 +183,79 @@ const Login = () => {
                     </form>
                     :
                     < >
-                        <h3>Forgot Password</h3>
+                        {!Password ?
+                            <>
+                                <h3>Forgot Password</h3>
 
-                        <div className="inputfields">
-                            {!otpSend ?
-                                <div className="inputname">
+                                <div className="inputfields">
+
+                                    {!otpSend ?
+                                        <div className="inputname">
+                                            <input
+                                                type="text"
+                                                placeholder="Your Valid Email"
+                                                className="infoInput"
+                                                name="username"
+                                                id="username"
+                                                onChange={(e) => { setEmail(e.target.value); }}
+                                            />
+                                            {errors.username && touched.username ? (
+                                                <span className="form-error">{errors.username}</span>) : null}
+                                        </div>
+                                        :
+                                        <div>
+                                            <input
+                                                type="number"
+                                                placeholder="Your Valid OTP"
+                                                className="infoInput"
+                                                name="otp"
+                                                id="otp"
+                                                ref={desc}
+                                            />
+                                        </div>
+                                    }
+                                </div>
+                                {!otpSend ?
+                                    <button onClick={verifyEmail} className="button infoButton" type="submit" disabled={loading} >
+                                        Send OTP
+                                    </button> :
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <p style={{ fontSize: 14, marginRight: '5px' }} onClick={resendOtps} >Rend OTP</p>
+                                        <button onClick={verifyOtps} className="button infoButton" type="submit" disabled={loading} >
+                                            Verify OTP
+                                        </button>
+                                    </div>
+                                }
+                            </> :
+                            <>
+                                <h3>Change Password</h3>
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <input
-                                        type="text"
-                                        placeholder="Your Valid Email"
+                                        type="password"
+                                        placeholder="Password"
                                         className="infoInput"
-                                        name="username"
-                                        id="username"
+                                        name="password"
+                                        id="password"
+                                        onChange={handleChanges}
+                                        value={data.password}
+                                    />
+                                    <input
+                                        type="password"
+                                        placeholder="Confirm Password"
+                                        className="infoInput"
+                                        name="confirmpassword"
+                                        id="confirmpassword"
                                         // ref={desc}
-                                        onChange={(e) => { setEmail(e.target.value); }}
-                                    />
-                                    {errors.username && touched.username ? (
-                                        <span className="form-error">{errors.username}</span>) : null}
-                                </div>
-                                :
-                                <div>
-                                    <input
-                                        type="number"
-                                        placeholder="Your Valid OTP"
-                                        className="infoInput"
-                                        name="otp"
-                                        id="otp"
-                                        ref={desc}
-                                    // onChange={(e) => { setOtp(e.target.value); }}
+                                        onChange={handleChanges}
+                                        value={data.confirmpassword}
+                                        style={{ marginTop: '10px' }}
                                     />
                                 </div>
-                            }
-                        </div>
-                        {!otpSend ?
-                            <button onClick={verifyEmail} className="button infoButton" type="submit" disabled={loading} >
-                                Send OTP
-                            </button> :
-                            <button onClick={verifyOtps} className="button infoButton" type="submit" disabled={loading} >
-                                Verify OTP
-                            </button>}
-                        {Password ?
-                            <div>
-                                <input
-                                    type="number"
-                                    placeholder="Password"
-                                    className="infoInput"
-                                    name="password"
-                                    id="password"
-                                    // ref={desc}
-                                    onChange={handleChanges}
-                                    value={data.password}
-                                />
-                                {/* <input
-                                    type="number"
-                                    placeholder="Confirm Password"
-                                    className="infoInput"
-                                    name="confirmpassword"
-                                    id="confirmpassword"
-                                    // ref={desc}
-                                    onChange={handleChanges}
-                                    value={data.confirmpassword}
-                                /> */}
-                            </div>
-                            : ''}
-                        {Password ?
-                            <button onClick={changePassword} className="button infoButton" type="submit" disabled={loading} >
-                                Change Password
-                            </button> :
-                            ''}
+                                <button style={{ marginTop: '10px' }} onClick={changePasswords} className="button infoButton" type="submit" disabled={loading} >
+                                    Change Password
+                                </button>
+                            </>
+                        }
 
                     </>
                 }

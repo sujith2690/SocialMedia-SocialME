@@ -21,7 +21,6 @@ function App() {
       <Routes>
 
       <Route path="/admin" element={user? <AdminHome/>  : <AdminAuth /> }/>
-      {/* <Route path="/error" element={ <ErrorPage/> }/> */}
       <Route path='/' element = {user?.user?.isUser?<Navigate to = "/home"/>:<Navigate to ='/login'/> }/>
       <Route path='/login' element = {user?.user?.isUser && !user.isBlock?<Navigate to = "../home"/>:<Login/> }/>
       <Route path='/signup' element = {user?.user?.isUser?<Navigate to = "../home"/>:<SignUp/> }/>
@@ -30,7 +29,8 @@ function App() {
       <Route path='/auth' element = {user?.user?.verified?<Navigate to = '../home'/>:<Login/>}/>
       <Route path='/profile/:id'  element = {user?.user?.isUser && !user.isBlock?<Profile/>:<Navigate to = "../login"/>}/>
       <Route path='/chat'  element = {user?.user?.isUser && !user.isBlock?<Chat/>:<Navigate to = "../login"/>}/>
-
+      <Route path="*" element={ <ErrorPage/> }/>
+    
     </Routes>
     </div>
   );

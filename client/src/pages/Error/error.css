@@ -1,9 +1,17 @@
 .errorPage{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: transparent;
     text-align: center;
-    background-color: aqua;
-    background-image: url('../../img/coverimage.jpg');
+    /* background-color: aqua; */
+    background-image: url('../../img/hlogol.png');
     height: auto;
     background-repeat: no-repeat;
-    background-size: cover;
+    /* background-size: contain; */
+    height: 600px;
+}
+.errbtn{
+    align-items: center;
 }

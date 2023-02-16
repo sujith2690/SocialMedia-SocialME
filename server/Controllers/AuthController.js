@@ -23,8 +23,6 @@ export const registerUser = async (req, res) => {
     }
     console.log(newUser, "----new user signup");
     const user = await newUser.save();
-    // console.log(newUser,'----------coming user details')
-    // console.log(user,'-----------saved user details')
     const otpSend = await sendOtpVerificationEmail(user);
 
     //  T O K E N
@@ -37,7 +35,7 @@ export const registerUser = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    res.status(200).json({ user, token });
+    res.status(200).json({ message: "OTP Send", success: true,user, token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -50,11 +48,8 @@ const sendOtpVerificationEmail = async (user) => {
     "---------id and user namea at sendotpverifunction............."
   );
   return new Promise(async (resolve, reject) => {
-    console.log(user, "lllll");
-    console.log(user._id, "------iddddd");
     const userEmail = user.username;
     const userid = user._id.toString();
-
     try {
       const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
       const transporter = nodemailer.createTransport({
@@ -71,7 +66,7 @@ const sendOtpVerificationEmail = async (user) => {
 
         subject: "Subject",
         text: "Email content",
-        html: `<p>Email verification Code is <b> ${otp} </b> from AmazeME. Ignore this mail if this is not done by you. </p>`,
+        html: `<p>Email verification Code is <b>${otp}</b> from AmazeME. Ignore this mail if this is not done by you. </p>`,
       };
 
       transporter.sendMail(mailOptions, function (error, info) {
@@ -92,7 +87,8 @@ const sendOtpVerificationEmail = async (user) => {
       });
       console.log("---------00------");
       const saltRound = 10;
-      const hashedOtp = await bcrypt.hash(otp, saltRound);
+      const hashedOtp = bcrypt.hashSync(otp,saltRound);
+      // const hashedOtp = otp
       const newOtpVerification = await new otpVerificationModel({
         userId: userid,
         otp: hashedOtp,
@@ -102,7 +98,7 @@ const sendOtpVerificationEmail = async (user) => {
       await newOtpVerification.save();
       await transporter.sendMail(mailOptions);
 
-      console.log("---------OTP send success------");
+      console.log(newOtpVerification,"---------OTP send success------");
     } catch (error) {
       console.log(error);
       reject({
@@ -116,34 +112,36 @@ const sendOtpVerificationEmail = async (user) => {
 
 
 export const otpVerify = async (req, res) => {
+  const userId  = req.body.userId
+  console.log(userId,'----------userfffggg---gg')
   try {
     let { userId, otp } = req.body;
     console.log(userId, otp, "userid and otp at authcontroller");
     if (!userId || !otp) {
       throw Error("Empty otp details are not allowed");
     } else {
-      const otpVerificationData = await otpVerificationModel.find({ userId });
-      console.log(otpVerificationData, "otp verification data");
+      const otpVerificationData = await otpVerificationModel.findOne({ userId });
+      console.log(otpVerificationData,'----otpVerificationData')
       if (otpVerificationData) {
-        const { expiresAt } = otpVerificationData[0];
-        const hashedOtp = otpVerificationData[0].otp;
-        console.log(hashedOtp, "hashed otp");
-
+        const { expiresAt } = otpVerificationData;
+        const hashedOtp = otpVerificationData.otp;
         if (expiresAt < Date.now()) {
           await otpVerificationModel.deleteMany({ userId });
-          throw new Error("OTP expires. Please request again");
+          res.status(200).json({ message: "OTP expires", success: false });
         } else {
-          console.log(otp, hashedOtp, "otp,hashedotp");
-          const vaildOtp = await bcrypt.compare(otp, hashedOtp);
+          console.log(otp,'---------otp', hashedOtp, "---55---hashedotp");
+          const vaildOtp = bcrypt.compareSync(otp, hashedOtp);
+          console.log(vaildOtp,'--------------------')
           if (!vaildOtp) {
-            throw new Error(" Invalied otp. check and Enter correct OTP");
+            const user = await UserModel.findOne({ _id: userId });
+            res.status(200).json({ message: "Invalid OTP", success: false,user });
           } else {
             console.log("else ccase otp valid");
             await UserModel.updateOne({ _id: userId }, { isUser: true });
             await otpVerificationModel.deleteMany({ userId });
             const user = await UserModel.findOne({ _id: userId });
-            console.log(user, "user at otpverify....");
-
+            console.log(user, "----- user at otpverify....");
+            const jwt = pkg;
             const token = jwt.sign(
               {
                 username: user.userName,
@@ -152,17 +150,18 @@ export const otpVerify = async (req, res) => {
               process.env.JWT_KEY,
               { expiresIn: "24h" }
             );
-
-            res.status(200).json({ user, token });
+            res.status(200).json({ user, token,message: "OTP Matched", success: true });
           }
         }
       }
     }
   } catch (error) {
+    
     res.json({
       status: "Failed",
-      message: error.message,
+      message: "UnMatched OTP",
     });
+    // res.status(500).json({ user, token,message: "UnMatched OTP", success: false,status: "Failed" });
   }
 };
 
@@ -187,8 +186,10 @@ export const resendOtp = async (req, res) => {
       await otpVerificationModel.deleteMany({ userid });
       sendOtpVerificationEmail(user);
     }
+    res.status(200).json({ message: "Otp Resend Sucess", success: true });
   } catch (error) {
     console.log(error, "----errererer");
+    // res.status(200).json({ message: "Otp Resend failed", success: false });
     res.json({ status: "Failed", message: error.message });
   }
 };
@@ -251,20 +252,26 @@ export const verifyEmail = async (req, res) => {
         console.log(response, "--------54545");
       }
     } else {
-      res.status(200).json({ message: "User Not Found", success: false });
+      res.status(200).json({ message: "Invalid Email", success: false });
     }
   } catch (error) {}
 };
+
+
 //Change password
 export const changePassword = async (req, res) => {
-  let { email, newPassword } = req.body;
+  console.log('change pass word')
+  let { userId, newPassword } = req.body;
+console.log(req.body,'----------req.body')
+
   try {
     newPassword = await bcrypt.hash(newPassword, 10);
     const user = await UserModel.findOneAndUpdate(
-      { username: email },
+      { _id: userId },
       { $set: { password: newPassword } }
     );
-    res.status(204).json(user);
+    console.log(user,'-------changed user')
+    res.status(200).json({ message: "Pasword Changed", success: true });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

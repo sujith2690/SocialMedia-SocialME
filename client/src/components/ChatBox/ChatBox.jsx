@@ -4,11 +4,14 @@ import { getUser } from '../../api/UserRequest'
 import { addMessage, getMessages } from '../../api/MessageRequest'
 import { format } from 'timeago.js'
 import InputEmoji from 'react-input-emoji'
+import Logo from '../../img/hlogo.png'
+import { useNavigate } from 'react-router-dom'
 
 const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
     const [userData, setuserData] = useState(null)
     const [messages, setmessages] = useState([])
     const [newMessage, setNewMessage] = useState("")
+    const navigate = useNavigate()
     const scroll = useRef()
 
     useEffect(() => {
@@ -86,7 +89,7 @@ const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
             {chat ? (
                 <>
                     <div className="chat-header">
-                        <div className="follower">
+                        <div className="userHead" style={{display:'flex',justifyContent:'space-between'}}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <img src={userData?.profilePicture ?
                                     process.env.REACT_APP_PUBLIC_FOLDER + userData.profilePicture :
@@ -94,10 +97,11 @@ const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
                                     className='followerImage'
                                     style={{ width: '50px', height: '50px' }}
                                 />
-                                <div className="name" style={{ fontSize: '0.8rem' }}>
+                                <div className="name" style={{ fontSize: '0.8rem',marginLeft:'10px' }}>
                                     <span>{userData?.firstname} {userData?.lastname}</span>
                                 </div>
                             </div>
+                            <div onClick={() => navigate('/home')}><img src={Logo} alt=""  /></div>
                         </div>
                         <hr style={{ width: '85%', border: '0.1px solid #ececec' }} />
                     </div>
@@ -115,14 +119,14 @@ const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
                     {/* chat sender */}
                     <form  onSubmit={handleSend} >
                         <div className="chat-sender">
-                            <div className='addChat'>+</div>
                             <InputEmoji
                                 value={newMessage}
                                 onChange={handleChange}
                             />
-                            <button  className="send-button button">Send</button>
+                            <button type='submit' className="send-button button">Send</button>
                         </div>
                     </form>
+                    
                 </>
             ) : (
                 <span className='chatbox-empty-message'>Tap on a Chat to start Conversation... </span>

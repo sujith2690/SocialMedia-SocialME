@@ -41,7 +41,6 @@
   text-align: center;
 }
 
-
 .notifyImagess {
   width: 2rem;
   height: 2rem;
@@ -53,22 +52,22 @@
   padding: 2px;
   margin-left: 5px;
 }
-.content{
-margin-left: 10px;
+.content {
+  margin-left: 10px;
 }
 
-.vl{
+.vl {
   height: 150%;
   /* border-left: 2px solid var(--hrColor); */
   background-color: black;
 }
-.Notification>hr{
+.Notification > hr {
   width: 85%;
   border: 1px solid var(--hrColor);
 }
-.clear{
+.clear {
   text-align: right;
-  color: #aaa;
+  color: white;
   font-size: 12px;
   margin-right: 10px;
   cursor: pointer;

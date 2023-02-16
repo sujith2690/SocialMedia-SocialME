@@ -1,7 +1,7 @@
 import mongoose  from "mongoose";
 
 const otpVerificationSchema = mongoose.Schema({
-    userEmail:{
+    userId:{
         type:String
     },
     createdAt:{

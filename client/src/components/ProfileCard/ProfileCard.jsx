@@ -51,7 +51,7 @@ function ProfileCard({ location }) {
         const senderId = user._id
         const receiverId = id
         await createChat({ senderId, receiverId }).then((response) => {
-            navigate('/chat')
+        navigate('/chat')
         })
     }
 
@@ -86,15 +86,25 @@ function ProfileCard({ location }) {
                     </div>
                 }
             </div>
+             {
+                    user._id !== id ? 
+                    <button className='button' onClick={handleChat} >Message</button >
+                    // <button className='button' onClick={handleChat}>hai</button>
+                        : ''
+                }
             <div className="ProfileName">
                 {!searchuser ? <span>{user.firstname} {user.lastname} {user.verified ? <ArrowUpRightCircle style={{ color: 'rgba(15, 37, 230, 0.788)' }} /> : ''}</span>
                     : <span>{searchuser.firstname} {searchuser.lastname} {searchuser.verified ? <ArrowUpRightCircle style={{ color: 'rgba(15, 37, 230, 0.788)' }} /> : ''}</span>
                 }
-                {
-                    user._id !== id ? <button className='button logout-button' onClick={handleChat} >Message</button >
+
+                {/* {
+                    user._id !== id ? 
+                    // <button className='button logout-button' onClick={handleChat} >Message</button >
+                    <button className='button' onClick={handleChat}>hai</button>
                         : ''
-                }
+                } */}
             </div>
+
             <div>
                 {!searchuser ?
 
@@ -122,6 +132,7 @@ function ProfileCard({ location }) {
                         <button className={followings ? "button fc-button UnfollowButton" : "button fc-button "} onClick={handleFollow}>
                             {followings ? "Unfollow" : "Follow"}
                         </button>
+
 
 
                     </div>

@@ -81,7 +81,6 @@ const RightSide = ({ location }) => {
         </div>
         <div className='notify'>
           <Bell
-            // onClick={handleBell}
             onClick={handleOpen}
           />
           {notes.length > 0 ? <span className="notification-icon">{notes.length} </span> : ''}
