@@ -101,7 +101,7 @@ const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
                                     <span>{userData?.firstname} {userData?.lastname}</span>
                                 </div>
                             </div>
-                            <div onClick={() => navigate('/home')}><img src={Logo} alt=""  /></div>
+                            <div style={{cursor:'pointer'}} onClick={() => navigate('/home')}><img src={Logo} alt=""  /></div>
                         </div>
                         <hr style={{ width: '85%', border: '0.1px solid #ececec' }} />
                     </div>
