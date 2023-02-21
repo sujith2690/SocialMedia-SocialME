@@ -29,10 +29,8 @@ const ReportModal = ({ modal, toggleModal,postId }) => {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
-        console.log(postId,'------postId', value, '-----value')
-        const response = await postReport(postId, value)
-        console.log(response,'--response')
         toggleModal()
+        const response = await postReport(postId, value)
     };
     return (
         <>

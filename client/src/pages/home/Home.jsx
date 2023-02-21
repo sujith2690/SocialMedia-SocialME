@@ -6,14 +6,15 @@ import RightSide from "../../components/RightSide/RightSide";
 import "./Home.css";
 
 function Home() {
+  
   return (
     <div>
       <Navbar location='Home' />
       <div className="Home">
-      <Profileside/>
-      <PostSide location='Home' />
-      <RightSide location='Home' />
-    </div>
+        <Profileside />
+        <PostSide  location='Home' />
+        <RightSide  location='Home' />
+      </div>
     </div>
   );
 }

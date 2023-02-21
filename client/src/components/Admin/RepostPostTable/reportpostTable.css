@@ -1,21 +1,4 @@
-/* table,
-  td,
-  th {
-    padding: 10px;
-    white-space: nowrap;
-    border: 1px solid black;
-   
-  }
-  table{
-    width: 100%;
-  } */
-    
-  
-  
-  /* table {
-    border-collapse: collapse;
-    width: 50%;
-  } */
+
   .repostPosts{
     width: 100%;
   }
@@ -66,4 +49,12 @@
     color: rgb(81, 81, 255);
     font-weight: 300;
     cursor: pointer;
+  }
+  .centered-list {
+    text-align: center;
+  }
+  .cell {
+    white-space: nowrap; /* prevent text from wrapping */
+    overflow: hidden; /* hide overflow */
+    text-overflow: ellipsis; /* use ellipsis to indicate truncated text */
   }

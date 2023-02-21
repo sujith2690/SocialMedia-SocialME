@@ -142,7 +142,6 @@ export const getReportedPost = async (req, res) => {
 
 export const blockUser = async (req, res) => {
   const userId = req.params.id;
-  console.log(userId, "-------------user block");
   const user = await UserModel.findById(userId);
   try {
     if (user.isBlock === false) {
@@ -180,22 +179,17 @@ export const verifyUser = async (req, res) => {
 export const removePost = async (req, res) => {
   const postId = req.params.id
   const { userId } = req.body
-  // console.log(postId,'---------postId')
-  console.log(userId,'---------userId')
   const Admin = await AdminModel.findById(userId)
   const post = await PostModal.findById(postId)
-  console.log(post,'----------post----')
 
   try {
       if (Admin) {
           if (post.isremoved) {
               await PostModal.updateOne({ _id: postId }, { isremoved: false });
               await ReportModel.deleteOne({postId:postId})
-              console.log('---1')
           }
           else {
               await PostModal.updateOne({ _id: postId }, { isremoved: true });
-              console.log('---2...')
           }
           res.status(200).json('Post Removed Succesfully')
       }

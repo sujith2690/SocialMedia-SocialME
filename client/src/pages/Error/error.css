@@ -5,11 +5,9 @@
     justify-content: center;
     background-color: transparent;
     text-align: center;
-    /* background-color: aqua; */
     background-image: url('../../img/hlogol.png');
     height: auto;
     background-repeat: no-repeat;
-    /* background-size: contain; */
     height: 600px;
 }
 .errbtn{

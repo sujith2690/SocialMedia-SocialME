@@ -1,0 +1,162 @@
+.loginPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 4rem;
+  position: relative;
+  /* background-color: #aaa; */
+  background-image: url('../../img/group-cheerful-friends.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.box {
+  position: relative;
+  width: 380px;
+  height: 450px;
+  background-color: #1c1c1c;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.box::before {
+  content: " ";
+  position: absolute;
+  width: 380px;
+  height: 420px;
+  top: -50%;
+  left: -50%;
+  background: linear-gradient(
+    70deg,
+    transparent,
+    transparent,
+    #25b6f9,
+    #5f20f3
+  );
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+}
+.box::after {
+  content: " ";
+  position: absolute;
+  width: 380px;
+  height: 420px;
+  top: -50%;
+  left: -50%;
+  background: linear-gradient(
+    70deg,
+    transparent,
+    transparent,
+    #25b6f9,
+    #5f20f3
+  );
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+  animation-delay: -3s;
+}
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.form {
+  position: absolute;
+  inset: 2px;
+  border-radius: 8px;
+  /* background-color: #28292c; */
+  background-color: #d3d3d3;
+  /* background-color: white; */
+  z-index: 10;
+  padding: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  background-image: url(../../img/hlogol.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.form h2 {
+  font-size: 2rem;
+  text-align: center;
+
+  background-image: var(--buttonBg);
+  background-size: 100%;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-decoration-color: transparent;
+}
+.inputBox {
+  position: relative;
+  width: 300px;
+  margin-top: 15px;
+  /* background-color: #05010f; */
+}
+.inputBox input {
+  position: relative;
+  width: 93%;
+  padding: 20px 10px 10px;
+  background: transparent;
+  /* background-color: #5f20f3; */
+  border: none;
+  outline: none;
+  /* color: #25b6f9; */
+  color: #23242a;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  z-index: 10;
+}
+.inputBox span {
+  position: absolute;
+  left: 0;
+  padding: 20px 0px 10px;
+  font-size: 1em;
+  color: #8f8f8f;
+  pointer-events: none;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+}
+.inputBox input:valid ~ span,
+.inputBox input:focus ~ span {
+  color: #25b6f9;
+  transform: translateX(0px) translateY(-34px);
+  font-size: 0.75em;
+}
+.inputBox i {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #45f3ff;
+  border-radius: 4px;
+  transition: 0.5s;
+  pointer-events: none;
+}
+.inputBox input:valid ~ i,
+.inputBox input:focus ~ i {
+  height: 44px;
+}
+.links {
+  display: flex;
+  justify-content: space-between;
+}
+.links a {
+  margin: 10px 0;
+  font-size: 0.75em;
+  color: #8f8f8f;
+  text-decoration: none;
+}
+.links a:hover {
+  color: #45f3ff;
+  cursor: pointer;
+}
+.logbtn {
+  letter-spacing: 0.05em !important;
+}
+.form-error{
+  color: red !important;
+  /* font-size: 12px !important; */
+}

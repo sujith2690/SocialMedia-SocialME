@@ -1,6 +1,18 @@
-.controllers{
-    display: flex;
-    align-items: flex-start;
-    width: 100%;
-    /* justify-content: space-between; */
+.controllers {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  /* justify-content: space-between; */
 }
+
+/* @media only screen and (max-width: 1500px) {
+  .adminHome {
+    grid-template-columns: 25rem auto;
+  }
+  .rightSide {
+    display: none;
+  }
+  .navBar {
+    display: block;
+  }
+} */

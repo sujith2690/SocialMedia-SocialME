@@ -6,7 +6,6 @@ import { Bookmark } from 'tabler-icons-react';
 
 import { createChat, userChats } from '../../api/ChatRequest'
 import Conversation from '../../components/Conversation/Conversation'
-import LogoSearch from '../../components/LogoSearch/LogoSearch'
 import './chat.css'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import { io } from 'socket.io-client'
@@ -16,7 +15,6 @@ import { Logout } from 'tabler-icons-react';
 import { logOut } from '../../Actions/AuthAction';
 import { searchUser } from '../../api/UserRequest';
 import { UilSearch } from '@iconscout/react-unicons'
-
 
 const Chat = () => {
     const { user } = useSelector((state) => state.authReducer.authData)
@@ -57,14 +55,12 @@ const Chat = () => {
 
     useEffect(() => {
         socket.current.on("receive-message", (data) => {
-            console.log("data received on parent chat", data)
             setReceiveMessages(data)
         })
     }, [])
 
     const getChat = async () => {
         try {
-            console.log("kkkkkkkk");
             const { data } = await userChats(user._id)
             setchats(data)
         } catch (error) {
@@ -108,10 +104,7 @@ const Chat = () => {
         }
     }
     const handleChat = async (receiverId) => {
-        console.log(receiverId, '--------receiverId')
-        console.log(senderId, '-----senderId')
       const userChat =  await createChat({ senderId, receiverId })
-        console.log(userChat.data ,'----------userChat')
             setcurrentChat(userChat.data)
             if (show === true) {
                 setshow(false)
@@ -148,7 +141,7 @@ const Chat = () => {
                     <h2>Chats</h2>
                     <div className="Chat-list">
                         {chats.map((chat, i) => (
-                            <div key={i} onClick={() => setcurrentChat(chat)} >
+                            <div  key={i} onClick={() => setcurrentChat(chat)} >
                                 <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} />
                             </div>
                         ))}

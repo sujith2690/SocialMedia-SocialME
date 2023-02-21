@@ -39,7 +39,6 @@ const Post = ({ location, data, fetchpost }) => {
     const [liked, setLiked] = useState(data.likes.includes(user._id))
     const [likes, setLikes] = useState(data.likes.length)
     const [cshow, csetShow] = useState(false)
-
     const [totalComm, setTotalComm] = useState(data.comments.length)
     const [saveShow, setsaveShow] = useState(true)
     const [save, setsave] = useState(data.savedusers?.includes(user._id))
@@ -113,14 +112,16 @@ const Post = ({ location, data, fetchpost }) => {
 
         <div className="Post">
             <Toaster />
+
+
             <div className='PostOptions'>
                 <div className="PostUser"   >
 
                     {postOwner ? <img onClick={() => navigate(`/profile/${postOwner._id}`)} className="Profileimg" src={postOwner.profilePicture ? serverPublic + postOwner.profilePicture : serverPublic + "avatar.png"} alt="" />
-                        : <img onClick={() => navigate(`/profile/${data._id}`)}  className="Profileimg" src={data.profilePicture ? serverPublic + data.profilePicture : serverPublic + "avatar.png"} alt="" />
+                        : <img onClick={() => navigate(`/profile/${data._id}`)} className="Profileimg" src={data.profilePicture ? serverPublic + data.profilePicture : serverPublic + "avatar.png"} alt="" />
                     }
-                    {postOwner ? <p><b>{postOwner.firstname} {postOwner.lastname}</b></p>
-                        : <p ><b>{data.firstname} {data.lastname}</b></p>}
+                    {postOwner ? <p onClick={() => navigate(`/profile/${postOwner._id}`)} style={{cursor:'pointer'}}><b>{postOwner.firstname} {postOwner.lastname}</b></p>
+                        : <p onClick={() => navigate(`/profile/${data._id}`)} style={{cursor:'pointer'}}><b>{data.firstname} {data.lastname}</b></p>}
                 </div>
                 <div className='opps' >
                     {save ?
@@ -168,6 +169,7 @@ const Post = ({ location, data, fetchpost }) => {
                 : ""
             }
             <ReportModal postId={postId} modal={modal} toggleModal={toggleModal} />
+
         </div>
         : ""
 

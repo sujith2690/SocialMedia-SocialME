@@ -18,12 +18,10 @@ const ReportPostTable = () => {
 
   const getPosts = async () => {
     const reposts = await getReportedPost()
-    console.log(reposts.data, '-------------get report')
     setFilteredUsers(reposts.data)
     setPosts(reposts.data)
   }
   const { admin } = useSelector((state) => state.authReducer.authData)
-  // console.log(admin,'------------admin')
   const userId = admin._id
 
   useEffect(() => {
@@ -32,52 +30,61 @@ const ReportPostTable = () => {
 
   const handleRemove = (postId) => {
     removePost(postId, userId)
-    console.log(postId, userId, '-------------postid,userid at reportposttable.........')
   }
   const columns = [
-    
+
     {
       name: <b>Post Images</b>,
-      selector: (row) => <p>{row.postDetails.image ?<img className='postImage' src={row.postDetails.image ? serverPublic + row.postDetails.image :''} />: 'No Images'}</p>
+      center: true,
+      selector: (row) => <p>{row.postDetails.image ? <img className='postImage' src={row.postDetails.image ? serverPublic + row.postDetails.image : ''} /> : 'No Images'}</p>
     },
     {
       name: <b>Description</b>,
+      center: true,
       selector: (row) => row.postDetails.desc
     },
     {
       name: <b>Likes</b>,
+      center: true,
       selector: (row) => row.postDetails.likes.length
     },
     {
       name: <b>Comments</b>,
+      center: true,
       selector: (row) => row.postDetails.comments.length
     },
     {
       name: <b>Reported Users</b>,
-      selector: (row) => row.userDetails.map((items,i)=>{
+      center: true,
+      selector: (row) => row.userDetails.map((items, i) => {
         return (<li key={i} >{items.firstname}</li>)
-        
+
       })
     },
     {
-      name: <b>Reported Comments</b>,
-      selector: (row) => row.users.map((items,i)=>{
-        return (<li key={i} >{items.desc}</li>)
-        
-      })
+      name: <b>Total Reports</b>,
+      selector: (row) => row.users.length,
+      center: true,
     },
+    {
+      name: <b>Reportes</b>,
+      selector: (row) => row.users.map((items, i) => {
+        return (
+             <li style={{listStyleType: 'none'}}>{i + 1}. {items.desc}</li>
+        )
 
+      }),
+    },
     {
       name: <b>Action</b>,
       cell: (row) => <button className={row.postDetails.isRemoved ? "block" : "Nonblock"} onClick={() => handleRemove(row.postDetails._id)}>{row.postDetails.isremoved ? "Retrive" : "Remove"}</button>
-      // <button className={row.isBlock ? 'Block' : 'button'} onClick={() => handleRemove(row._id)} >{row.isBlock ? "Unblock" : "Block"}</button>
     },
-    
+
   ]
 
   return (
     <div className='repostPosts'>
-     
+
       <DataTable
         className='sixze'
         columns={columns}

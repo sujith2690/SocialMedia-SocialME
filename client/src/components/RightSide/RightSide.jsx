@@ -1,7 +1,6 @@
 import React from 'react'
 import './RightSide.css'
 import Home from '../../img/homes.png'
-import { Link } from 'react-router-dom'
 import FollowersCard from '../FollowersCard/FollowersCard'
 import { Bookmark } from 'tabler-icons-react';
 import { Bell } from 'tabler-icons-react';
@@ -16,11 +15,11 @@ import { logOut } from '../../Actions/AuthAction'
 import { useNavigate } from 'react-router-dom'
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
-const RightSide = ({ location }) => {
+const RightSide = ({ location } ) => {
+  
   const dispatch = useDispatch();
   const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
   const { user } = useSelector((state) => state.authReducer.authData)
@@ -28,15 +27,6 @@ const RightSide = ({ location }) => {
   const userId = user._id
   const navigate = useNavigate()
 
-
-
-
-  const [show, setShow] = useState(false)
-
-  const handleBell = () => {
-    if (show === false) setShow(true)
-    else setShow(false)
-  }
   useEffect(() => {
     Notifications()
   }, [])
@@ -85,7 +75,6 @@ const RightSide = ({ location }) => {
           />
           {notes.length > 0 ? <span className="notification-icon">{notes.length} </span> : ''}
         </div>
-
         <div>
           <MessageDots onClick={() => navigate('/chat')} />
         </div>
@@ -97,7 +86,7 @@ const RightSide = ({ location }) => {
         </div>
       </div>
       
-      <FollowersCard location={location} />
+      <FollowersCard  location={location} />
 
       <Modal
         open={open}

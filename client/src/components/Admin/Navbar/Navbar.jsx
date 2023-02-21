@@ -53,12 +53,6 @@ const Navbar = ({ location }) => {
                         <UilSearch className='s-icons' onClick={search} />
                     </div>
                 </form>
-
-                {/* <div className='IconsContainer'>
-                    {location === "Home" ?
-                        ""
-                        : <span>Admin</span>}
-                </div> */}
                 <div className='LogoContainer'>
                     <img src={Logo} alt="" />
                     <p>SocialME</p>

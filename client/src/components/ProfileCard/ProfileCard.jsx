@@ -8,6 +8,7 @@ import { followUser, unFollowUser } from '../../Actions/UserAction'
 import { Edit } from 'tabler-icons-react';
 import ProfileModal from "../ProfileModal/ProfileModal";
 import { createChat } from "../../api/ChatRequest";
+import { MessageDots } from 'tabler-icons-react';
 
 function ProfileCard({ location }) {
 
@@ -27,6 +28,7 @@ function ProfileCard({ location }) {
     useEffect(() => {
         const fetchFollowers = async () => {
             if (id !== user._id) {
+                console.log(id,'------other user')
                 const { data } = await getUser(id)
                 setFollowers(data.followers)
                 setFollowing(data.following)
@@ -36,7 +38,7 @@ function ProfileCard({ location }) {
                 setFollowers(data.followers)
                 setFollowing(data.following)
                 setUserPost(data.allPosts)
-
+                setsearchuser(data)
             }
         }
         fetchFollowers()
@@ -88,7 +90,7 @@ function ProfileCard({ location }) {
             </div>
              {
                     user._id !== id ? 
-                    <button className='button' onClick={handleChat} >Message</button >
+                    <button className='button' onClick={handleChat} ><MessageDots/>  Message</button >
                     // <button className='button' onClick={handleChat}>hai</button>
                         : ''
                 }

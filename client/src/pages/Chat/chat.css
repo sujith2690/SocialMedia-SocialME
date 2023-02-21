@@ -29,7 +29,7 @@
   .Chat-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    /* gap: 1rem; */
     height: 410px;
     overflow: hidden;
     overflow-y: scroll; 
@@ -81,11 +81,19 @@
     cursor: pointer;
   }
   
-  @media screen and (max-width: 768px) {
+  /* @media screen and (max-width: 768px) {
    .Chat {
-      grid-template-columns: 16% auto;
+      grid-template-columns: 25rem auto;
     }
      .follower.conversation>div>.name{
       display: none;
      }
   }
+  @media screen and (max-width: 1500px) {
+    .Chat {
+       grid-template-columns:  auto 25rem;
+     }
+      .follower.conversation>div>.name{
+       display: none;
+      }
+   } */

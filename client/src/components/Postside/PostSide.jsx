@@ -13,9 +13,8 @@ function PostSide({ location }) {
   const otherUserid = params.id
   let [posts, setPosts] = useState([])
   const { user } = useSelector((state) => state.authReducer.authData)
+
   const fetchPosts = async () => {
-
-
     if (otherUserid) {
       const { data } = await getUser(otherUserid)
       setPosts(data.allPosts)
@@ -26,7 +25,6 @@ function PostSide({ location }) {
     }
   }
   const savedPost = async () => {
-
     const { data } = await getSavedPost(user._id)
     setPosts(data)
   }
@@ -41,6 +39,10 @@ function PostSide({ location }) {
   return (
     <div className="PostSide">
       {location === "Home" ?
+        <PostShare fetchPosts={fetchPosts} />
+        : ''
+      }
+      {location === "saved" ?
         <PostShare fetchPosts={fetchPosts} />
         : ''
       }

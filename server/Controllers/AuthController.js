@@ -9,7 +9,6 @@ import mongoose, { Types } from "mongoose";
 // Registering New User
 
 export const registerUser = async (req, res) => {
-  console.log("--------its here");
   const jwt = pkg;
   const salt = await bcrypt.genSalt(10);
   const hashedPass = await bcrypt.hash(req.body.password, salt);
@@ -35,7 +34,7 @@ export const registerUser = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    res.status(200).json({ message: "OTP Send", success: true,user, token });
+    res.status(200).json({ message: "OTP Send", success: true, user, token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -87,7 +86,7 @@ const sendOtpVerificationEmail = async (user) => {
       });
       console.log("---------00------");
       const saltRound = 10;
-      const hashedOtp = bcrypt.hashSync(otp,saltRound);
+      const hashedOtp = bcrypt.hashSync(otp, saltRound);
       // const hashedOtp = otp
       const newOtpVerification = await new otpVerificationModel({
         userId: userid,
@@ -96,9 +95,7 @@ const sendOtpVerificationEmail = async (user) => {
         expiresAt: Date.now() + 3600000,
       });
       await newOtpVerification.save();
-      await transporter.sendMail(mailOptions);
-
-      console.log(newOtpVerification,"---------OTP send success------");
+      console.log(newOtpVerification, "---------OTP send success------");
     } catch (error) {
       console.log(error);
       reject({
@@ -109,19 +106,19 @@ const sendOtpVerificationEmail = async (user) => {
   });
 };
 
-
-
 export const otpVerify = async (req, res) => {
-  const userId  = req.body.userId
-  console.log(userId,'----------userfffggg---gg')
+  const userId = req.body.userId;
+  console.log(userId, "----------userfffggg---gg");
   try {
     let { userId, otp } = req.body;
     console.log(userId, otp, "userid and otp at authcontroller");
     if (!userId || !otp) {
       throw Error("Empty otp details are not allowed");
     } else {
-      const otpVerificationData = await otpVerificationModel.findOne({ userId });
-      console.log(otpVerificationData,'----otpVerificationData')
+      const otpVerificationData = await otpVerificationModel.findOne({
+        userId,
+      });
+      console.log(otpVerificationData, "----otpVerificationData");
       if (otpVerificationData) {
         const { expiresAt } = otpVerificationData;
         const hashedOtp = otpVerificationData.otp;
@@ -129,12 +126,14 @@ export const otpVerify = async (req, res) => {
           await otpVerificationModel.deleteMany({ userId });
           res.status(200).json({ message: "OTP expires", success: false });
         } else {
-          console.log(otp,'---------otp', hashedOtp, "---55---hashedotp");
+          console.log(otp, "---------otp", hashedOtp, "---55---hashedotp");
           const vaildOtp = bcrypt.compareSync(otp, hashedOtp);
-          console.log(vaildOtp,'--------------------')
+          console.log(vaildOtp, "--------------------");
           if (!vaildOtp) {
             const user = await UserModel.findOne({ _id: userId });
-            res.status(200).json({ message: "Invalid OTP", success: false,user });
+            res
+              .status(200)
+              .json({ message: "Invalid OTP", success: false, user });
           } else {
             console.log("else ccase otp valid");
             await UserModel.updateOne({ _id: userId }, { isUser: true });
@@ -150,13 +149,14 @@ export const otpVerify = async (req, res) => {
               process.env.JWT_KEY,
               { expiresIn: "24h" }
             );
-            res.status(200).json({ user, token,message: "OTP Matched", success: true });
+            res
+              .status(200)
+              .json({ user, token, message: "OTP Matched", success: true });
           }
         }
       }
     }
   } catch (error) {
-    
     res.json({
       status: "Failed",
       message: "UnMatched OTP",
@@ -170,16 +170,13 @@ export const otpVerify = async (req, res) => {
 export const resendOtp = async (req, res) => {
   console.log("resend otp ");
   try {
-    console.log(req.body, "???? otp ");
     const id = req.body.userId;
     const username = req.body.userEmail;
     let user = {
       _id: new mongoose.Types.ObjectId(id),
       username: username,
     };
-    console.log(user, "------userId and email");
     const userid = req.body.userId;
-    console.log(userid, "----------userid");
     if (!user._id || !user.username) {
       throw Error("Empty user Details");
     } else {
@@ -198,7 +195,6 @@ export const resendOtp = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   const { username, password } = req.body;
-  console.log(username, "--------login details");
   const jwt = pkg;
 
   try {
@@ -233,15 +229,66 @@ export const loginUser = async (req, res) => {
   }
 };
 
+//       google
+
+export const googleUser = async (req, res) => {
+  const jwt = pkg;
+  const email = req.body.email;
+  try {
+    const user = await UserModel.findOne({ username: email });
+    if (user) {
+      if (user.isBlock) {
+        res.status(200).json({ message: "User Blocked", success: false });
+      } else {
+        const token = jwt.sign(
+          {
+            username: email,
+            id: user._id,
+          },
+          process.env.JWT_KEY,
+          { expiresIn: "24h" }
+        );
+        res
+          .status(200)
+          .json({ user, token, success: true, message: "Login Success" });
+        console.log("token sented");
+      }
+    } else {
+      console.log("else part of google");
+      const user = await new UserModel({
+        firstname: req.body.given_name,
+        lastname: req.body.family_name,
+        username: req.body.email,
+        isUser: req.body.email_verified,
+        password: "google",
+      }).save();
+      console.log(user, "-----save user google");
+      const token = jwt.sign(
+        {
+          username: email,
+          id: user._id,
+        },
+        process.env.JWT_KEY,
+        { expiresIn: "24h" }
+      );
+
+      res
+        .status(200)
+        .json({ message: "Succesfully Login", success: true, user, token });
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error.message });
+  }
+};
+
 //  searchUser
 
 export const verifyEmail = async (req, res) => {
-  console.log(req.body.email);
   const userEmail = req.body.email;
   try {
     const user = await UserModel.findOne({ username: userEmail });
     if (user) {
-      console.log(user, "----get user");
       const userDetails = {
         username: user.username,
         _id: user._id,
@@ -249,7 +296,6 @@ export const verifyEmail = async (req, res) => {
       const response = sendOtpVerificationEmail(userDetails);
       res.status(200).json({ message: "OTP SEND", success: true, userDetails });
       if (response) {
-        console.log(response, "--------54545");
       }
     } else {
       res.status(200).json({ message: "Invalid Email", success: false });
@@ -257,12 +303,9 @@ export const verifyEmail = async (req, res) => {
   } catch (error) {}
 };
 
-
 //Change password
 export const changePassword = async (req, res) => {
-  console.log('change pass word')
   let { userId, newPassword } = req.body;
-console.log(req.body,'----------req.body')
 
   try {
     newPassword = await bcrypt.hash(newPassword, 10);
@@ -270,7 +313,6 @@ console.log(req.body,'----------req.body')
       { _id: userId },
       { $set: { password: newPassword } }
     );
-    console.log(user,'-------changed user')
     res.status(200).json({ message: "Pasword Changed", success: true });
   } catch (err) {
     console.log(err);
@@ -279,10 +321,8 @@ console.log(req.body,'----------req.body')
 };
 
 export const searchUser = async (req, res) => {
-  console.log(req.body, "---------serch controller");
 
   const user = req.body.data.desc;
-  console.log(user, "---------serch controller");
   try {
     let findUser = await UserModel.find({
       firstname: { $regex: new RegExp(user), $options: "si" },
@@ -292,7 +332,6 @@ export const searchUser = async (req, res) => {
         item._doc;
       return otherDetails;
     });
-    console.log(findUser, "-----findUser");
     res.status(200).json(findUser);
   } catch (error) {
     console.log(error);
@@ -303,14 +342,12 @@ export const searchUser = async (req, res) => {
 // Registering New Admin ..........................................
 
 export const registerAdmin = async (req, res) => {
-  console.log(req.body, "--------admin controller");
   const jwt = pkg;
   const salt = await bcrypt.genSalt(10);
   const hashedPass = await bcrypt.hash(req.body.password, salt);
   req.body.password = hashedPass;
   const newAdmin = new AdminModel(req.body);
   const { adminname } = req.body;
-  console.log(adminname, "--------adminname");
   try {
     const oldAdmin = await AdminModel.findOne({ adminname });
     if (oldAdmin) {
@@ -338,7 +375,6 @@ export const registerAdmin = async (req, res) => {
 // Login Admin
 
 export const loginAdmin = async (req, res) => {
-  console.log(req.body, "---------------login admin *****");
   const { adminname, password } = req.body;
   const jwt = pkg;
   try {

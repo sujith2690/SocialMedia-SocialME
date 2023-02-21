@@ -12,7 +12,6 @@ const Conversation = ({ data, currentUserId , online }) => {
             try {
                 const { data } = await getUser(userId)
                 setuserData(data)
-                console.log(data, '---------data conversation')
             } catch (error) {
                 console.log(error)
             }
@@ -23,7 +22,7 @@ const Conversation = ({ data, currentUserId , online }) => {
 
     return (
         <>
-            <div className="follower conversation" style={{marginTop:'-15px'}}>
+            <div className="follower conversation" >
                 <div style={{display:'flex',alignItems:'center'}}>
                     {online && <div className="online-dot"></div>}
                     <img src={userData?.profilePicture ?

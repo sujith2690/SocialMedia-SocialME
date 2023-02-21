@@ -7,8 +7,7 @@ import { UilLocationPoint } from "@iconscout/react-unicons"
 import { UilTimes } from "@iconscout/react-unicons"
 import { useDispatch, useSelector } from 'react-redux'
 import { uploadImage, uploadPost } from '../../Actions/uploadAction'
-import toast, { Toaster } from 'react-hot-toast';
-import { Link } from 'react-router-dom'
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom'
 
 
@@ -62,7 +61,6 @@ function PostShare({ fetchPosts }) {
                 }
             }
             dispatch(uploadPost(newPost))
-            console.log(newPost, '---------newPost------')
             fetchPosts()
             reset()
         }
@@ -70,11 +68,13 @@ function PostShare({ fetchPosts }) {
 
     return (
         <div className='PostShare'>
-                <img onClick={() => navigate(`/profile/${user._id}`)} style={{cursor:'pointer'}} className='share' src={user.profilePicture ? serverPublic + user.profilePicture : serverPublic + "avatar.png"} alt="" />
-            <div>
+            <div style={{display:'flex',flexDirection:'row'}}>
+                <img onClick={() => navigate(`/profile/${user._id}`)} style={{ cursor: 'pointer' }} className='share' src={user.profilePicture ? serverPublic + user.profilePicture : serverPublic + "avatar.png"} alt="" />
                 <input
                     ref={desc}
                     type="text" placeholder="What's Happening" />
+            </div>
+            <div className='allItems'>
                 <div className="postOptions">
                     <div className='option' style={{ color: "var(--photo)" }}
                         onClick={() => imageRef.current.click()}
@@ -88,9 +88,7 @@ function PostShare({ fetchPosts }) {
                     <div className='option' style={{ color: "var(--location)" }}>
                         <UilLocationPoint />Location
                     </div>
-                    {/* <div className='option' style={{ color: "var(--shedule)" }}>
-                        <UilSchedule />Shedule
-                    </div> */}
+                    
                     <button className='button ps-button'
                         onClick={handleSubmit}
                         disabled={loading}>
@@ -103,7 +101,7 @@ function PostShare({ fetchPosts }) {
 
                 {image && (
                     <div className="previewImage">
-                        <UilTimes onClick={() => setImage(null)} />
+                        <UilTimes style={{color:'red'}} onClick={() => setImage(null)} />
                         <img src={URL.createObjectURL(image)} alt="" />
                     </div>
                 )}

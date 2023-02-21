@@ -50,37 +50,4 @@
     display: none !important;
   }
 }
-/* 
-@media only screen and (min-width: 1024px) {
-  .Home {
-    grid-template-columns: 25rem auto;
-  }
-  .rightSide {
-    display: none;
-  }
-  .navBar{
-    display: none;
-  }
-}
 
-
-@media only screen and (max-width: 900px) {
-  .Home {
-    grid-template-columns: auto;
-  }
-  .FollowersCard {
-    display: none;
-  }
-  .menu{
-    display: none;
-  }
-  .navBar{
-    display: block;
-  }
-}
-
-@media only screen and (max-width: 900px) {
-  #profileDiv {
-    display: none !important;
-  }
-} */

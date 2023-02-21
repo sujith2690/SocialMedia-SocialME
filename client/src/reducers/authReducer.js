@@ -2,7 +2,6 @@ const authReducer = (
   state = { authData: null, loading: false, error: false },
   action
 ) => {
-  // console.log(action.type,'actiontype')
   switch (action.type) {
     case "AUTH_START":
       return { ...state, loading: true, error: false };
@@ -43,7 +42,6 @@ const authReducer = (
       return { ...state, updateLoading: false, error: true };
 
     case "FOLLOW_USER":
-      console.log(action.data, "------------555");
       return {
         ...state,
         authData: {
@@ -80,6 +78,8 @@ const authReducer = (
     default:
       return state;
   }
+
+ 
 };
 
 export default authReducer;

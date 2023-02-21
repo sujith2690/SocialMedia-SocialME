@@ -22,9 +22,7 @@ export const getAllUnfollowUsers = async (req, res) => {
 // get All follow users
 
 export const getAllFollowUser = async (req, res) => {
-  console.log(req.params.id, "--------------****-------otheruser");
   const User = req.params.id;
-  // console.log(req.body,'---------------loginuser or ')
   try {
     let users = await UserModel.find({ followers: { $in: [User] } });
     users = users.map((user) => {
@@ -58,9 +56,7 @@ export const getUser = async (req, res) => {
 
 // get unfollowed user
 export const getUnfollowedUser = async (req, res) => {
-  console.log('*****55555*****')
   const UserId = req.params.id;
-  console.log(UserId, "-------userId-------");
   try {
     let users = await UserModel.find({ followers: { $nin: [UserId] } });
     users = users.map((user) => {
@@ -88,7 +84,6 @@ export const updateUser = async (req, res) => {
       const user = await UserModel.findByIdAndUpdate(id, req.body, {
         new: true,
       });
-      console.log(user);
 
       const token = jwt.sign(
         { username: user.username, id: user._id },
@@ -131,7 +126,6 @@ export const deleteUser = async (req, res) => {
 
 export const searchUser = async (req, res) => {
   const user = req.body.desc
-  console.log(user,'------controler')
   try {
     let findUser = await UserModel.find({
       firstname: { $regex: new RegExp(user), $options: "si" },
@@ -141,7 +135,6 @@ export const searchUser = async (req, res) => {
         item._doc;
       return otherDetails;
     });
-    console.log(findUser, "-----findUser");
     res.status(200).json(findUser);
   } catch (error) {
     console.log(error);
@@ -154,7 +147,6 @@ export const searchUser = async (req, res) => {
 // Follow User
 
 export const followUser = async (req, res) => {
-  console.log('-------------followuser')
   const id = req.params.id;
   const { _id } = req.body;
 
@@ -170,9 +162,7 @@ export const followUser = async (req, res) => {
           content: `${followingUser.firstname} ${followingUser.lastname} started following you`,
           userId: new mongoose.Types.ObjectId(_id),
           createdAt: new Date(),
-          seen: false,
         };
-        console.log(data,'----------------------')
         await followUser.updateOne({ $push: { Notifications: data } });
         await followUser.updateOne({ $push: { followers: _id } });
         await followingUser.updateOne({ $push: { following: id } });
@@ -187,7 +177,6 @@ export const followUser = async (req, res) => {
 };
 
 // UnFollow User
-
 export const UnFollowUser = async (req, res) => {
   const id = req.params.id;
 
@@ -199,7 +188,6 @@ export const UnFollowUser = async (req, res) => {
     try {
       const followUser = await UserModel.findById(id);
       const followingUser = await UserModel.findById(_id);
-
       if (followUser.followers.includes(_id)) {
         await followUser.updateOne({ $pull: { followers: _id } });
         await followingUser.updateOne({ $pull: { following: id } });
@@ -218,7 +206,6 @@ export const UnFollowUser = async (req, res) => {
 
 export const getNotifications = async (req, res) => {
   const userId = req.params.id;
-  console.log(userId, "----userId----notifications ");
   try {
     const userDetails = await UserModel.aggregate([
       {
@@ -259,7 +246,6 @@ export const getNotifications = async (req, res) => {
         },
       },
     ]);
-    console.log(userDetails, "---------userDetails");
     res.status(200).json(userDetails);
   } catch (error) {
     console.log(error);
@@ -270,11 +256,9 @@ export const getNotifications = async (req, res) => {
 export const clearNotifications = async (req, res) => {
   const userId = req.params.id;
   const user = await UserModel.findById(userId);
-  console.log(user, "------- 888-----user");
   try {
     const clear = await user.updateOne({ $unset: { Notifications: "" } });
     res.status(200).json(clear);
-    console.log(clear);
   } catch (error) {
     res.status(500).json(error);
   }

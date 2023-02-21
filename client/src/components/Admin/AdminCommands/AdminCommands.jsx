@@ -20,6 +20,7 @@ const AdminCommands = ({ setSelect }) => {
   return (
     <div className='Leftbar'>
       <div className='adminOptioins'>
+        <p style={{fontSize:'20px',marginBottom:'-20px',color:'blue',}}><b>SocialME</b> <span style={{fontSize:'14px'}}>Admin</span></p>
         <div className='iconss' onClick={() => setSelect("users")} >
           <UserExclamation />
           <p>All users</p>
@@ -37,11 +38,6 @@ const AdminCommands = ({ setSelect }) => {
           <p>Logout</p>
         </div>
       </div>
-
-      
-
-
-
     </div>
   )
 }

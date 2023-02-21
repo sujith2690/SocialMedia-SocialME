@@ -1,7 +1,7 @@
 .RightSide {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  /* width: 90%; */
   align-items: center;
   justify-content: center;
   margin-left: 1rem;
@@ -15,11 +15,17 @@
   align-items: center;
   background-color: #aaa;
   border-radius: 20px;
+  padding: 5px;
+  /* position: absolute; */
 }
 .navIcons > img {
   width: 1.5rem;
   height: 1.5rem;
   cursor: pointer;
+}
+.navIcons>div{
+  display: flex;
+  align-items: center;
 }
 .homeimage {
   width: 1.5rem;
@@ -35,7 +41,7 @@
   display: inline-block;
   width: 20px;
   height: 20px;
-  background-color: rgba(9, 7, 143, 0.719);
+  background-color: rgba(13, 10, 194, 0.897);
   border-radius: 50%;
   color: white;
   text-align: center;

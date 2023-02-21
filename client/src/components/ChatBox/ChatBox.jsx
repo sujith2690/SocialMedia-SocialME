@@ -16,12 +16,10 @@ const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
 
     useEffect(() => {
         if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
-            console.log('Data received in child box', receiveMessage)
             setmessages([...messages, receiveMessage])
         }
     }, [receiveMessage])
 
-    console.log(currentUser, '----------currentUser')
     // fetching data for the header
     useEffect(() => {
         const userId = chat?.members?.find((id) => id !== currentUser)

@@ -82,7 +82,10 @@ const Menu = () => {
 
     return (
         <div className="menu">
-            <form action="" onSubmit={search}>
+            <div>
+                <h2>SocialME</h2>
+            </div>
+            <form action=""  onSubmit={search}>
                 <div className="search">
                     <input type="text" className='textbox' placeholder='Search User' ref={desc} />
                     <UilSearch className='s-icons' onClick={search} />
@@ -102,7 +105,7 @@ const Menu = () => {
                     })}
                 </div>
                 : ''}
-            <div className='menuitems' onClick={() => navigate('/home')}>
+            <div className='menuitems'  onClick={() => navigate('/home')}>
                 <img className='homeimage' src={Home} alt="" />
                 <p>Home</p>
             </div>

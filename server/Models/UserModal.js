@@ -41,10 +41,6 @@ const UserSchema = mongoose.Schema(
           ref: 'users',
         },
         date: Date,
-        seen: {
-          type: Boolean,
-          default: false,
-        },
       },
     ],
     saved: [

@@ -14,15 +14,21 @@
 .adminOptioins {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
+  padding: 10px;
 }
 .adminOptioins > div {
   margin-top: 50px;
   cursor: pointer;
 }
 
-.iconss{
-display: flex;
-align-items: center;
-}
 
+.iconss {
+  display: flex;
+  align-items: center;
+}
+.iconss:hover{
+  background-image: linear-gradient(98.63deg, #25b6f9 0%, #5f20f3 100%);
+  border-radius: 15px;
+  color: white;
+}

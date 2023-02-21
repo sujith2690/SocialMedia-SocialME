@@ -1,7 +1,7 @@
 .menu {
   background-color: rgba(122, 170, 209, 0.562);
   height: auto;
-  width: 70%;
+  width: 80%;
   border-radius: 10px;
   background-image: url(../../img/hlogol.png);
   background-repeat: no-repeat;
@@ -9,21 +9,48 @@
   /* min-height: 380px; */
   /* max-height: 500px; */
   height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
 }
 .menuitems {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 5px;
-  height: 50px;
+  padding: 6px;
+  height: 35px;
+  /* background-color: black; */
 }
 .menuitems:hover {
   background-color: rgba(0, 0, 0, 0.418);
   color: white;
   border-radius: 50px;
+  padding: 6px;
 }
 .menuitems > p {
   margin-left: 10px;
+}
+
+.menu>div>h2{
+  /* font-size: 2rem; */
+  text-align: center;
+  
+  /* color: #25b6f9; */
+  /* font-size: 2em; */
+
+  /* letter-spacing: 0.1em; */
+ /* Create The Gradient */
+ background-image: var(--buttonBg);
+ /* Set the ColorBg size and Properties */
+ background-size: 100%;
+ background-repeat: repeat;
+ /* Use the Text as mask of the background */
+ /* This will show the gradient as a text Color rather than element background */
+ -webkit-background-clip: text;
+ -webkit-text-fill-color: transparent;
+ -moz-background-clip: text;
+ -moz-text-decoration-color: transparent;
 }
 
 .homeimage {

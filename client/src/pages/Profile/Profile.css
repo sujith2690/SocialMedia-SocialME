@@ -5,14 +5,11 @@
 }
 
 
-@media only screen and (max-width: 1250px){
+/* @media only screen and (max-width: 1250px){
     .Profile{
-        grid-template-columns: 18rem auto;
+        grid-template-columns: 18rem auto 20rem;
     }
-   
-    
 } 
-
 @media only screen and (max-width: 900px){
     .Profile{
         grid-template-columns: auto;
@@ -20,5 +17,48 @@
     .rightSide {
         display: none;
     }
-    
-}
+} */
+
+
+@media only screen and (max-width: 1250px) {
+    .Profile {
+      grid-template-columns: 25rem auto;
+    }
+    .rightSide {
+      display: none;
+    }
+    .navBar{
+      display: none;
+    }
+  }
+  @media only screen and (min-width: 1300px) {
+    /* .Profile {
+      grid-template-columns: 25rem auto;
+    } */
+    .rightSide {
+      display: block;
+    }
+    .navBar{
+      display: none;
+    }
+  }
+  @media only screen and (max-width: 900px) {
+    .Profile {
+      grid-template-columns: auto;
+    }
+    .FollowersCard {
+      display: none;
+    }
+    .menu{
+      display: none;
+    }
+    .navBar{
+      display: block;
+    }
+  }
+  
+  @media only screen and (max-width: 900px) {
+    #profileDiv {
+      display: none !important;
+    }
+  }

@@ -73,6 +73,7 @@ const ActiveUser = () => {
     <div className="allLoginUsers">
       
       <DataTable
+      
         className='sixze'
         columns={columns}
         data={filteredUsers}

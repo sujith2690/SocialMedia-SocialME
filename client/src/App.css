@@ -1,3 +1,4 @@
+
 :root {
   --yellow: #f5c32c;
   --orange: #fca61f;
@@ -15,18 +16,32 @@
   --shedule: #e1ae4a;
 }
 
+/* new font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
 .App {
-  overflow: hidden;
-  /* padding: 1rem 1rem; */
+  /* display: flex; */
+  /* justify-content: center;
+  align-items: center; */
+  min-height: 100vh;
+  /* background-color: #23242a; */
+  background: #f3f3f3;
+  font-family: "Poppins", sans-serif;
+
+  /* existing design */
+  /* overflow: hidden;
   color: var(--black);
   background: #f3f3f3;
   box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-size: cover; */
+
+  /* removed design */
+
+  /* padding: 1rem 1rem; */
   /* height: 100vh; */
   /* background-image: url('./img/Wall.jpg'); */
-  background-repeat: no-repeat;
   /* background-size: auto; */
-  background-size: cover;
- 
 }
 .blur {
   position: absolute;
@@ -35,7 +50,6 @@
   border-radius: 50%;
   background: #a6ddf0;
   filter: blur(72px);
-  
 }
 .button {
   display: flex;
