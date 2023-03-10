@@ -7,8 +7,8 @@ import ReportModel from "../Models/ReportModal.js";
 //get Admin
 
 export const getAdmin = async (req, res) => {
-  const id = req.params.id;
   try {
+    const id = req.params.id;
     const admin = await AdminModel.findById(id);
     if (admin) {
       const {
@@ -32,11 +32,11 @@ export const getAdmin = async (req, res) => {
 // update Admin
 
 export const updateAdmin = async (req, res) => {
-  const id = req.params.id;
-  const { currentAdminId, currentAdminStatus, password } = req.body;
-
-  if (id === currentAdminId || currentAdminStatus) {
-    try {
+  
+  try {
+      const id = req.params.id;
+      const { currentAdminId, currentAdminStatus, password } = req.body;
+      if (id === currentAdminId || currentAdminStatus) {
       if (password) {
         const salt = await bcrypt.genSalt(10);
         req.body.password = await bcrypt.hash(password, salt);
@@ -45,34 +45,33 @@ export const updateAdmin = async (req, res) => {
         new: true,
       });
       res.status(200).json(admin);
+    } else {
+      res
+        .status(403)
+        .json("Access Denied ...? You can only Update Your own Profile");
+    }
     } catch (error) {
       res.status(500).json(error);
     }
-  } else {
-    res
-      .status(403)
-      .json("Access Denied ...? You can only Update Your own Profile");
-  }
 };
 
 // Delete Admin
 
 export const deleteAdmin = async (req, res) => {
-  const id = req.params.id;
-
-  const { currentAdminId, currentAdminStatus } = req.body;
-  if (currentAdminId === id || currentAdminStatus) {
-    try {
+  try {
+      const id = req.params.id;
+      const { currentAdminId, currentAdminStatus } = req.body;
+      if (currentAdminId === id || currentAdminStatus) {
       await AdminModel.findByIdAndDelete(id);
       res.status(200).json("User Deleted Successfully");
+    } else {
+      res
+        .status(403)
+        .json("Access Denied ...? You can only Delete Your own Profile");
+    }
     } catch (error) {
       res.status(500).json(error);
     }
-  } else {
-    res
-      .status(403)
-      .json("Access Denied ...? You can only Delete Your own Profile");
-  }
 };
 
 //get all user
@@ -88,46 +87,52 @@ export const getAllUser = async (req, res) => {
 export const getReportedPost = async (req, res) => {
   // const posts = await ReportModel.find().populate("postId").populate("users.userId")
 
-  const reportPost = await ReportModel.aggregate([
-    {
-      $lookup: {
-        from: "posts",
-        localField: "postId",
-        foreignField: "_id",
-        as: "postDetails",
-      },
-    },
-    {
-      $unwind: {
-        path: "$postDetails",
-      },
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "users.userId",
-        foreignField: "_id",
-        as: "userDetails",
-      },
-    },
-    {
-      $project: {
-        "userDetails.firstname": 1,
-        "userDetails.lastname": 1,
-        "userDetails.username": 1,
-        "userDetails._id": 1,
-        "userDetails.profilePicture": 1,
-        "postDetails.desc": 1,
-        "postDetails.image": 1,
-        "postDetails._id": 1,
-        "postDetails.likes": 1,
-        "postDetails.comments": 1,
-        "postDetails.isremoved": 1,
-        "users.desc": 1,
-      },
-    },
-  ]);
   try {
+    const reportPost = await ReportModel.aggregate([
+      {
+        $lookup: {
+          from: "posts",
+          localField: "postId",
+          foreignField: "_id",
+          as: "postDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$postDetails",
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "users.userId",
+          foreignField: "_id",
+          as: "userDetails",
+        },
+      },
+      {
+        $project: {
+          "userDetails.firstname": 1,
+          "userDetails.lastname": 1,
+          "userDetails.username": 1,
+          "userDetails._id": 1,
+          "userDetails.profilePicture": 1,
+          "postDetails.desc": 1,
+          "postDetails.image": 1,
+          "postDetails._id": 1,
+          "postDetails.likes": 1,
+          "postDetails.comments": 1,
+          "postDetails.isremoved": 1,
+          "users.desc": 1,
+        },
+      },
+      
+    ]);
     if (reportPost) {
       res.status(200).json(reportPost);
     } else {
@@ -141,9 +146,9 @@ export const getReportedPost = async (req, res) => {
 // Block user
 
 export const blockUser = async (req, res) => {
-  const userId = req.params.id;
-  const user = await UserModel.findById(userId);
   try {
+    const userId = req.params.id;
+    const user = await UserModel.findById(userId);
     if (user.isBlock === false) {
       const blockuser = await user.updateOne({ isBlock: true });
       res.status(200).json(blockuser);
@@ -159,9 +164,9 @@ export const blockUser = async (req, res) => {
 // Verify user
 
 export const verifyUser = async (req, res) => {
-  const userId = req.params.id;
-  const user = await UserModel.findById(userId);
   try {
+    const userId = req.params.id;
+    const user = await UserModel.findById(userId);
     if (user.verified === false) {
       const updateUser = await user.updateOne({ verified: true });
       res.status(200).json(updateUser);
@@ -177,12 +182,12 @@ export const verifyUser = async (req, res) => {
 
 
 export const removePost = async (req, res) => {
-  const postId = req.params.id
-  const { userId } = req.body
-  const Admin = await AdminModel.findById(userId)
-  const post = await PostModal.findById(postId)
-
+  
   try {
+    const postId = req.params.id
+    const { userId } = req.body
+    const Admin = await AdminModel.findById(userId)
+    const post = await PostModal.findById(postId)
       if (Admin) {
           if (post.isremoved) {
               await PostModal.updateOne({ _id: postId }, { isremoved: false });

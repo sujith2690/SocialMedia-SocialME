@@ -22,8 +22,8 @@ export const getAllUnfollowUsers = async (req, res) => {
 // get All follow users
 
 export const getAllFollowUser = async (req, res) => {
-  const User = req.params.id;
   try {
+    const User = req.params.id;
     let users = await UserModel.find({ followers: { $in: [User] } });
     users = users.map((user) => {
       const { password, isBlock, verified, saved, ...otherDetails } = user._doc;
@@ -35,14 +35,14 @@ export const getAllFollowUser = async (req, res) => {
   }
 };
 
-// get a user
+// get user and his posts
 export const getUser = async (req, res) => {
-  const id = req.params.id;
   try {
+    const id = req.params.id;
     const user = await UserModel.findById(id);
     if (user) {
       const { password, isBlock, verified, saved, ...otherDetails } = user._doc;
-      const userPost = await PostModel.find({ userId: id });
+      const userPost = await PostModel.find({ userId: id }).sort({ createdAt: -1 })
       otherDetails.allPosts = userPost;
       res.status(200).json(otherDetails);
     } else {
@@ -56,8 +56,8 @@ export const getUser = async (req, res) => {
 
 // get unfollowed user
 export const getUnfollowedUser = async (req, res) => {
-  const UserId = req.params.id;
   try {
+    const UserId = req.params.id;
     let users = await UserModel.find({ followers: { $nin: [UserId] } });
     users = users.map((user) => {
       const { password, isBlock, verified, saved, ...otherDetails } = user._doc;
@@ -72,11 +72,11 @@ export const getUnfollowedUser = async (req, res) => {
 // update user
 
 export const updateUser = async (req, res) => {
-  const id = req.params.id;
-  const { _id, password } = req.body;
-
-  if (id === _id) {
-    try {
+  try {
+      const id = req.params.id;
+      const { _id, password } = req.body;
+    
+      if (id === _id) {
       if (password) {
         const salt = await bcrypt.genSalt(10);
         req.body.password = await bcrypt.hash(password, salt);
@@ -92,41 +92,41 @@ export const updateUser = async (req, res) => {
       );
 
       res.status(200).json({ user, token });
+    } else {
+      res
+        .status(403)
+        .json("Access Denied ...? You can only Update Your own Profile");
+    }
     } catch (error) {
       res.status(500).json(error);
     }
-  } else {
-    res
-      .status(403)
-      .json("Access Denied ...? You can only Update Your own Profile");
-  }
 };
 
 // Delete User
 
 export const deleteUser = async (req, res) => {
-  const id = req.params.id;
-
-  const { currentUserId, currentUserAdminStatus } = req.body;
-  if (currentUserId === id || currentUserAdminStatus) {
-    try {
+  try {
+      const id = req.params.id;
+    
+      const { currentUserId, currentUserAdminStatus } = req.body;
+      if (currentUserId === id || currentUserAdminStatus) {
       await UserModel.findByIdAndDelete(id);
       res.status(200).json("User Deleted Successfully");
+    } else {
+      res
+        .status(403)
+        .json("Access Denied ...? You can only Delete Your own Profile");
+    }
     } catch (error) {
       res.status(500).json(error);
     }
-  } else {
-    res
-      .status(403)
-      .json("Access Denied ...? You can only Delete Your own Profile");
-  }
 };
 
 // search user
 
 export const searchUser = async (req, res) => {
-  const user = req.body.desc
   try {
+    const user = req.body.desc
     let findUser = await UserModel.find({
       firstname: { $regex: new RegExp(user), $options: "si" },
     });
@@ -147,13 +147,13 @@ export const searchUser = async (req, res) => {
 // Follow User
 
 export const followUser = async (req, res) => {
-  const id = req.params.id;
-  const { _id } = req.body;
-
-  if (_id === id) {
-    res.status(403).json("Action Forbidden");
-  } else {
-    try {
+  
+  try {
+      const id = req.params.id;
+      const { _id } = req.body;
+      if (_id === id) {
+        res.status(403).json("Action Forbidden");
+      } else {
       const followUser = await UserModel.findById(id);
       const followingUser = await UserModel.findById(_id);
 
@@ -166,26 +166,27 @@ export const followUser = async (req, res) => {
         await followUser.updateOne({ $push: { Notifications: data } });
         await followUser.updateOne({ $push: { followers: _id } });
         await followingUser.updateOne({ $push: { following: id } });
+
         res.status(200).json("User Followed");
       } else {
         res.status(403).json("User Already Followed by You");
       }
+    }
     } catch (error) {
       res.status(500).json(error);
     }
-  }
 };
 
 // UnFollow User
 export const UnFollowUser = async (req, res) => {
-  const id = req.params.id;
-
-  const { _id } = req.body;
-
-  if (_id === id) {
-    res.status(403).json("Action Forbidden");
-  } else {
-    try {
+  try {
+      const id = req.params.id;
+    
+      const { _id } = req.body;
+    
+      if (_id === id) {
+        res.status(403).json("Action Forbidden");
+      } else {
       const followUser = await UserModel.findById(id);
       const followingUser = await UserModel.findById(_id);
       if (followUser.followers.includes(_id)) {
@@ -195,18 +196,18 @@ export const UnFollowUser = async (req, res) => {
       } else {
         res.status(403).json("User Not Followed by You");
       }
+    }
     } catch (error) {
       console.log(error);
       res.status(500).json(error);
     }
-  }
 };
 
 // Notifications
 
 export const getNotifications = async (req, res) => {
-  const userId = req.params.id;
   try {
+    const userId = req.params.id;
     const userDetails = await UserModel.aggregate([
       {
         $match: {
@@ -254,9 +255,9 @@ export const getNotifications = async (req, res) => {
 };
 
 export const clearNotifications = async (req, res) => {
-  const userId = req.params.id;
-  const user = await UserModel.findById(userId);
   try {
+    const userId = req.params.id;
+    const user = await UserModel.findById(userId);
     const clear = await user.updateOne({ $unset: { Notifications: "" } });
     res.status(200).json(clear);
   } catch (error) {

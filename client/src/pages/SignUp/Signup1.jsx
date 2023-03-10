@@ -28,12 +28,9 @@ const Signup1 = () => {
         initialValues: initialValues,
         validationSchema: signUpSchema,
         onSubmit: (values, action) => {
-            console.log(values, '---------values')
             const user = values.username
-            console.log(user, '-----------user')
             setInitValue(values)
             const response = dispatch(signUp(values))
-            console.log(values.password, '-----resppppp---')
             if (response) toast.success(userData.message)
             else toast.error(userData.message)
             setShow(true)
@@ -61,14 +58,14 @@ const Signup1 = () => {
             toast.success("OTP send, Please Check Your Email")
         }
         else {
-            console.log('--**********     nothing')
+            console.log('NO Values')
         }
     }
 
     return (
         <div className='SignUpPage'>
             <div className="box1">
-                <Toaster />
+            <Toaster />
                 {!show ?
                     <form className="form1" onSubmit={handleSubmit}>
                         <h2>SocialME</h2>

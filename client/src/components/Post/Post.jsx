@@ -17,6 +17,7 @@ import { deletePost, likePost, postReport, savepost } from '../../api/PostReques
 import toast, { Toaster } from 'react-hot-toast';
 import ReportModal from '../ReportModal/ReportModal'
 import { useNavigate } from 'react-router-dom'
+import ConfirmModal from '../Modal/ConfirmModal'
 
 
 
@@ -79,12 +80,6 @@ const Post = ({ location, data, fetchpost }) => {
             csetShow(false)
         }
     }
-    const handleDelete = async () => {
-        const response = await deletePost(data._id, user._id)
-        setAnchorEl(null);
-        fetchpost()
-    }
-
     const countComment = () => {
         setTotalComm((prev) => prev + 1)
     }
@@ -96,32 +91,47 @@ const Post = ({ location, data, fetchpost }) => {
                 usepostOwner(pOwn)
             }
             savedUser()
+        } else {
+            usepostOwner(null)
         }
     }, [])
 
     // Report Modal
 
     const [modal, setModal] = useState(false);
-
     const toggleModal = () => {
         setModal(!modal);
         handleClose()
     };
+    // Delete Modal
 
+    const [deleModal, setDeleModal] = React.useState(false);
+    const handleDelete = () => {
+        setDeleModal(!deleModal)
+        setAnchorEl(null);
+    }
+
+    const closeModal = () => {
+        setDeleModal(false)
+        fetchpost()
+    }
+    // console.log(data, '------posts ')
+    // console.log(postOwner, '------postOwner')
     return (saveShow === true ?
 
         <div className="Post">
-            <Toaster />
-
-
+            <Toaster position="top-right" />
             <div className='PostOptions'>
                 <div className="PostUser"   >
 
                     {postOwner ? <img onClick={() => navigate(`/profile/${postOwner._id}`)} className="Profileimg" src={postOwner.profilePicture ? serverPublic + postOwner.profilePicture : serverPublic + "avatar.png"} alt="" />
                         : <img onClick={() => navigate(`/profile/${data._id}`)} className="Profileimg" src={data.profilePicture ? serverPublic + data.profilePicture : serverPublic + "avatar.png"} alt="" />
                     }
-                    {postOwner ? <p onClick={() => navigate(`/profile/${postOwner._id}`)} style={{cursor:'pointer'}}><b>{postOwner.firstname} {postOwner.lastname}</b></p>
-                        : <p onClick={() => navigate(`/profile/${data._id}`)} style={{cursor:'pointer'}}><b>{data.firstname} {data.lastname}</b></p>}
+                    {postOwner ? <p onClick={() => navigate(`/profile/${postOwner._id}`)} style={{ cursor: 'pointer' }}><b>{postOwner.firstname} {postOwner.lastname}</b></p>
+                        : <p onClick={() => navigate(`/profile/${data._id}`)} style={{ cursor: 'pointer' }}><b>{data.firstname} {data.lastname}</b></p>}
+                    {/* <img onClick={() => navigate(`/profile/${data._id}`)} className="Profileimg" src={data.userDetails.profilePicture ? serverPublic + data.userDetails.profilePicture : serverPublic + "avatar.png"} alt="" />
+
+                    <p onClick={() => navigate(`/profile/${data._id}`)} style={{ cursor: 'pointer' }}><b>{data.userDetails.map((item)=>item.firstname)}</b></p> */}
                 </div>
                 <div className='opps' >
                     {save ?
@@ -140,7 +150,7 @@ const Post = ({ location, data, fetchpost }) => {
                             'aria-labelledby': 'basic-button',
                         }}
                     >{postOwnerId === user._id ?
-                        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                        <MenuItem onClick={handleDelete} >Delete</MenuItem>
                         : <MenuItem
                             onClick={toggleModal}
                         > Report</MenuItem>
@@ -170,6 +180,7 @@ const Post = ({ location, data, fetchpost }) => {
             }
             <ReportModal postId={postId} modal={modal} toggleModal={toggleModal} />
 
+            <ConfirmModal data={data} deleModal={deleModal} id='DeleteModal' closeModal={closeModal} />
         </div>
         : ""
 

@@ -16,6 +16,7 @@ import { Logout } from 'tabler-icons-react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import NotificaionModal from '../Modal/NotificaionModal';
 
 const Menu = () => {
     const { user } = useSelector((state) => state.authReducer.authData)
@@ -25,6 +26,7 @@ const Menu = () => {
     const navigate = useNavigate()
     const [Result, setResult] = useState([])
     const [show, setshow] = useState(false)
+    const [notes, setNotes] = useState([])
     const dispatch = useDispatch();
     const reset = () => {
         desc.current.value = ""
@@ -55,18 +57,6 @@ const Menu = () => {
         await ClearNotifications(userId)
         setNotes([])
       }
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: '',
-        border: '2px solid #000',
-        boxShadow: 24,
-        color: 'white',
-        p: 4,
-    };
     useEffect(() => {
         Notifications()
       }, [])
@@ -75,10 +65,17 @@ const Menu = () => {
         const allNotifications = notifications.data
         setNotes(allNotifications)
       }
-    const [notes, setNotes] = useState([])
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+   
+    
+
+    // Notification Modal
+    const [notiModal, setNotiModal] = React.useState(false);
+    const handleNotification = () => {
+        setNotiModal(!notiModal)
+    }
+    const closeModal = () => {
+        setNotiModal(false)
+    }
 
     return (
         <div className="menu">
@@ -113,7 +110,7 @@ const Menu = () => {
                 <Bookmark />
                 <p>Saved Posts</p>
             </div>
-            <div className='menuitems' onClick={handleOpen}>
+            <div className='menuitems' onClick={handleNotification}>
                 <Bell />
                 <p>Notification</p>{notes.length > 0 ? <span className="notification-icon">{notes.length} </span> : ''}
             </div>
@@ -129,7 +126,7 @@ const Menu = () => {
                 <Logout />
                 <p>LogOut</p>
             </div>
-            <Modal
+            {/* <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
@@ -155,7 +152,8 @@ const Menu = () => {
                         <span className='clear' onClick={handleClear}>Clear all</span>
                     </Typography>
                 </Box>
-            </Modal>
+            </Modal> */}
+            <NotificaionModal notiModal={notiModal} notes={notes} handleClear={handleClear} closeModal={closeModal} />
 
         </div>
     )

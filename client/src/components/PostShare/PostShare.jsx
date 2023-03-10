@@ -15,6 +15,8 @@ function PostShare({ fetchPosts }) {
     const navigate = useNavigate()
 
     const notify = () => toast.error('Unsupported Format');
+    const notify1 = () => toast.error('Large file Format');
+
     const loading = useSelector((state) => state.postReducer.uploading)
 
     const { user } = useSelector((state) => state.authReducer.authData)
@@ -27,12 +29,30 @@ function PostShare({ fetchPosts }) {
     const dispatch = useDispatch()
 
     const onImageChange = (event) => {
+        // if (event.target.files && event.target.files[0]) {
+        //     if (event.target.files[0].type === 'image/x-png' || event.target.files[0].type === 'image/gif' || event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'image/jpg') {
+        //         let img = event.target.files[0];
+        //         setImage(img);
+        //     } else {
+        //         notify()
+        //     }
+        // }
+        
         if (event.target.files && event.target.files[0]) {
-            if (event.target.files[0].type === 'image/x-png' || event.target.files[0].type === 'image/gif' || event.target.files[0].type === 'image/jpeg' || event.target.files[0].type === 'image/jpg') {
-                let img = event.target.files[0];
-                setImage(img);
+            const allowedTypes = ['image/png', 'image/gif', 'image/jpeg', 'image/jpg'];
+            const maxSizeInBytes = 1024 * 1024 * 2; // 1 MB
+
+            const file = event.target.files[0];
+            if (allowedTypes.includes(file.type) && file.size <= maxSizeInBytes) {
+                setImage(file);
             } else {
-                notify()
+                if (file.size >= maxSizeInBytes) {
+                    notify1();
+                    reset()
+                } else {
+                    notify();
+                    reset()
+                }
             }
         }
     }
@@ -41,7 +61,7 @@ function PostShare({ fetchPosts }) {
         setImage(null);
         desc.current.value = ""
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         if (desc.current.value || image) {
             e.preventDefault();
             const newPost = {
@@ -55,12 +75,12 @@ function PostShare({ fetchPosts }) {
                 data.append("file", image)
                 newPost.image = filename
                 try {
-                    dispatch(uploadImage(data));
+                    await dispatch(uploadImage(data));
                 } catch (error) {
                     console.log(error, 'error in postshare')
                 }
             }
-            dispatch(uploadPost(newPost))
+           await dispatch(uploadPost(newPost))
             fetchPosts()
             reset()
         }
@@ -68,7 +88,7 @@ function PostShare({ fetchPosts }) {
 
     return (
         <div className='PostShare'>
-            <div style={{display:'flex',flexDirection:'row'}}>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <img onClick={() => navigate(`/profile/${user._id}`)} style={{ cursor: 'pointer' }} className='share' src={user.profilePicture ? serverPublic + user.profilePicture : serverPublic + "avatar.png"} alt="" />
                 <input
                     ref={desc}
@@ -88,7 +108,7 @@ function PostShare({ fetchPosts }) {
                     <div className='option' style={{ color: "var(--location)" }}>
                         <UilLocationPoint />Location
                     </div>
-                    
+
                     <button className='button ps-button'
                         onClick={handleSubmit}
                         disabled={loading}>
@@ -101,7 +121,7 @@ function PostShare({ fetchPosts }) {
 
                 {image && (
                     <div className="previewImage">
-                        <UilTimes style={{color:'red'}} onClick={() => setImage(null)} />
+                        <UilTimes style={{ color: 'red' }} onClick={() => setImage(null)} />
                         <img src={URL.createObjectURL(image)} alt="" />
                     </div>
                 )}

@@ -81,15 +81,16 @@
     cursor: pointer;
   }
   
-  /* @media screen and (max-width: 768px) {
-   .Chat {
+  @media screen and (max-width: 768px) {
+   /* .Chat {
       grid-template-columns: 25rem auto;
-    }
+    } */
      .follower.conversation>div>.name{
       display: none;
      }
   }
-  @media screen and (max-width: 1500px) {
+
+  /* @media screen and (max-width: 1500px) {
     .Chat {
        grid-template-columns:  auto 25rem;
      }

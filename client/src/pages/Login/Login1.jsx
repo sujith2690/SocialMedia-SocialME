@@ -140,7 +140,7 @@ const Login1 = () => {
     return (
         <div className='loginPage'>
             <div className="box">
-                <Toaster />
+            <Toaster />
                 {!forgot ?
                     <form className="form" onSubmit={handleSubmit} >
                         <h2>SocialME</h2>

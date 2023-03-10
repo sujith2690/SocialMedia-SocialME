@@ -31,7 +31,6 @@ function PostSide({ location }) {
   useEffect(() => {
     if (location === "saved") {
       savedPost()
-
     } else {
       fetchPosts()
     }
@@ -52,7 +51,7 @@ function PostSide({ location }) {
         : ''
       }
 
-      <Posts location='saved' data={posts} fetchPosts={fetchPosts} />
+      <Posts location={location} data={posts} fetchPosts={fetchPosts} />
     </div>
   )
 }

@@ -42,7 +42,6 @@ const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
             try {
                 const { data } = await getMessages(chat._id)
                 setmessages(data)
-                console.log(data, '------charbox')
 
             } catch (error) {
                 console.log(error)

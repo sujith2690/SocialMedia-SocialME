@@ -16,7 +16,6 @@ const ActiveUser = () => {
       const verifiedUsers = users.data.filter((item)=>{
         return item.followers.length >= 5
       })
-      console.log(users.data, "jjjjj")
       setUser(users.data)
       setFilteredUsers(verifiedUsers)
     } catch (error) {

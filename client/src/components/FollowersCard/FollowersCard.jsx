@@ -34,7 +34,6 @@ function FollowersCard({ location }) {
         } catch (error) {
           console.log(error, '--ERROR')
         }
-
       }
     }
     fetchPersons()

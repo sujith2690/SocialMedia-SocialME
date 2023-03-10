@@ -9,18 +9,17 @@ import mongoose, { Types } from "mongoose";
 // Registering New User
 
 export const registerUser = async (req, res) => {
-  const jwt = pkg;
-  const salt = await bcrypt.genSalt(10);
-  const hashedPass = await bcrypt.hash(req.body.password, salt);
-  req.body.password = hashedPass;
-  const newUser = new UserModel(req.body);
-  const { username } = req.body;
   try {
+    const jwt = pkg;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPass = await bcrypt.hash(req.body.password, salt);
+    req.body.password = hashedPass;
+    const newUser = new UserModel(req.body);
+    const { username } = req.body;
     const oldUser = await UserModel.findOne({ username });
     if (oldUser) {
       return res.status(400).json({ message: "Email is already regiserd" });
     }
-    console.log(newUser, "----new user signup");
     const user = await newUser.save();
     const otpSend = await sendOtpVerificationEmail(user);
 
@@ -44,12 +43,12 @@ export const registerUser = async (req, res) => {
 const sendOtpVerificationEmail = async (user) => {
   console.log(
     user,
-    "---------id and user namea at sendotpverifunction............."
+    "---------id and user name at send otp verifunction............."
   );
   return new Promise(async (resolve, reject) => {
-    const userEmail = user.username;
-    const userid = user._id.toString();
     try {
+      const userEmail = user.username;
+      const userid = user._id.toString();
       const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -58,7 +57,6 @@ const sendOtpVerificationEmail = async (user) => {
           pass: process.env.NDMILR_PASS,
         },
       });
-      console.log(userEmail, "--------email");
       const mailOptions = {
         from: process.env.EMAIL,
         to: userEmail,
@@ -84,7 +82,7 @@ const sendOtpVerificationEmail = async (user) => {
           email: userEmail,
         },
       });
-      console.log("---------00------");
+      // console.log("---------00------");
       const saltRound = 10;
       const hashedOtp = bcrypt.hashSync(otp, saltRound);
       // const hashedOtp = otp
@@ -108,7 +106,7 @@ const sendOtpVerificationEmail = async (user) => {
 
 export const otpVerify = async (req, res) => {
   const userId = req.body.userId;
-  console.log(userId, "----------userfffggg---gg");
+  console.log(userId, "----------user---id");
   try {
     let { userId, otp } = req.body;
     console.log(userId, otp, "userid and otp at authcontroller");
@@ -168,8 +166,8 @@ export const otpVerify = async (req, res) => {
 // resend OTP
 
 export const resendOtp = async (req, res) => {
-  console.log("resend otp ");
   try {
+    console.log("resend otp ");
     const id = req.body.userId;
     const username = req.body.userEmail;
     let user = {
@@ -194,10 +192,9 @@ export const resendOtp = async (req, res) => {
 // Login User
 
 export const loginUser = async (req, res) => {
-  const { username, password } = req.body;
-  const jwt = pkg;
-
   try {
+    const { username, password } = req.body;
+    const jwt = pkg;
     const user = await UserModel.findOne({ username: username });
 
     if (user) {
@@ -232,9 +229,9 @@ export const loginUser = async (req, res) => {
 //       google
 
 export const googleUser = async (req, res) => {
-  const jwt = pkg;
-  const email = req.body.email;
   try {
+    const jwt = pkg;
+    const email = req.body.email;
     const user = await UserModel.findOne({ username: email });
     if (user) {
       if (user.isBlock) {
@@ -285,8 +282,8 @@ export const googleUser = async (req, res) => {
 //  searchUser
 
 export const verifyEmail = async (req, res) => {
-  const userEmail = req.body.email;
   try {
+    const userEmail = req.body.email;
     const user = await UserModel.findOne({ username: userEmail });
     if (user) {
       const userDetails = {
@@ -305,15 +302,15 @@ export const verifyEmail = async (req, res) => {
 
 //Change password
 export const changePassword = async (req, res) => {
-  let { userId, newPassword } = req.body;
-
+  
   try {
+    let { userId, newPassword } = req.body;
     newPassword = await bcrypt.hash(newPassword, 10);
     const user = await UserModel.findOneAndUpdate(
       { _id: userId },
       { $set: { password: newPassword } }
     );
-    res.status(200).json({ message: "Pasword Changed", success: true });
+    res.status(200).json({ message: "Password Changed", success: true });
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -351,7 +348,7 @@ export const registerAdmin = async (req, res) => {
   try {
     const oldAdmin = await AdminModel.findOne({ adminname });
     if (oldAdmin) {
-      return res.status(400).json({ message: "Admin is already regiserd" });
+      return res.status(400).json({ message: "Admin is already registered" });
     }
     const admin = await newAdmin.save();
 
@@ -375,9 +372,9 @@ export const registerAdmin = async (req, res) => {
 // Login Admin
 
 export const loginAdmin = async (req, res) => {
-  const { adminname, password } = req.body;
-  const jwt = pkg;
   try {
+    const { adminname, password } = req.body;
+    const jwt = pkg;
     const admin = await AdminModel.findOne({ adminname: adminname });
     if (admin) {
       if (admin.isAdmin === false) {

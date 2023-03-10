@@ -11,6 +11,7 @@ export const updateUser = (id, formData) => async (dispatch) => {
 };
 
 export const followUser = (id, data) => async (dispatch) => {
+  console.log('------now')
   dispatch({ type: "FOLLOW_USER", data: data._id });
   UserApi.followUser(id, data);
 };

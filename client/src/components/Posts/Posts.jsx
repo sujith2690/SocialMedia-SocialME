@@ -16,14 +16,13 @@ function Posts({ location, data, fetchPosts }) {
 
   if (!posts) return "no posts";
   if (params.id) {
-  
     posts = posts.filter((post) => post.userId === params.id)
   }
   return (
     <div className="Posts">
       {loading ? "Fetching posts..." :
         posts.map((post, id) => {
-          return <Post location='saved' data={post} fetchpost={fetchPosts} key={id} />
+          return <Post location='saved'  data={post} fetchpost={fetchPosts} key={id} />
         })}
     </div>
   )

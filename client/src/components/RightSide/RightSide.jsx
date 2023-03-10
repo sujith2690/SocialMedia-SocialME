@@ -14,9 +14,8 @@ import { Logout } from 'tabler-icons-react';
 import { logOut } from '../../Actions/AuthAction'
 import { useNavigate } from 'react-router-dom'
 
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+
+import NotificaionModal from '../Modal/NotificaionModal';
 
 const RightSide = ({ location } ) => {
   
@@ -43,21 +42,16 @@ const RightSide = ({ location } ) => {
   const handleLogOut = () => {
     dispatch(logOut())
   }
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: '',
-    border: '2px solid #000',
-    boxShadow: 24,
-    color: 'white',
-    p: 4,
-  };
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+ 
+
+   // Notification Modal
+   const [notiModal, setNotiModal] = React.useState(false);
+   const handleNotification = () => {
+       setNotiModal(!notiModal)
+   }
+   const closeModal = () => {
+       setNotiModal(false)
+   }
 
   return (
     <div className="RightSide">
@@ -71,7 +65,7 @@ const RightSide = ({ location } ) => {
         </div>
         <div className='notify'>
           <Bell
-            onClick={handleOpen}
+           onClick={handleNotification}
           />
           {notes.length > 0 ? <span className="notification-icon">{notes.length} </span> : ''}
         </div>
@@ -88,34 +82,8 @@ const RightSide = ({ location } ) => {
       
       <FollowersCard  location={location} />
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Notifications...
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {notes.map((items, i) => {
-              return (
-                <div className='notificationdetails' key={i} >
-                  <img src={items.userData.profilePicture ? serverPublic + items.userData.profilePicture : serverPublic + "avatar.png"} alt=""
-                    className='notifyImagess' />
-                  <div className="content">
-                    <p style={{fontSize:15}}>{items.Notifications.content}</p>
-                  </div>
-                </div>
-              )
-            })}
-            <hr />
-            <span className='clear' onClick={handleClear}>Clear all</span>
-          </Typography>
-        </Box>
-      </Modal>
-
+     
+      <NotificaionModal notiModal={notiModal} notes={notes} handleClear={handleClear} closeModal={closeModal} />
     </div>
   )
 }

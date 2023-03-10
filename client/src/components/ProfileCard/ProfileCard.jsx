@@ -23,30 +23,36 @@ function ProfileCard({ location }) {
     const [userPost, setUserPost] = useState([])
     const [followings, setFollowings] = useState(user.following.includes(id))
     const [modalOpened, setModalOpened] = useState(false)
+    const [count,setCount] = useState(null)
     const navigate = useNavigate()
 
     useEffect(() => {
         const fetchFollowers = async () => {
             if (id !== user._id) {
-                console.log(id,'------other user')
                 const { data } = await getUser(id)
                 setFollowers(data.followers)
                 setFollowing(data.following)
                 setsearchuser(data)
+                setCount(data.followers.length)
             } else {
                 const { data } = await getUser(user._id)
                 setFollowers(data.followers)
                 setFollowing(data.following)
                 setUserPost(data.allPosts)
                 setsearchuser(data)
+                setCount(data.followers.length)
             }
         }
         fetchFollowers()
     }, [id])
     const handleFollow = () => {
-        following ?
-            dispatch(unFollowUser(id, user)) :
+        if(followings){
+            dispatch(unFollowUser(id, user))
+            setCount(count-1)
+        }else{
             dispatch(followUser(id, user))
+            setCount(count+1)
+        } 
         setFollowings((prev) => !prev)
     }
     const handleChat = async () => {
@@ -56,7 +62,6 @@ function ProfileCard({ location }) {
         navigate('/chat')
         })
     }
-
     return (
         <div className="ProfileCard">
             <div className="ProfileImages">
@@ -64,7 +69,6 @@ function ProfileCard({ location }) {
                     :
                     <img className="coverImages" src={searchuser?.coverPicture ? serverPublic + searchuser?.coverPicture : serverPublic + "coverimage.jpg"} alt="" />
                 }
-
                 {!searchuser ?
                     <div onClick={() => setModalOpened(true)}>
                         <div>
@@ -151,8 +155,8 @@ function ProfileCard({ location }) {
                     </div>
                     <div className="vl"></div>
                     <div className="follow">
-                        {!searchuser ? <span>{user.followers?.length}</span>
-                            : <span>{searchuser?.followers?.length}</span>
+                        {!searchuser ? <span>{count}</span>
+                            : <span>{count}</span>
                         }
                         <span>Followers</span>
                     </div>

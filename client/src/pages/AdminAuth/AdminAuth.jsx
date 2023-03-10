@@ -37,7 +37,7 @@ const AdminAuth = () => {
     return (
 
         <div className="Auth">
-            <Toaster/>
+            <Toaster position="top-right" />
             {/* Left side */}
             <div className="a-left">
                 <img src={Logo} alt="" />
