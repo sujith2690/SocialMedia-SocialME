@@ -36,7 +36,7 @@ export default function  Socket(app)
           io.to(user.socketId).emit("receive-message", data)
       }
     })
-  
+    // receive message
     socket.on("disconnect", ()=>{
       activeUsers = activeUsers.filter((user)=> user.socketId !== socket.id)
       console.log("User Disconnected +++", activeUsers)

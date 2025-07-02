@@ -194,35 +194,36 @@ export const resendOtp = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
+    console.log(username, '-----------------username at loginuser');
     const jwt = pkg;
-    const user = await UserModel.findOne({ username: username });
-
-    if (user) {
-      if (user.isBlock === true) {
-        res.status(200).json({ message: "User Blocked", success: false });
-      } else {
-        const validity = await bcrypt.compare(password, user.password);
-        if (!validity) {
-          res.status(200).json({ message: "Wrong Password", success: false });
-        } else {
-          const token = jwt.sign(
-            {
-              username: user.username,
-              id: user._id,
-            },
-            process.env.JWT_KEY,
-            { expiresIn: "24h" }
-          );
-          res
-            .status(200)
-            .json({ user, token, success: true, message: "Login Success" });
-        }
-      }
-    } else {
-      res.status(200).json({ message: "User does not Exist", success: false });
+    const user = await UserModel.findOne({ username });
+    console.log(user, "-----------------user at loginuser");
+    if (!user) {
+      return res.status(200).json({ message: "User does not exist", success: false });
     }
+    if (user.isBlock) {
+      return res.status(200).json({ message: "User is blocked", success: false });
+    }
+    const validity = await bcrypt.compare(password, user.password);
+    if (!validity) {
+      return res.status(200).json({ message: "Wrong password", success: false });
+    }
+
+    const token = jwt.sign(
+      { username: user.username, id: user._id },
+      process.env.JWT_KEY,
+      { expiresIn: "24h" }
+    );
+
+    return res.status(200).json({
+      message: "Login successful",
+      user,
+      token,
+      success: true,
+    });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Login Error:-----🚫", error);
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -297,12 +298,12 @@ export const verifyEmail = async (req, res) => {
     } else {
       res.status(200).json({ message: "Invalid Email", success: false });
     }
-  } catch (error) {}
+  } catch (error) { }
 };
 
 //Change password
 export const changePassword = async (req, res) => {
-  
+
   try {
     let { userId, newPassword } = req.body;
     newPassword = await bcrypt.hash(newPassword, 10);
