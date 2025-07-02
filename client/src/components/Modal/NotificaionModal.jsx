@@ -10,9 +10,9 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 350,
-    minHeight:100,
-    maxHeight:400,
-    overflow:'hidden',
+    minHeight: 100,
+    maxHeight: 400,
+    overflow: 'hidden',
     overflowY: "scroll",
     bgcolor: '',
     border: '2px solid #000',
@@ -20,15 +20,15 @@ const style = {
     color: 'white',
     p: 4,
 };
-const NotificaionModal = ({notiModal,notes,handleClear,closeModal}) => {
+const NotificaionModal = ({ notiModal, notes, handleClear, closeModal }) => {
     const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
     const handleClose = () => {
         closeModal()
     }
-    
-  return (
-    <div>
-        <Modal
+
+    return (
+        <div>
+            <Modal
                 open={notiModal}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
@@ -39,7 +39,7 @@ const NotificaionModal = ({notiModal,notes,handleClear,closeModal}) => {
                         Notifications...
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    {notes.map((items, i) => {
+                        {notes.map((items, i) => {
                             return (
                                 <div className='notificationdetails' key={i} >
                                     <img src={items.userData.profilePicture ? serverPublic + items.userData.profilePicture : serverPublic + "avatar.png"} alt=""
@@ -55,8 +55,8 @@ const NotificaionModal = ({notiModal,notes,handleClear,closeModal}) => {
                     </Typography>
                 </Box>
             </Modal>
-    </div>
-  )
+        </div>
+    )
 }
 
 export default NotificaionModal

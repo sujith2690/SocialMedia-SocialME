@@ -39,11 +39,13 @@
 
 .notification-icon {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  padding: 5px 5px 5px 5px;
+  /* width: 20px;
+  height: 20px; */
   background-color: rgba(13, 10, 194, 0.897);
-  border-radius: 50%;
+  border-radius: 30%;
   color: white;
+  font-size: 10px;
   text-align: center;
 }
 

@@ -10,6 +10,7 @@ import { verifyEmails, verifyOtp } from '../../api/UserRequest'
 import { useFormik } from 'formik'
 import toast, { Toaster } from 'react-hot-toast';
 import jwt_decode from 'jwt-decode'
+const GoogleClientId = process.env.REACT_APP_GClientID
 
 const Login1 = () => {
     // ////////////////////////////////////  
@@ -20,6 +21,7 @@ const Login1 = () => {
     const [forgot, setForgot] = useState(false)
     const [otpSend, setOtpSend] = useState(false)
     const [Password, setPassword] = useState(false)
+    const [load, setLoad] = useState(false)
     const [passwordChanged, setPasswordChanged] = useState(false);
     const [email, setEmail] = useState('')
     const [Userid, setUserid] = useState('')
@@ -28,8 +30,6 @@ const Login1 = () => {
         password: '',
         confirmpassword: '',
     });
-
-
     const initialValues = {
         username: '',
         password: '',
@@ -38,12 +38,15 @@ const Login1 = () => {
         initialValues: initialValues,
         validationSchema: loginSchema,
         onSubmit: async (values, action) => {
+            setLoad(true)
             const response = await dispatch(logIn(values))
+            console.log(response, '----------------response')
             if (response.success) {
                 toast.success(response.message)
             } else {
-                toast.error(response.message)
+                toast.error("User Not Found!")
             }
+            setLoad(false)
             action.resetForm()
         },
         onClick: (values, action) => {
@@ -119,12 +122,12 @@ const Login1 = () => {
         /*global  google*/
         try {
             google.accounts.id.initialize({
-                client_id: process.env.REACT_APP_GClientID,
+                client_id: GoogleClientId,
                 callback: handleCallbackResponse,
             });
 
             google.accounts.id.renderButton(
-                document.getElementById("googlebtn"),
+                document.getElementById("googleBtn"),
                 { theme: "outline", size: "large", shape: "rectangle" }
             );
             //google.accounts.id.prompt();
@@ -140,7 +143,7 @@ const Login1 = () => {
     return (
         <div className='loginPage'>
             <div className="box">
-            <Toaster />
+                <Toaster />
                 {!forgot ?
                     <form className="form" onSubmit={handleSubmit} >
                         <h2>SocialME</h2>
@@ -181,9 +184,19 @@ const Login1 = () => {
                             <a onClick={handleLogin}>Sign Up</a>
                         </div>
                         {/* <input type="submit" value='Login' /> */}
-                        <button type='submit' className='button logbtn'>Login</button>
+                        {
+                            load ? <button className="loading-btn" disabled>
+                                <span className="spinner" />
 
-                        <div style={{ marginTop: '10px' }} className='' id='googlebtn'></div>
+                            </button>
+                                :
+                                <>
+                                    <button type='submit' className='loginBtn'>Login</button>
+                                    <div style={{ marginTop: '10px' }} className='' id='googleBtn'></div>
+                                </>
+                        }
+                        {/* <button type='submit' className='button logbtn'>Login</button> */}
+
                     </form>
                     :
 
@@ -223,7 +236,7 @@ const Login1 = () => {
                                         Send OTP
                                     </button> :
                                     <>
-                                        <p style={{cursor:'pointer'}} onClick={resendOtps} >Rend OTP</p>
+                                        <p style={{ cursor: 'pointer' }} onClick={resendOtps} >Rend OTP</p>
                                         <button onClick={verifyOtps} className="button infoButton" type="submit" disabled={loading} >
                                             Verify OTP
                                         </button>

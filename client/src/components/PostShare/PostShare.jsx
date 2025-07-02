@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { uploadImage, uploadPost } from '../../Actions/uploadAction'
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom'
+import Spinner from '../Spinner/Spinner'
 
 
 function PostShare({ fetchPosts }) {
@@ -16,6 +17,7 @@ function PostShare({ fetchPosts }) {
 
     const notify = () => toast.error('Unsupported Format');
     const notify1 = () => toast.error('Large file Format');
+    const [load, setLoad] = useState(false)
 
     const loading = useSelector((state) => state.postReducer.uploading)
 
@@ -37,7 +39,7 @@ function PostShare({ fetchPosts }) {
         //         notify()
         //     }
         // }
-        
+
         if (event.target.files && event.target.files[0]) {
             const allowedTypes = ['image/png', 'image/gif', 'image/jpeg', 'image/jpg'];
             const maxSizeInBytes = 1024 * 1024 * 2; // 1 MB
@@ -61,7 +63,8 @@ function PostShare({ fetchPosts }) {
         setImage(null);
         desc.current.value = ""
     }
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
+        setLoad(true)
         if (desc.current.value || image) {
             e.preventDefault();
             const newPost = {
@@ -80,9 +83,10 @@ function PostShare({ fetchPosts }) {
                     console.log(error, 'error in postshare')
                 }
             }
-           await dispatch(uploadPost(newPost))
+            await dispatch(uploadPost(newPost))
             fetchPosts()
             reset()
+            setLoad(false)
         }
     }
 
@@ -109,11 +113,18 @@ function PostShare({ fetchPosts }) {
                         <UilLocationPoint />Location
                     </div>
 
-                    <button className='button ps-button'
+                    {
+                        load ? <Spinner /> : <button className='button ps-button'
+                            onClick={handleSubmit}
+                            disabled={loading}>
+                            Share
+                        </button>
+                    }
+                    {/* <button className='button ps-button'
                         onClick={handleSubmit}
                         disabled={loading}>
                         {loading ? "Loading..." : "Share"}
-                    </button>
+                    </button> */}
                     <div style={{ display: "none" }}>
                         <input type="file" name='myImage' ref={imageRef} onChange={onImageChange} accept="image/png, image/gif, image/jpeg" />
                     </div>
@@ -121,6 +132,7 @@ function PostShare({ fetchPosts }) {
 
                 {image && (
                     <div className="previewImage">
+                        {/* / close button / */}
                         <UilTimes style={{ color: 'red' }} onClick={() => setImage(null)} />
                         <img src={URL.createObjectURL(image)} alt="" />
                     </div>

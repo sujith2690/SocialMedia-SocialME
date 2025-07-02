@@ -43,11 +43,19 @@ const Chat = () => {
     // initialisation of socket
 
     useEffect(() => {
-        socket.current = io(process.env.REACT_APP_BASE_URL)
-        socket.current.emit("new-user-add", user._id)
-        socket.current.on('get-users', (users) => {
-            setOnlineUsers(users);
-        })
+        function initSocket() {
+            try {
+                console.log(process.env.REACT_APP_BASE_URL,'------------process.env.REACT_APP_BASE_URL')
+                socket.current = io(process.env.REACT_APP_BASE_URL)
+                socket.current.emit("new-user-add", user._id)
+                socket.current.on('get-users', (users) => {
+                    setOnlineUsers(users);
+                })
+            } catch (error) {
+                console.log('Error initializing socket: 🛑', error.message)
+            }
+        }
+        initSocket()
     }, [user])
 
 
@@ -73,6 +81,7 @@ const Chat = () => {
     }, [user])
 
     const checkOnlineStatus = (chat) => {
+        console.log(chat, '-------------------------chat')
         const chatMember = chat.members.find((member) => member !== user._id)
         const online = onlineUsers.find((user) => user.userId === chatMember)
         return online ? true : false
@@ -104,78 +113,104 @@ const Chat = () => {
         }
     }
     const handleChat = async (receiverId) => {
-      const userChat =  await createChat({ senderId, receiverId })
-            setcurrentChat(userChat.data)
-            if (show === true) {
-                setshow(false)
-            }
-            const { data } = await userChats(user._id)
-            setchats(data)
+        const userChat = await createChat({ senderId, receiverId })
+        setcurrentChat(userChat.data)
+        if (show === true) {
+            setshow(false)
+        }
+        const { data } = await userChats(user._id)
+        setchats(data)
     }
     return (
-        <div className="Chat">
-            {/* left side */}
-            <div className="Left-side-chat">
+        <>
+            <div className="Chat">
+                {/* left side */}
+                <div className="Left-side-chat">
 
-                <div className="Chat-container">
-                    <form action="" onSubmit={search}>
-                        <div className="search">
-                            <input type="text" className='textbox' placeholder='Search User' ref={desc} />
-                            <UilSearch className='s-icons' onClick={search} />
+                    <div className="Chat-container">
+                        <div className='search-all'>
+                            <form action="" onSubmit={search}>
+                                <div className="search">
+                                    <input type="text" className='textbox' placeholder='Search User' ref={desc} />
+                                    <UilSearch className='s-icons' onClick={search} />
+                                </div>
+                            </form>
+                            {show === true ?
+                                <div className='searchoutput' style={{ padding: '5px' }}>
+                                    {Result.map((item, i) => {
+                                        return (
+                                            <div className='resultlocation' key={i} style={{ display: 'flex', alignItems: 'center' }} onClick={() => handleChat(item._id)}  >
+                                                <img className="SearchProfile" src={item.profilePicture ? serverPublic + item.profilePicture : serverPublic + "avatar.png"} alt="" />
+                                                <p style={{ marginLeft: '10px', marginTop: 10, fontSize: 12, color: 'white' }} >
+                                                    {item.firstname} {item.lastname}
+                                                </p>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                : ''}
                         </div>
-                    </form>
-                    {show === true ?
-                        <div className='searchoutput' style={{ padding: '5px' }}>
-                            {Result.map((item, i) => {
-                                return (
-                                    <div className='resultlocation' key={i} style={{ display: 'flex', alignItems: 'center' }} onClick={() => handleChat(item._id)}  >
-                                        <img className="SearchProfile" src={item.profilePicture ? serverPublic + item.profilePicture : serverPublic + "avatar.png"} alt="" />
-                                        <p style={{ marginLeft: '10px', marginTop: 10, fontSize: 12, color: 'white' }} >
-                                            {item.firstname} {item.lastname}
-                                        </p>
-                                    </div>
-                                )
-                            })}
+                        <p>Chats</p>
+                        <div className="Chat-list">
+                            {chats.map((chat, i) => (
+                                <div key={i} onClick={() => setcurrentChat(chat)} >
+                                    <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} />
+                                </div>
+                            ))}
                         </div>
-                        : ''}
-                    <h2>Chats</h2>
-                    <div className="Chat-list">
-                        {chats.map((chat, i) => (
-                            <div  key={i} onClick={() => setcurrentChat(chat)} >
-                                <Conversation data={chat} currentUserId={user._id} online={checkOnlineStatus(chat)} />
+
+                    </div>
+                </div>
+                {/* Right side */}
+                <div className="Right-side-chat">
+                    <div className='naviconns' style={{ width: '20rem', alignSelf: 'flex-end' }}>
+
+                        <div className="navIcons">
+                            <div>
+                                <img className='homeimage' src={Home} alt="" onClick={() => navigate('/home')} />
                             </div>
-                        ))}
-                    </div>
-
-                </div>
-            </div>
-            {/* Right side */}
-            <div className="Right-side-chat">
-                <div className='naviconns' style={{ width: '20rem', alignSelf: 'flex-end' }}>
-
-                    <div className="navIcons">
-                        <div>
-                            <img className='homeimage' src={Home} alt="" onClick={() => navigate('/home')} />
-                        </div>
-                        <div>
-                            <Bookmark style={{ cursor: 'pointer' }} onClick={() => navigate('/saved')} />
-                        </div>
-                        <div>
-                            <MessageDots onClick={() => navigate('/chat')} />
-                        </div>
-                        <div>
-                            <UserCircle onClick={() => navigate(`/profile/${user._id}`)} />
-                        </div>
-                        <div>
-                            <Logout onClick={handleLogOut} />
+                            <div>
+                                <Bookmark style={{ cursor: 'pointer' }} onClick={() => navigate('/saved')} />
+                            </div>
+                            <div>
+                                <MessageDots onClick={() => navigate('/chat')} />
+                            </div>
+                            <div>
+                                <UserCircle onClick={() => navigate(`/profile/${user._id}`)} />
+                            </div>
+                            <div>
+                                <Logout onClick={handleLogOut} />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <ChatBox chat={currentChat} currentUser={user._id} setSendMessages={setSendMessages}
+                    <ChatBox chat={currentChat} currentUser={user._id} setSendMessages={setSendMessages}
 
-                    receiveMessage={receiveMessage} />
+                        receiveMessage={receiveMessage} />
+                </div>
             </div>
-        </div>
+            <div className='search-mobile'>
+                <form action="" onSubmit={search}>
+                    <div className="search">
+                        <input type="text" className='textbox' placeholder='Search User' ref={desc} />
+                        <UilSearch className='s-icons' onClick={search} />
+                    </div>
+                </form>
+                {show === true ?
+                    <div className='searchoutput' style={{ padding: '5px' }}>
+                        {Result.map((item, i) => {
+                            return (
+                                <div className='resultlocation' key={i} style={{ display: 'flex', alignItems: 'center' }} onClick={() => handleChat(item._id)}  >
+                                    <img className="SearchProfile" src={item.profilePicture ? serverPublic + item.profilePicture : serverPublic + "avatar.png"} alt="" />
+                                    <p style={{ marginLeft: '10px', marginTop: 10, fontSize: 12, color: 'white' }} >
+                                        {item.firstname} {item.lastname}
+                                    </p>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    : ''}
+            </div>
+        </>
     )
 }
 

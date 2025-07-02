@@ -56,17 +56,17 @@ const Menu = () => {
     const handleClear = async () => {
         await ClearNotifications(userId)
         setNotes([])
-      }
+    }
     useEffect(() => {
         Notifications()
-      }, [])
+    }, [])
     const Notifications = async () => {
         const notifications = await getNotifications(userId)
         const allNotifications = notifications.data
         setNotes(allNotifications)
-      }
-   
-    
+    }
+
+
 
     // Notification Modal
     const [notiModal, setNotiModal] = React.useState(false);
@@ -82,7 +82,7 @@ const Menu = () => {
             <div>
                 <h2>SocialME</h2>
             </div>
-            <form action=""  onSubmit={search}>
+            <form action="" onSubmit={search}>
                 <div className="search">
                     <input type="text" className='textbox' placeholder='Search User' ref={desc} />
                     <UilSearch className='s-icons' onClick={search} />
@@ -102,7 +102,7 @@ const Menu = () => {
                     })}
                 </div>
                 : ''}
-            <div className='menuitems'  onClick={() => navigate('/home')}>
+            <div className='menuitems' onClick={() => navigate('/home')}>
                 <img className='homeimage' src={Home} alt="" />
                 <p>Home</p>
             </div>

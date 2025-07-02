@@ -54,6 +54,7 @@ const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
         setNewMessage(newMessage)
     }
     const handleSend = async (e) => {
+        if (!newMessage.trim()) return;
         e.preventDefault()
         const message = {
             senderId: currentUser,
@@ -86,7 +87,7 @@ const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
             {chat ? (
                 <>
                     <div className="chat-header">
-                        <div className="userHead" style={{display:'flex',justifyContent:'space-between'}}>
+                        <div className="userHead" style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <img src={userData?.profilePicture ?
                                     process.env.REACT_APP_PUBLIC_FOLDER + userData.profilePicture :
@@ -94,11 +95,11 @@ const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
                                     className='followerImage'
                                     style={{ width: '50px', height: '50px' }}
                                 />
-                                <div className="name" style={{ fontSize: '0.8rem',marginLeft:'10px' }}>
+                                <div className="name" style={{ fontSize: '0.8rem', marginLeft: '10px' }}>
                                     <span>{userData?.firstname} {userData?.lastname}</span>
                                 </div>
                             </div>
-                            <div style={{cursor:'pointer'}} onClick={() => navigate('/home')}><img src={Logo} alt=""  /></div>
+                            <div style={{ cursor: 'pointer' }} onClick={() => navigate('/home')}><img src={Logo} alt="" /></div>
                         </div>
                         <hr style={{ width: '85%', border: '0.1px solid #ececec' }} />
                     </div>
@@ -114,16 +115,16 @@ const ChatBox = ({ chat, currentUser, setSendMessages, receiveMessage }) => {
                         ))}
                     </div>
                     {/* chat sender */}
-                    <form  onSubmit={handleSend} >
+                    <form onSubmit={handleSend} >
                         <div className="chat-sender">
                             <InputEmoji
                                 value={newMessage}
                                 onChange={handleChange}
                             />
-                            <button type='submit' className="send-button button">Send</button>
+                            <button type='submit' className="button send-button">Send</button>
                         </div>
                     </form>
-                    
+
                 </>
             ) : (
                 <span className='chatbox-empty-message'>Tap on a Chat to start Conversation... </span>

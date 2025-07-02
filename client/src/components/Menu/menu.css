@@ -14,43 +14,49 @@
   justify-content: space-between;
   padding: 10px;
 }
+
 .menuitems {
   display: flex;
   align-items: center;
   cursor: pointer;
   padding: 6px;
   height: 35px;
+  gap: 10px;
   /* background-color: black; */
 }
+
+
 .menuitems:hover {
   background-color: rgba(0, 0, 0, 0.418);
   color: white;
   border-radius: 50px;
   padding: 6px;
 }
-.menuitems > p {
+
+.menuitems>p {
   margin-left: 10px;
 }
 
-.menu>div>h2{
+
+.menu>div>h2 {
   /* font-size: 2rem; */
   text-align: center;
-  
+
   /* color: #25b6f9; */
   /* font-size: 2em; */
 
   /* letter-spacing: 0.1em; */
- /* Create The Gradient */
- background-image: var(--buttonBg);
- /* Set the ColorBg size and Properties */
- background-size: 100%;
- background-repeat: repeat;
- /* Use the Text as mask of the background */
- /* This will show the gradient as a text Color rather than element background */
- -webkit-background-clip: text;
- -webkit-text-fill-color: transparent;
- -moz-background-clip: text;
- -moz-text-decoration-color: transparent;
+  /* Create The Gradient */
+  background-image: var(--buttonBg);
+  /* Set the ColorBg size and Properties */
+  background-size: 100%;
+  background-repeat: repeat;
+  /* Use the Text as mask of the background */
+  /* This will show the gradient as a text Color rather than element background */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-background-clip: text;
+  -moz-text-decoration-color: transparent;
 }
 
 .homeimage {
@@ -67,60 +73,73 @@
   border-radius: 50px;
   transition: 0.4s;
 }
+
 .textbox {
   border-radius: 25px;
   border: none;
   outline: none;
 }
+
 .search .textbox {
   width: 0;
   text-indent: 16px;
   transition: 0.4s;
   border: none;
 }
+
 .search:hover {
   background-color: #00000073;
 }
+
 .search:hover .textbox {
   width: 80%;
   cursor: pointer;
 }
+
 .s-icons {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 5px;
-    padding: 5px;
-    background: linear-gradient(98.63deg, #25b6f9 0%, #5f20f3 100%);
-    border-radius: 50%;
-    padding: 5px;
-    color: white;
-    border: none;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  padding: 5px;
+  background: linear-gradient(98.63deg, #25b6f9 0%, #5f20f3 100%);
+  border-radius: 50%;
+  padding: 5px;
+  color: white;
+  border: none;
+}
 
 
-  
+
 .SearchProfile {
-    border-radius: 50%;
-    width: 3rem;
-    height: 3rem;
-  }
-  
-  .searchoutput {
-    min-height: 100px;
-    max-height: 150px;
-    overflow: hidden;
-    overflow-y: scroll;
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.336);
-  }
-  .searchoutput > div {
-    margin-top: 10px;
-  }
-  .resultlocation {
-    /* background-color: white; */
-    display: flex;
-    border-radius: 10px;
-  }
-  
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+}
 
+.searchoutput {
+  min-height: 100px;
+  max-height: 150px;
+  overflow: hidden;
+  overflow-y: scroll;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.336);
+}
+
+.searchoutput>div {
+  margin-top: 10px;
+}
+
+.resultlocation {
+  /* background-color: white; */
+  display: flex;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .followIcon_pointer {
+    display: flex; /* Show only on mobile */
+    align-items: center;
+    gap: 8px; /* optional spacing */
+  }
+}
